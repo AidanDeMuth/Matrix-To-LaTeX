@@ -1,0 +1,15 @@
+{
+  "name": "matrix-solver",
+  "version": "1.0.0",
+  "description": "Solves Matrix",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "Matrix-Solver"
+  },
+  "author": "Me",
+  "license": "ISC"
+}

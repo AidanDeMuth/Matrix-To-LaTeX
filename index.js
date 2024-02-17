@@ -1,62 +1,122 @@
-/*
- * Permutes two rows of a given matrix. Parameters are 1-indexed.
- */
-
-function permuteRowOperation(matrix, i, j) {
-	if (i > matrix.length || j > matrix.length) {
-		console.log("Rows cannot be greater than matrix size!");
-		return matrix;
-	}
-	else if (i < 0 || j < 0) {
-		console.log("Rows cannot be less than zero!");
-		return matrix;
-	}
-
-	let tempRow = matrix[i];
-	matrix[i] = matrix[j];
-	matrix[j] = tempRow;
-	return matrix;
-}
+import {frac, gcd} from './frac.js';
+import operations from './operations.js';
 
 /*
- * Will add n times the value of each element in row i to row j. Parameters
- * are 1-indexed.
+ * Reduces a matrix of any dimension to RREF
  */
 
-function rowReplacementOperation(matrix, i, j, n) {
-	if (i > matrix.length || j > matrix.length) {
-		console.log("Rows cannot be greater than matrix size!");
-		return matrix;
-	}
-	else if (i < 0 || j < 0) {
-		console.log("Rows cannot be less than zero!");
+function reducedRowEchelon(matrix, i, j) {
+	// End iterations if at right end of matrix
+	if ((j >= matrix[0].length) || (i >= matrix.length)) {
+		console.log("Finished! Returning Matrix.")
 		return matrix;
 	}
 
-	for (let x = 0; x < matrix[0].length; x++) {
-		if (matrix[i][x] != 0) {
-			matrix[j][x] += n * matrix[i][x]; 
+	// Checks if the pivot and down is all zero
+	let hasNonZero = false;
+	for (let x = i; x < matrix.length; x++) {
+		if (matrix[x][j].isNonZero()) {
+			hasNonZero = true;
 		}
 	}
-	return matrix;
+
+
+	if (!hasNonZero) {
+		reducedRowEchelon(matrix, i, j+1);
+	}
+	else {
+		// Finds first nonzero row and permutes with pivot position
+		for (let x = i; x < matrix.length; x++) {
+			if (!(matrix[i][j].isNonZero()) && (matrix[x][j].isNonZero())) {
+				console.log("Permuting rows: " + i + " and " + x);
+				matrix = operations.permuteRowOperation(matrix, i, x);
+				printMatrix(matrix);
+				break;
+			}
+		}
+
+		// Multiplies the row of the pivot position by the
+		// reciprocal of the pivot point
+		if (((matrix[i][j].getDecimal()) != 1) && ((matrix[i][j].getDecimal()) != 0)) {
+			console.log("Scaling row: " + (i+1));
+			matrix = operations.scalarOperation(matrix, i, matrix[i][j].invertFraction());
+			printMatrix(matrix);
+		}
+
+		// Loops to add to the other rows to reduce
+		for (let x = 0; x < matrix.length; x++) {
+			if ((x != i) && (matrix[x][j].isNonZero()) && (matrix[i][j].isNonZero()) && (j < matrix[0].length)) {
+				console.log("Row Replacement to row: " + (x+1));
+				let product = matrix[i][j].multiplyFraction(matrix[x][j]);
+				matrix = operations.rowReplacementOperation(matrix, i, x, 
+																					 product.negateFraction());
+				printMatrix(matrix);
+			}
+		}
+
+		reducedRowEchelon(matrix, i+1, j+1);
+	}	
 }
 
-/*
- * Multiplies a row i by a constant factor of n. Parameters are 1-indexed.
- */
-
-function scalarOperation(matrix, i, n) {
-	if (i > matrix.length) {
-		console.log("Rows cannot be greater than matrix size!");
-		return matrix;
-	} 
-	else if (i < 0) {
-		console.log("Row cannot be less than one!")
+function reducedRowEchelonAugmented(matrix, i, j) {
+	// End iterations if at right end of matrix
+	if ((j >= matrix[0].length-1) || (i >= matrix.length)) {
+		console.log("Finished! Returning Matrix.")
 		return matrix;
 	}
-	
-	for (let x = 0; x < matrix[0].length; x++) {
-		matrix[i][x] *= n;
+
+	// Checks if the pivot and down is all zero
+	let hasNonZero = false;
+	for (let x = i; x < matrix.length; x++) {
+		if (matrix[x][j].isNonZero()) {
+			hasNonZero = true;
+		}
+	}
+
+
+	if (!hasNonZero) {
+		reducedRowEchelonAugmented(matrix, i, j+1);
+	}
+	else {
+		// Finds first nonzero row and permutes with pivot position
+		for (let x = i; x < matrix.length; x++) {
+			if (!(matrix[i][j].isNonZero()) && (matrix[x][j].isNonZero())) {
+				console.log("Permuting rows: " + i + " and " + x);
+				matrix = operations.permuteRowOperation(matrix, i, x);
+				printMatrix(matrix);
+				break;
+			}
+		}
+
+		// Multiplies the row of the pivot position by the
+		// reciprocal of the pivot point
+		if (((matrix[i][j].getDecimal()) != 1) && ((matrix[i][j].getDecimal()) != 0)) {
+			console.log("Scaling row: " + (i+1));
+			matrix = operations.scalarOperation(matrix, i, matrix[i][j].invertFraction());
+			printMatrix(matrix);
+		}
+
+		// Loops to add to the other rows to reduce
+		for (let x = 0; x < matrix.length; x++) {
+			if ((x != i) && (matrix[x][j].isNonZero()) && (matrix[i][j].isNonZero()) && (j < matrix[0].length)) {
+				console.log("Row Replacement to row: " + (x+1));
+				let product = matrix[i][j].multiplyFraction(matrix[x][j]);
+				matrix = operations.rowReplacementOperation(matrix, i, x, 
+																					 product.negateFraction());
+				printMatrix(matrix);
+			}
+		}
+
+		reducedRowEchelonAugmented(matrix, i+1, j+1);
+	}	
+}
+
+
+function convertInput(matrix) {
+	for (let x = 0; x < matrix.length; x++) {
+		for (let y = 0; y < matrix[0].length; y++) {
+			matrix[x][y] = new frac(matrix[x][y], 1);
+		}
 	}
 	return matrix;
 }
@@ -66,90 +126,22 @@ function scalarOperation(matrix, i, n) {
  */
 
 function printMatrix(matrix) {
-	console.log(matrix.join('\n'));
-}
-
-
-/*
- * Reduces a matrix of any dimension to RREF
- */
-
-function reducedRowEchelon(matrix, i, j) {
-	// End iterations if at right end of matrix
-	if ((j >= matrix[0].length) || (i >= matrix.length)) {
-		return matrix;
-	}
-
-	// Checks if the pivot and down is all zero
-	let hasNonZero = false;
-	for (let x = i; x < matrix.length; x++) {
-		if (matrix[x][j] != 0) {
-			hasNonZero = true;
-		}
-	}
-	if (!hasNonZero) {
-		reducedRowEchelon(matrix, i, j+1);
-	}
-
-	// Finds first nonzero row and permutes with pivot position
-	for (let x = i; x < matrix.length; x++) {
-		console.log("Current row and column:\n" +i+ " and " +j);
-		if ((matrix[i][j] == 0) && (matrix[x][j] != 0)) {
-			console.log("Got here");
-			matrix = permuteRowOperation(matrix, i, x);
-			console.log(x +" "+ j);
-			console.log("Swapping rows:\n" +x+ " and " +j);
-			printMatrix(matrix);
-			break;
-		}
-	}
-
-	// Multiplies the row of the pivot position by the
-	// reciprocal of the pivot point
-	if ((matrix[i][j] != 1) && (matrix[i][j] != 0)) {
-		matrix = scalarOperation(matrix, i, 1 / matrix[i][j]);
-		console.log(i +" "+ j);
-		console.log("Scalar operation:\n")
-		printMatrix(matrix);
-	}
-
-	// Loops to add to the other rows to reduce
 	for (let x = 0; x < matrix.length; x++) {
-		if ((x != i) && (matrix[x][j] != 0) && (j < matrix[0].length)) {
-			rowReplacementOperation(matrix, i, x, (-1)*(matrix[i][j] * matrix[x][j]));
-			console.log("row" + i +" "+ "col" +j);
-			console.log("Replacement operation");
-			printMatrix(matrix);
+		for (let y = 0; y < matrix[0].length; y++) {
+			if (matrix[x][y].den == 1) {
+				process.stdout.write(matrix[x][y].num + "\t");
+			}
+			else {
+				process.stdout.write(matrix[x][y].num + "/" + matrix[x][y].den);
+			}
 		}
+		console.log();
 	}
-
-	console.log("Reprinting matrix");
-	reducedRowEchelon(matrix, i+1, j+1);
+	console.log();
 }
 
-/*
- * Euclid's algorithm to get the greatest common divisor.
- *
- */
 
-/*
-function gcd(a, b) {
-  if (!b) return a;
+let matrix = [[1,3,7,9],[-4,5,-11,19],[3,-5,9,1],[-9,3,7,-1]];
 
-  return gcd(b, a % b);
-};
-*/
-
-/*
- * Reduces an augmented matrix of any dimension to RREF
- */
-
-function findDeterminant(matrix) {
-
-}
-
-var matrix = [[1,0,0,0,0],[0,0,0,1,0],[0,0,1,0,0]];
-var matrix = [[1,2,3],[4,5,6],[7,8,9]];
-reducedRowEchelon(matrix, 0, 0);
-
-
+matrix = convertInput(matrix);
+reducedRowEchelonAugmented(matrix, 0, 0);

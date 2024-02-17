@@ -110,6 +110,10 @@ export class frac {
 	invertFraction() {
 		return new frac(this.den, this.num);
 	}
+
+	printFraction() {
+		console.log(this.num + "/" + this.den);
+	}
 }
 
 // Euclid's method, from Wikipedia

@@ -9,27 +9,7 @@ export class frac {
 		let newFrac = new frac((num2.num * this.den) + (this.num * num2.den),
 								commonDenominator);
 
-		// If GCD > 1 it divides, if GCD == 1 it returns
-
-		let divisor = Math.abs(gcd(newFrac.num, newFrac.den));
-		if (divisor == 1) {
-			return newFrac;
-		} 
-		else {
-			newFrac.num /= divisor;
-			newFrac.den /= divisor;
-		}
-
-		// Non-Permanant solution
-		if ((newFrac.num < 0) && (newFrac.den < 0)) {
-			newFrac.num *= (-1);
-			newFrac.den *= (-1);
-		}
-		if ((newFrac.den == -1) && (newFrac.num == 0)) {
-			newFrac.den *= (-1);
-		}
-
-		return newFrac;
+		return newFrac.simplifyFraction(newFrac);
 	}
 
 	subtractFraction(num2) {
@@ -41,53 +21,13 @@ export class frac {
 	multiplyFraction(num2) {
 		let newFrac = new frac((this.num * num2.num), (this.den * num2.den));
 
-		// If GCD > 1 it divides, if GCD == 1 it returns
-
-		let divisor = Math.abs(gcd(newFrac.num, newFrac.den));
-		if (divisor == 1) {
-			return newFrac;
-		} 
-		else {
-			newFrac.num /= divisor;
-			newFrac.den /= divisor;
-		}
-
-		// Non-Permanant solution
-		if ((newFrac.num < 0) && (newFrac.den < 0)) {
-			newFrac.num *= (-1);
-			newFrac.den *= (-1);
-		}
-		if ((newFrac.den == -1) && (newFrac.num == 0)) {
-			newFrac.den *= (-1);
-		}
-
-		return newFrac;
+		return newFrac.simplifyFraction(newFrac);
 	}
 
 	divideFraction(num2) {
 		let newFrac = new frac((this.num * num2.den), (this.den * num2.num));
 
-		// If GCD > 1 it divides, if GCD == 1 it returns
-
-		let divisor = Math.abs(gcd(newFrac.num, newFrac.den));
-		if (divisor == 1) {
-			return newFrac;
-		} 
-		else {
-			newFrac.num /= divisor;
-			newFrac.den /= divisor;
-		}
-
-		// Non-Permanant solution
-		if ((newFrac.num < 0) && (newFrac.den < 0)) {
-			newFrac.num *= (-1);
-			newFrac.den *= (-1);
-		}
-		if ((newFrac.den == -1) && (newFrac.num == 0)) {
-			newFrac.den *= (-1);
-		}
-
-		return newFrac;
+		return newFrac.simplifyFraction(newFrac);
 	}
 
 	negateFraction() {
@@ -114,9 +54,31 @@ export class frac {
 	printFraction() {
 		console.log(this.num + "/" + this.den);
 	}
+
+	simplifyFraction(oldFrac) {
+		// Non-Permanant solution
+		if ((oldFrac.num < 0) && (oldFrac.den < 0)) {
+			oldFrac.num *= (-1);
+			oldFrac.den *= (-1);
+		}
+		if ((oldFrac.den < 0) && (oldFrac.num >= 0)) {
+			oldFrac.den *= (-1);
+		}
+
+		let divisor = Math.abs(gcd(oldFrac.num, oldFrac.den));
+		if (divisor == 1) {
+			return oldFrac;
+		} 
+		else {
+			oldFrac.num /= divisor;
+			oldFrac.den /= divisor;
+		}
+
+		return oldFrac;
+	}
 }
 
-// Euclid's method, from Wikipedia
+// Euclid's method
 
 export function gcd(a, b) {
   if (!b) return a;

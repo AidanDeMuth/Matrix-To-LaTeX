@@ -19,7 +19,14 @@ export class frac {
 	}
 
 	multiplyFraction(num2) {
+		console.log("multiplying");
+		console.log(this);
+		console.log("with");
+		console.log(num2);
+		console.log("\n\n");
+
 		let newFrac = new frac((this.num * num2.num), (this.den * num2.den));
+
 
 		return newFrac.simplifyFraction(newFrac);
 	}
@@ -55,14 +62,21 @@ export class frac {
 		console.log(this.num + "/" + this.den);
 	}
 
+	isFraction() {
+		if (this.den == 1) {
+			return false;
+		}
+		return true;
+	}
+
 	simplifyFraction(oldFrac) {
-		// Non-Permanant solution
 		if ((oldFrac.num < 0) && (oldFrac.den < 0)) {
 			oldFrac.num *= (-1);
 			oldFrac.den *= (-1);
 		}
 		if ((oldFrac.den < 0) && (oldFrac.num >= 0)) {
 			oldFrac.den *= (-1);
+			oldFrac.num *= (-1);
 		}
 
 		let divisor = Math.abs(gcd(oldFrac.num, oldFrac.den));

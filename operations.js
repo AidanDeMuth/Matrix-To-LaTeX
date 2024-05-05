@@ -50,7 +50,7 @@ export function rowReplacementOperation(matrix, i, j, fraction) {
  */
 
 function scalarOperation(matrix, i, inverse) {
-	console.log("inverse" + inverse.num + " " + inverse.den);
+	console.log("After inverse: " + inverse.num + " " + inverse.den);
 	if (i > matrix.length) {
 		console.log("Rows cannot be greater than matrix size!");
 		return matrix;

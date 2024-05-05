@@ -41,6 +41,7 @@ function reducedRowEchelon(matrix, i, j) {
 		// reciprocal of the pivot point
 		if (((matrix[i][j].getDecimal()) != 1) && ((matrix[i][j].getDecimal()) != 0)) {
 			console.log("Scaling row: " + (i+1));
+			console.log("Before inverse: " + matrix[i][j].num + " " + matrix[i][j].den);
 			matrix = operations.scalarOperation(matrix, i, matrix[i][j].invertFraction());
 			printMatrix(matrix);
 		}
@@ -128,7 +129,7 @@ function reducedRowEchelonDeterminant(matrix, i, j) {
 	}	
 }
 
-/* ------------ Matrix Functions ------------ */
+/* ------------ Matrix Format Functions ------------ */
 
 /*
  * Converts the input matrix into a matrix of frac objects

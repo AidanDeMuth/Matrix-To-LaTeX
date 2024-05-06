@@ -13,7 +13,9 @@ export class frac {
 	}
 
 	subtractFraction(num2) {
+
 		// Uses existing add function by negating second fraction
+		
 		let newFrac = num2.negateFraction();
 		return this.addFraction(newFrac);
 	}

@@ -1,6 +1,10 @@
 import {frac, gcd} from './frac.js';
 import matrixOperations from './matrixOperations.js';
 
+/*
+ * Given a matrix, will product latex code with brackets (\bmatrix)
+ */
+
 function matrixLatex(matrix) {
 	matrixOperations.printMatrix(matrix);
 	let output = `$\\begin{bmatrix}\n`;
@@ -26,7 +30,10 @@ function matrixLatex(matrix) {
 				line = line.concat(`&`);
 			}
 		}
-		line = line.concat(`\\\\\n`);
+		if (x + 1 < matrix.length) {
+			line = line.concat(`\\\\`);
+		}
+		line = line.concat(`\n`);
 		output = output.concat(line);
 	}
 
@@ -34,6 +41,41 @@ function matrixLatex(matrix) {
 	console.log(output);
 }
 
+/*
+ * Given a matrix, will produce the latex code as if it were a basis. Braces will surround
+ * vectors, and each vector will be represented as a matrix.
+ */
+
+function basisLatex(matrix) {
+	console.log("PRINTING MATRIX");
+	console.log(matrix);
+
+	let output = `$\\left\\{\n`;
+	for (let x = 0; x < matrix[0].length; x++) {
+		output = output.concat(`  \\begin{bmatrix}\n`);
+
+		for (let y = 0; y < matrix.length; y++) {
+			if (matrix[y][x].isFraction()) {
+				console.log("is fraction");
+				output = output.concat(`   \\frac{${matrix[y][x].num}}{${matrix[y][x].den}} \\\\\n`);
+			}
+			else {
+				console.log("is not fraction");
+				output = output.concat(`   ${matrix[y][x].num} \\\\\n`);
+			}
+		}
+		output = output.concat(`  \\end{bmatrix}`)
+		if (x + 1 < matrix[0].length) {
+			output = output.concat(`_{\\textstyle,}`)
+		}
+		output = output.concat(`\n`);
+	}
+	output = output.concat(`\\right\\}$\n`);
+
+	console.log(output);
+}
+
 export default {
-	matrixLatex: matrixLatex
+	matrixLatex: matrixLatex,
+	basisLatex: basisLatex
 }

@@ -46,7 +46,7 @@ function matrixLatex(matrix) {
  * vectors, and each vector will be represented as a matrix.
  */
 
-function basisLatex(matrix) {
+function columnBasisLatex(matrix) {
 	console.log("PRINTING MATRIX");
 	console.log(matrix);
 
@@ -75,7 +75,38 @@ function basisLatex(matrix) {
 	console.log(output);
 }
 
+function rowBasisLatex(matrix) {
+	console.log("Printing Matrix");
+	console.log(matrix);
+
+	let output = `$\\left\\{\n`;
+
+	for (let x = 0; x < matrix.length; x++) {
+		output = output.concat(`  \\begin{bmatrix}\n  `);
+		output = output.concat(`  `);
+		for (let y = 0; y < matrix[0].length; y++) {
+			if (matrix[y][x].isFraction()) {
+				console.log("is fraction");
+				output = output.concat(`  \\frac{${matrix[y][x].num}}{${matrix[y][x].den}} & `);
+			}
+			else {
+				console.log("is not fraction");
+				output = output.concat(`${matrix[y][x].num} & `);
+			}
+		}
+		output = output.concat(`\\\\\n`);
+		output = output.concat(`  \\end{bmatrix}\n`);
+		if (x + 1 < matrix.length) {
+			output = output.concat(`  _{\\textstyle,}\n`);
+		}
+	}
+
+	output = output.concat(`\\right\\}$\n`);
+	console.log(output);
+}
+
 export default {
 	matrixLatex: matrixLatex,
-	basisLatex: basisLatex
+	columnBasisLatex: columnBasisLatex,
+	rowBasisLatex: rowBasisLatex
 }

@@ -4,7 +4,8 @@ import operations from './operations.js';
 /* ------------ Row Reduction Operations ------------ */
 
 /*
- * Reduces a matrix of any dimension to RREF
+ * Reduces a matrix of any dimension to RREF. Implemented Recursively.
+ * No return value - uses reference.
  */
 
 function reducedRowEchelon(matrix, i, j) {
@@ -14,7 +15,7 @@ function reducedRowEchelon(matrix, i, j) {
 		return;
 	}
 
-	// Checks if the pivot and down is all zero
+	// Checks if the pivot position down is all zero
 	let hasNonZero = false;
 	for (let x = i; x < matrix.length; x++) {
 		if (matrix[x][j].isNonZero()) {
@@ -65,7 +66,8 @@ function reducedRowEchelon(matrix, i, j) {
 }
 
 /*
- * Solves an augmented matrix
+ * Solves an augmented matrix.
+ * No return value - uses reference.
  */
 
 function reducedRowEchelonAugmented(matrix, i, j) {
@@ -86,7 +88,7 @@ function reducedRowEchelonAugmented(matrix, i, j) {
 
 
 	if (!hasNonZero) {
-		reducedRowEchelon(matrix, i, j+1);
+		reducedRowEchelonAugmented(matrix, i, j+1);
 	}
 	else {
 
@@ -202,33 +204,8 @@ function reducedRowEchelonDeterminant(matrix, i, j) {
  */
 
 function matrixColumnSpace(matrix) {
-	let matrixCopy = [];
-	for (let x = 0; x < matrix.length; x++) {
-		let newArr = [];
-		for (let y = 0; y < matrix.length; y++) {
-			let tempFrac = new frac(matrix[x][y].num, matrix[x][y].den);
-			newArr.push(tempFrac);
-		}
-		matrixCopy.push(newArr);
-	}
-	reducedRowEchelon(matrixCopy, 0, 0);
-
-	let pivots = [];
-
-	let i = 0; // rows
-	let j = 0; // cols
-	while ((i < matrixCopy.length) && (j < matrixCopy[0].length)) {
-		console.log("got in here1");
-		if ((matrixCopy[i][j].num == 1) && (matrixCopy[i][j].den == 1)) { // move 1 right 1 down
-			console.log("got in here");
-			pivots.push(j);
-			i++;
-			j++;
-		}
-		else { // move 1 right only
-			j++;
-		}
-	}
+	let matrixCopy = copyMatrix(matrix);
+	let pivots = getPivots(matrixCopy);
 
 	console.log(pivots);	
 
@@ -250,6 +227,53 @@ function matrixColumnSpace(matrix) {
 	return newMatrix;
 }
 
+/*
+ * Returns a matrix consisting of only the row basis vectors
+ */
+
+function matrixRowSpace(matrix) {
+	let matrixCopy = copyMatrix(matrix);
+	let pivots = getPivots(matrixCopy);
+
+	console.log(pivots);	
+	let newMatrix = [];
+	for (let x = 0; x < pivots.length; x++) {
+		let rowArr = [];
+		for (let y = 0; y < matrixCopy[0].length; y++) {
+			console.log("length" + matrixCopy[0].length);
+			rowArr.push(matrixCopy[x][y]);
+		}
+		newMatrix.push(rowArr);
+	}
+
+	return newMatrix;
+}
+
+/*
+ * Returns a new matrix that represents the basis vectors of the nullspace.
+ */
+
+/*
+function matrixNullspace(matrix) {
+	let matrixCopy = copyMatrix(matrix);
+
+	let pivots = getPivots(matrixCopy);
+	let pivot_tally = 0;
+
+	let non_pivot_tally = 0;
+
+	for (let x = 0; x < matrixCopy.length; x++) {
+		let rowArr = [];
+
+		for (let y = 0; y < matrixCopy[0].length; y++) {
+			if (!pivots.contains(y) && (y > pivots[pivot_tally])) {
+				rowArr.push(matrixCopy[x][y].negateFraction());
+			}
+		}
+	}
+}
+*/
+
 /* ------------ Matrix Format Functions ------------ */
 
 /*
@@ -263,10 +287,6 @@ function convertInput(matrix) {
 		}
 	}
 }
-
-/*
- * Verifies the dimensions of a matrix after inputs
- */
 
 function printMatrix(matrix) {
 	for (let x = 0; x < matrix.length; x++) {
@@ -283,11 +303,56 @@ function printMatrix(matrix) {
 	console.log();
 }
 
+/*
+ * Returns a copy of the matrix
+ */
+
+function copyMatrix(matrix) {
+	let matrixCopy = [];
+	for (let x = 0; x < matrix.length; x++) {
+		let newArr = [];
+		for (let y = 0; y < matrix[0].length; y++) {
+			let tempFrac = new frac(matrix[x][y].num, matrix[x][y].den);
+			newArr.push(tempFrac);
+		}
+		matrixCopy.push(newArr);
+	}
+
+	return matrixCopy;
+}
+
+/*
+ * Returns an array of 0-indexed pivot positions
+ */
+
+function getPivots(matrix) {
+	reducedRowEchelon(matrix, 0, 0);
+	let pivots = [];
+
+	let i = 0; // rows
+	let j = 0; // cols
+	while ((i < matrix.length) && (j < matrix[0].length)) {
+		if ((matrix[i][j].num == 1) && (matrix[i][j].den == 1)) { // move 1 right 1 down
+			pivots.push(j);
+			i++;
+			j++;
+		}
+		else { // move 1 right only
+			j++;
+		}
+	}
+
+	return pivots;
+}
+
 export default {
 	reducedRowEchelon: reducedRowEchelon,
 	reducedRowEchelonAugmented: reducedRowEchelonAugmented,
 	calculateDeterminant: calculateDeterminant,
 	matrixColumnSpace: matrixColumnSpace,
+	matrixRowSpace: matrixRowSpace,
 	convertInput: convertInput,
-	printMatrix: printMatrix
+	printMatrix: printMatrix,
+	copyMatrix: copyMatrix,
+	getPivots: getPivots
 }

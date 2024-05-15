@@ -52,12 +52,12 @@ function columnBasisLatex(matrix) {
 
 	let output = `$\\left\\{\n`;
 
-	for (let x = 0; x < matrix.length; x++) {
+	for (let x = 0; x < matrix[0].length; x++) {
 
 		output = output.concat(`  \\begin{bmatrix}\n`);
 
-		for (let y = 0; y < matrix[0].length; y++) {
-			if (matrix[x][y].isFraction()) {
+		for (let y = 0; y < matrix.length; y++) {
+			if (matrix[y][x].isFraction()) {
 				output = output.concat(`    \\frac{${matrix[y][x].num}}{${matrix[y][x].den}} `);
 			}
 			else {

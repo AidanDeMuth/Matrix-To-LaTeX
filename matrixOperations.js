@@ -253,26 +253,54 @@ function matrixRowSpace(matrix) {
  * Returns a new matrix that represents the basis vectors of the nullspace.
  */
 
-/*
+
 function matrixNullspace(matrix) {
 	let matrixCopy = copyMatrix(matrix);
-
+	reducedRowEchelon(matrixCopy, 0, 0);
 	let pivots = getPivots(matrixCopy);
-	let pivot_tally = 0;
 
-	let non_pivot_tally = 0;
+	console.log(pivots);
 
-	for (let x = 0; x < matrixCopy.length; x++) {
+	let newMatrix = [];
+	let pivotTally = 0;
+	let nonPivotTally = 0;
+
+	let x = 0;
+	while (x < matrixCopy[0].length) {
 		let rowArr = [];
 
-		for (let y = 0; y < matrixCopy[0].length; y++) {
-			if (!pivots.contains(y) && (y > pivots[pivot_tally])) {
-				rowArr.push(matrixCopy[x][y].negateFraction());
+		if (pivots.includes(x)) {
+			console.log("top iteration " + x);
+			for (let y = 0; y < matrixCopy[0].length; y++) {
+				if (!pivots.includes(y)) {
+					rowArr.push(matrixCopy[pivotTally][y].negateFraction());
+				}
 			}
+			pivotTally++;
 		}
+		else if (!pivots.includes(x)) {
+			console.log("bottom iteration " + x);
+			for (let y = 0; y < (matrixCopy[0].length - pivots.length); y++) {
+				if (y == nonPivotTally) {
+					rowArr.push(new frac(1, 1));
+				}
+				else {
+					rowArr.push(new frac(0, 1));
+				}
+			}
+			nonPivotTally++;
+		}
+
+		x++;
+		newMatrix.push(rowArr);
 	}
+
+	console.log("done.");
+	console.log(newMatrix);
+
+	return newMatrix;
 }
-*/
+
 
 /* ------------ Matrix Format Functions ------------ */
 
@@ -322,6 +350,25 @@ function copyMatrix(matrix) {
 }
 
 /*
+ * Returns a transposed matrix
+ */
+
+function getTranspose(matrix) {
+	let matrixCopy = copyMatrix(matrix);
+	let newMatrix = [];
+
+	for (let x = 0; x < matrixCopy[0].length; x++) {
+		let rowArr = [];
+		for (let y = 0; y < matrix.length; y++) {
+			rowArr.push(matrixCopy[y][x]);
+		}
+		newMatrix.push(rowArr);
+	}
+
+	return newMatrix;
+}
+
+/*
  * Returns an array of 0-indexed pivot positions
  */
 
@@ -351,8 +398,10 @@ export default {
 	calculateDeterminant: calculateDeterminant,
 	matrixColumnSpace: matrixColumnSpace,
 	matrixRowSpace: matrixRowSpace,
+	matrixNullspace: matrixNullspace,
 	convertInput: convertInput,
 	printMatrix: printMatrix,
 	copyMatrix: copyMatrix,
+	getTranspose: getTranspose,
 	getPivots: getPivots
 }

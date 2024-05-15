@@ -7,7 +7,7 @@ matrixOperations.convertInput(matrix);
 
 console.log(matrix);
 
-let choice = 3;
+let choice = 6;
 
 switch (choice) {
 	case 0: // Row reduction
@@ -34,6 +34,13 @@ switch (choice) {
 		latexOutput.rowBasisLatex(rowBasis);
 		break;
 	case 5: // Find NULLSPACE of a matrix
+		let nullBasis = matrixOperations.matrixNullspace(matrix);
+		console.log(nullBasis);
+		latexOutput.columnBasisLatex(nullBasis);
 		break;
+	case 6: // Transpose Matrix
+		let transpose = matrixOperations.getTranspose(matrix);
+		console.log(transpose);
+
 
 }

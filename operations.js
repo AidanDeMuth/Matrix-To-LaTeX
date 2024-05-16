@@ -46,7 +46,7 @@ export function rowReplacementOperation(matrix, i, j, fraction) {
 }
 
 /*
- * Multiplies a row i by a constant factor of n
+ * Multiplies a row i by a scalar fraction {inverse}
  */
 
 function scalarOperation(matrix, i, inverse) {

@@ -1,13 +1,14 @@
 import matrixOperations from './matrixOperations.js';
 import latexOutput from './latexOutput.js';
 import {gcd, frac} from './frac.js';
+import vector from './vector.js';
 
 let matrix = [[1, 2, 3, 4, 5],[2, 3, 4, 5 ,6],[3, -8, 4, 6, -1]];
 matrixOperations.convertInput(matrix);
 
 console.log(matrix);
 
-let choice = 6;
+let choice = 7;
 
 switch (choice) {
 	case 0: // Row reduction
@@ -41,6 +42,9 @@ switch (choice) {
 	case 6: // Transpose Matrix
 		let transpose = matrixOperations.getTranspose(matrix);
 		console.log(transpose);
-
+	case 7: //
+		console.log(matrix[1]);
+		let arr = vector.scalarProduct(new frac(180, 27), matrix[1]);
+		console.log(arr);
 
 }

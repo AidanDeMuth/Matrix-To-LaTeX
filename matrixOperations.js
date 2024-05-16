@@ -1,7 +1,7 @@
 import {frac, gcd} from './frac.js';
 import operations from './operations.js';
 
-/* ------------ Row Reduction Operations ------------ */
+/* ------------ Matrix Solution Operations ------------ */
 
 /*
  * Reduces a matrix of any dimension to RREF. Implemented Recursively.
@@ -9,13 +9,16 @@ import operations from './operations.js';
  */
 
 function reducedRowEchelon(matrix, i, j) {
+
 	// End iterations if at right end of matrix
+
 	if ((j >= matrix[0].length) || (i >= matrix.length)) {
 		console.log("Finished! Returning.")
 		return;
 	}
 
 	// Checks if the pivot position down is all zero
+
 	let hasNonZero = false;
 	for (let x = i; x < matrix.length; x++) {
 		if (matrix[x][j].isNonZero()) {
@@ -40,8 +43,7 @@ function reducedRowEchelon(matrix, i, j) {
 			}
 		}
 
-		// Multiplies the row of the pivot position by the
-		// reciprocal of the pivot point
+		// Multiplies the row by reciprocal of pivot point
 
 		if (((matrix[i][j].getDecimal()) != 1) && ((matrix[i][j].getDecimal()) != 0)) {
 			console.log("Scaling row: " + (i+1));
@@ -50,7 +52,7 @@ function reducedRowEchelon(matrix, i, j) {
 			printMatrix(matrix);
 		}
 
-		// Loops to add to the other rows to reduce
+		// Adds multiple of pivot position to other rows
 
 		for (let x = 0; x < matrix.length; x++) {
 			if ((x != i) && (matrix[x][j].isNonZero()) && (matrix[i][j].isNonZero()) && (j < matrix[0].length)) {
@@ -66,19 +68,22 @@ function reducedRowEchelon(matrix, i, j) {
 }
 
 /*
- * Solves an augmented matrix.
+ * Solves an augmented matrix. Implemented recursively.
  * No return value - uses reference.
  */
 
 function reducedRowEchelonAugmented(matrix, i, j) {
 	console.log("reducing augmented!");
+
 	// End iterations if at right end of matrix
+
 	if ((j >= matrix[0].length - 1) || (i >= matrix.length)) {
 		console.log("Finished! Returning.")
 		return;
 	}
 
 	// Checks if the pivot and down is all zero
+
 	let hasNonZero = false;
 	for (let x = i; x < matrix.length; x++) {
 		if (matrix[x][j].isNonZero()) {
@@ -103,8 +108,7 @@ function reducedRowEchelonAugmented(matrix, i, j) {
 			}
 		}
 
-		// Multiplies the row of the pivot position by the
-		// reciprocal of the pivot point
+		// Multiplies the row by reciprocal of the pivot point
 
 		if (((matrix[i][j].getDecimal()) != 1) && ((matrix[i][j].getDecimal()) != 0)) {
 			console.log("Scaling row: " + (i+1));
@@ -113,7 +117,7 @@ function reducedRowEchelonAugmented(matrix, i, j) {
 			printMatrix(matrix);
 		}
 
-		// Loops to add to the other rows to reduce
+		// Adds multiple of pivot position to other rows
 
 		for (let x = 0; x < matrix.length; x++) {
 			if ((x != i) && (matrix[x][j].isNonZero()) && (matrix[i][j].isNonZero()) && (j < matrix[0].length)) {
@@ -139,13 +143,16 @@ function calculateDeterminant(matrix) {
 }
 
 function reducedRowEchelonDeterminant(matrix, i, j) {
+
 	// End iterations if at right end of matrix
+
 	if ((i >= matrix.length) || (j >= matrix[0].length)) {
 		console.log("Finished! Returning Determinant.")
 		return;
 	}
 
 	// Checks if the pivot and down is all zero
+
 	let hasNonZero = false;
 
 	for (let x = 0; x < matrix.length; x++) {
@@ -154,11 +161,13 @@ function reducedRowEchelonDeterminant(matrix, i, j) {
 		}
 	}
 	if (!hasNonZero) {
-		multiplicity.multiplyFraction(new frac (0,1));
+		multiplicity.multiplyFraction(new frac(0,1));
 		return;
 	}
 	else {
+
 		// Finds first nonzero row and permutes with pivot position
+
 		for (let x = i; x < matrix.length; x++) {
 			if (!(matrix[i][j].isNonZero()) && (matrix[x][j].isNonZero())) {
 				console.log("Permuting rows: " + i + " and " + x);
@@ -169,7 +178,8 @@ function reducedRowEchelonDeterminant(matrix, i, j) {
 			}
 		}
 
-		// Multiplies the row of the pivot position by the reciprocal of the pivot point
+		// Multiplies the row by reciprocal of pivot point
+
 		if (((matrix[i][j].getDecimal()) != 1) && ((matrix[i][j].getDecimal()) != 0)) {
 			console.log("Scaling row: " + (i+1));
 			multiplicity = multiplicity.multiplyFraction(matrix[i][j]);
@@ -178,7 +188,7 @@ function reducedRowEchelonDeterminant(matrix, i, j) {
 			printMatrix(matrix);
 		}
 
-		// Loops to add to the other rows to reduce
+		// Adds multiple of pivot point to other rows
 
 		for (let x = 0; x < matrix.length; x++) {
 			if ((x != i) && (matrix[x][j].isNonZero()) && (matrix[i][j].isNonZero()) && (j < matrix[0].length)) {
@@ -200,7 +210,7 @@ function reducedRowEchelonDeterminant(matrix, i, j) {
 /* ------------ Matrix Rank / Span Functions ------------ */
 
 /*
- * Given a matrix, returns a matrix of just the rows that form a basis
+ * Given a matrix, returns a matrix of only the rows that form a basis
  */
 
 function matrixColumnSpace(matrix) {
@@ -210,6 +220,7 @@ function matrixColumnSpace(matrix) {
 	console.log(pivots);	
 
 	let newMatrix = []; // matrix of frac objects
+
 	for (let x = 0; x < matrix.length; x++) {
 		let rowArr = [];
 		let pivotTally = 0;
@@ -236,7 +247,9 @@ function matrixRowSpace(matrix) {
 	let pivots = getPivots(matrixCopy);
 
 	console.log(pivots);	
+	
 	let newMatrix = [];
+
 	for (let x = 0; x < pivots.length; x++) {
 		let rowArr = [];
 		for (let y = 0; y < matrixCopy[0].length; y++) {

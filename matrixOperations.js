@@ -1,5 +1,6 @@
 import {frac, gcd} from './frac.js';
 import operations from './operations.js';
+import vector from './vector.js';
 
 /* ------------ Matrix Solution Operations ------------ */
 
@@ -210,7 +211,7 @@ function reducedRowEchelonDeterminant(matrix, i, j) {
 /* ------------ Matrix Rank / Span Functions ------------ */
 
 /*
- * Given a matrix, returns a matrix of only the rows that form a basis
+ * Given a matrix, returns a matrix of the rows that form a basis
  */
 
 function matrixColumnSpace(matrix) {
@@ -247,9 +248,7 @@ function matrixRowSpace(matrix) {
 	let pivots = getPivots(matrixCopy);
 
 	console.log(pivots);	
-	
 	let newMatrix = [];
-
 	for (let x = 0; x < pivots.length; x++) {
 		let rowArr = [];
 		for (let y = 0; y < matrixCopy[0].length; y++) {
@@ -312,6 +311,36 @@ function matrixNullspace(matrix) {
 	console.log(newMatrix);
 
 	return newMatrix;
+}
+
+/* ------------ Vector Space Operations ------------ */
+
+/*
+ * Given a matrix, will perform the gram-schmidt process and return
+ * a set of orthogonal vectors.
+ */
+
+function gramSchmidtProcess(matrix) {
+
+	// Transpose so we can operate on vectors as rows
+	console.log("test");6
+
+	let vectors = getTranspose(matrix);
+	console.log("printing vectors");
+	console.log(vectors);
+
+	console.log("")
+
+	for (let x = 0; x < vectors.length; x++) {
+		for (let y = 0; y < x; y++) {
+			console.log(x);
+			vectors[x] = vector.subtractVector(vectors[x], vector.projectVector(vectors[x], vectors[y]));
+		}
+	}
+
+	// Transpose back to regular matrix
+
+	return getTranspose(vectors);
 }
 
 
@@ -412,6 +441,7 @@ export default {
 	matrixColumnSpace: matrixColumnSpace,
 	matrixRowSpace: matrixRowSpace,
 	matrixNullspace: matrixNullspace,
+	gramSchmidtProcess: gramSchmidtProcess,
 	convertInput: convertInput,
 	printMatrix: printMatrix,
 	copyMatrix: copyMatrix,

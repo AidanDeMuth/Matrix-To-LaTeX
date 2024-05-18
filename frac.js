@@ -8,34 +8,21 @@ export class frac {
 		let commonDenominator = this.den * num2.den;
 		let newFrac = new frac((num2.num * this.den) + (this.num * num2.den),
 								commonDenominator);
-
 		return newFrac.simplifyFraction(newFrac);
 	}
 
 	subtractFraction(num2) {
-
-		// Uses existing add function by negating second fraction
-		
 		let newFrac = num2.negateFraction();
 		return this.addFraction(newFrac);
 	}
 
 	multiplyFraction(num2) {
-		console.log("multiplying");
-		console.log(this);
-		console.log("with");
-		console.log(num2);
-		console.log("\n\n");
-
 		let newFrac = new frac((this.num * num2.num), (this.den * num2.den));
-
-
 		return newFrac.simplifyFraction(newFrac);
 	}
 
 	divideFraction(num2) {
 		let newFrac = new frac((this.num * num2.den), (this.den * num2.num));
-
 		return newFrac.simplifyFraction(newFrac);
 	}
 
@@ -94,7 +81,7 @@ export class frac {
 	}
 }
 
-// Euclid's method
+// Euclidean Algorithm
 
 export function gcd(a, b) {
   if (!b) return a;

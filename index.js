@@ -3,7 +3,8 @@ import latexOutput from './latexOutput.js';
 import {gcd, frac} from './frac.js';
 import vector from './vector.js';
 
-let matrix = [[1, 2, 3, 4, 5],[2, 3, 4, 5 ,6],[3, -8, 4, 6, -1]];
+let matrix1 = [[1, 2, 3, 4, 5],[2, 3, 4, 5 ,6],[3, -8, 4, 6, -1]];
+let matrix = [[-4, 2, 7], [3, 1, 2], [3, 5, 6]];
 matrixOperations.convertInput(matrix);
 
 console.log(matrix);
@@ -42,9 +43,11 @@ switch (choice) {
 	case 6: // Transpose Matrix
 		let transpose = matrixOperations.getTranspose(matrix);
 		console.log(transpose);
-	case 7: //
-		console.log(matrix[1]);
-		let arr = vector.scalarProduct(new frac(180, 27), matrix[1]);
-		console.log(arr);
-
+		break
+	case 7: // testing
+		console.log(matrix);
+		let gram = matrixOperations.gramSchmidtProcess(matrix);
+		matrixOperations.printMatrix(gram);
+		latexOutput.columnBasisLatex(gram);
+		break;
 }

@@ -12,5 +12,8 @@
     "url": "Matrix-Solver"
   },
   "author": "Me",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "Express": "^3.0.1"
+  }
 }

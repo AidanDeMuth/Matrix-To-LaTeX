@@ -3,13 +3,16 @@ import latexOutput from './latexOutput.js';
 import {gcd, frac} from './frac.js';
 import vector from './vector.js';
 
-let matrix1 = [[1, 2, 3, 4, 5],[2, 3, 4, 5 ,6],[3, -8, 4, 6, -1]];
-let matrix = [[-4, 2, 7], [3, 1, 2], [3, 5, 6]];
-matrixOperations.convertInput(matrix);
+import express from 'express';
+const app = express();
+const port = 3000;
+app.use(express.static('/'));
 
-console.log(matrix);
 
-let choice = 7;
+selectOperation = () => {
+	var operation = document.getElementById('operation').value;
+	console.log(operation);
+}
 
 switch (choice) {
 	case 0: // Row reduction

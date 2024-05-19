@@ -47,7 +47,9 @@ switch (choice) {
 	case 7: // testing
 		console.log(matrix);
 		let gram = matrixOperations.gramSchmidtProcess(matrix);
+		for (let x = 0; x < gram.length; x++) {
+			vector.simplifyVector(gram[x]);
+		}
 		matrixOperations.printMatrix(gram);
-		latexOutput.columnBasisLatex(gram);
 		break;
 }

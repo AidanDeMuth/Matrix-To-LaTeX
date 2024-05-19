@@ -1,15 +1,25 @@
 html {
+	font-family: 'Helvecta';
 	font-size: 10px;
-	font=family: "Garamond";
 	background-color: #E0D5D6;
+	font-size: 18px;
 }
 
-h1 {
-	font-size: 50px;
+.header {
+	padding: 25px;
+	text-align: center;
+	color: black;
+	font-size: 35px;
+	font-weight: bold;
+}
+
+p {
+	font-size: 18px;
 	text-align: center;
 }
 
-p, li {
-	font-size: 20pt;
-	line-height: 2;
+.center {
+	text-align: center;
+	margin: auto;
+	padding: 5px;
 }

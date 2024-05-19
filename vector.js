@@ -66,10 +66,21 @@ function projectVector(vector1, vector2) {
 	return scalarProduct(innerProduct(vector1, vector2).divideFraction(innerProduct(vector2, vector2)), vector2);
 }
 
+/*
+ * Simplifies an entire vector
+ */
+
+function simplifyVector(vector) {
+	for (let x = 0; x < vector.length; x++) {
+		vector[x] = vector[x].simplifyFraction(vector[x]);
+	}
+}
+
 export default {
 	innerProduct: innerProduct,
 	scalarProduct: scalarProduct,
 	addVector: addVector,
 	subtractVector: subtractVector,
-	projectVector: projectVector
+	projectVector: projectVector,
+	simplifyVector: simplifyVector
 }

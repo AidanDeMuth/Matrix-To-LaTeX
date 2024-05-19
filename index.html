@@ -2,12 +2,86 @@
 <html>
   <head>
     <title>Matrix to LaTeX</title>
-    <meta charset="UTF-8"\>
-    <link href="style.css" rel=stylesheet>
+    <meta charset="UTF-8"></meta>
+    <link href="style.css" rel=stylesheet></link>
   </head>
   <body>
-    <h1>
-      test
-    </h1>
+    <div class='header'>
+      Matrix Solver and LaTeX Converter
+    </div>
+
+    <div>
+      <p>
+        Solve matrices and generate customizable LaTeX code. Choose an operation from the dropdown menu or convert custom matrix.
+      <p>
+    </div>
+
+    <div class='center'>
+      <select>
+        <option value="0">Custom</option>
+        <option value="1">Reduced Row Echelon Form</option>
+        <option value="2">Reduce Augmented Matrix</option>
+        <option value="3">Determinant</option>
+        <option value="4">Column Space</option>
+        <option value="5">Row Space</option>
+        <option value="6">Null Space</option>
+        <option value="7">Transpose</option>
+      </select>
+    </div>
+
+    <div class='center'>
+      <label for="Rows">Rows</label>
+      <input type="number" id="Rows" min="1" max="15" oninput="checkValue(this);"></input>
+
+      <label for="Columns">Columns</label>
+      <input type="number" id="Columns" min="1" max="15" oninput="checkValue(this);"></input>
+    </div>
+
+    <div class='center'>
+      <button onclick="getTable()">Generate Table</button>
+    </div>
+
+    <div class='center'>
+      <div id='Table Space' class='center'></div>
+    </div>
+
+    <script>
+      function checkValue(element) {
+        let min = element.min;
+        let max = element.max;
+    
+        let value = parseInt(element.value);
+        if (value > max) {
+          element.value = max;
+        } 
+        else if (value < min) {
+          element.value = min;
+        }
+      }
+
+      getTable = () => {
+        document.getElementById('Table Space').innerHTML = '';
+        let num_rows = document.getElementById('Rows').value;
+        let num_cols = document.getElementById('Columns').value;
+        let table = document.createElement('Table')
+        table.style.margin = 'auto';
+
+        for (let x = 0; x < num_rows; x++) {
+          let row = table.insertRow();
+          for (let y = 0; y < num_cols; y++) {
+            let cell = row.insertCell();
+            let input_box = document.createElement('input');
+            input_box.style.width = '50px'
+
+            cell.appendChild(input_box);
+            cell.style.border = '1px solid black';
+
+            console.log('test');
+          }
+        }
+
+        document.getElementById('Table Space').appendChild(table);
+      } 
+    </script>
   </body>
 </html>

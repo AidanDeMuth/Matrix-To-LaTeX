@@ -3,13 +3,7 @@ import latexOutput from './latexOutput.js';
 import {gcd, frac} from './frac.js';
 import vector from './vector.js';
 
-import express from 'express';
-const app = express();
-const port = 3000;
-app.use(express.static('/'));
-
-
-selectOperation = () => {
+const selectOperation = () => {
 	var operation = document.getElementById('operation').value;
 	console.log(operation);
 }

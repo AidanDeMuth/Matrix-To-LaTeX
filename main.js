@@ -2,7 +2,16 @@ import matrixOperations from './matrixOperations.js';
 import latexOutput from './latexOutput.js';
 import {gcd, frac} from './frac.js';
 import vector from './vector.js';
+import {complex} from './complex.js';
+import * as comp from './complex.js';
 
+let temp = new complex(1, 2);
+comp.negateComplex(temp);
+console.log(temp);
+console.log(comp.addComplex(temp, new complex(4, 5)));
+console.log(comp.subtractComplex(temp, new complex(1, 1)));
+
+/*
 selectOperation = () => {
 	var operation = document.getElementById('operation').value;
 	console.log(operation);
@@ -90,3 +99,4 @@ getTable = () => {
 
     document.getElementById('Table Space').appendChild(table);
 } 
+*/

@@ -41,11 +41,7 @@ export function isEqualTo(fraction1, fraction2) {
 }
 
 export function isNonZero(fraction1) {
-    if (fraction1.num !== 0) {
-        return true;
-    }
-
-    return false;
+    return fraction1.num !== 0;
 }
 
 // AKA reciprocal

@@ -3,18 +3,19 @@ import latexOutput from './latexOutput.js';
 import {frac} from './frac.js';
 import * as fraction from './frac.js';
 import vector from './vector.js';
-import {complex} from './complex.js';
+import {addComplex, complex, invertComplex, multiplyComplex, negateComplex, subtractComplex} from './complex.js';
 import * as comp from './complex.js';
 
-let temp = new frac(1, 3);
-let temp2 = new frac(2, 3);
-let test = fraction.invertFraction(temp);
-console.log(test);
+let temp = new complex(new frac(1, 2), new frac(2, 4));
+let temp2 = new complex(new frac(1, 2), new frac( 3, 4));
+console.log(invertComplex(temp));
 
+/*
 let matrix = [[2,-5, 6], [6, 7, 2], [-1, 3, 4]];
 matrixOperations.convertInput(matrix);
 matrix = matrixOperations.gramSchmidtProcess(matrix);
 console.log(matrix);
+*/
 
 /*
 let temp = new complex(1, 2);

@@ -1,4 +1,5 @@
-import {frac, gcd} from './frac.js';
+import {frac} from './frac.js';
+import * as fraction from './frac.js';
 
 /*
  * Returns the Inner Product
@@ -10,10 +11,10 @@ function innerProduct(vector1, vector2) {
 	let sum = new frac(0, 1);
 
 	for (let x = 0; x < vector1.length; x++) {
-		sum = sum.addFraction(vector1[x].multiplyFraction(vector2[x]));
+		sum = fraction.addFraction(sum, fraction.multiplyFraction(vector1[x], vector2[x]));
 	}
 
-	sum.simplifyFraction(sum);
+	fraction.simplifyFraction(sum);
 
 	return sum;
 }
@@ -28,8 +29,8 @@ function scalarProduct(scalarFrac, vector) {
 	let productArr = [];
 
 	for (let x = 0; x < vector.length; x++) {
-		productArr.push(vector[x].multiplyFraction(scalarFrac));
-		productArr[x].simplifyFraction(productArr[x]);
+		productArr.push(fraction.multiplyFraction(vector[x], scalarFrac));
+		fraction.simplifyFraction(productArr[x]);
 	}
 
 	return productArr;
@@ -43,8 +44,8 @@ function addVector(vector1, vector2) {
 	let newVector = [];
 
 	for (let x = 0; x < vector1.length; x++) {
-		newVector.push(vector1[x].addFraction(vector2[x]));
-		newVector[x].simplifyFraction(newVector[x]);
+		newVector.push(fraction.addFraction(vector1[x], vector2[x]));
+		fraction.simplifyFraction(newVector[x]);
 	}
 
 	return newVector;
@@ -63,7 +64,7 @@ function subtractVector(vector1, vector2) {
  */
 
 function projectVector(vector1, vector2) {
-	return scalarProduct(innerProduct(vector1, vector2).divideFraction(innerProduct(vector2, vector2)), vector2);
+	return scalarProduct(fraction.divideFraction(innerProduct(vector1, vector2), innerProduct(vector2, vector2)), vector2);
 }
 
 /*
@@ -72,7 +73,7 @@ function projectVector(vector1, vector2) {
 
 function simplifyVector(vector) {
 	for (let x = 0; x < vector.length; x++) {
-		vector[x] = vector[x].simplifyFraction(vector[x]);
+		fraction.simplifyFraction(vector[x]);
 	}
 }
 

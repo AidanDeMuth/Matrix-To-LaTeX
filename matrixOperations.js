@@ -1,4 +1,5 @@
-import {frac, gcd} from './frac.js';
+import {frac} from './frac.js';
+import * as fraction from './frac.js'
 import operations from './operations.js';
 import vector from './vector.js';
 
@@ -22,11 +23,12 @@ function reducedRowEchelon(matrix, i, j) {
 
 	let hasNonZero = false;
 	for (let x = i; x < matrix.length; x++) {
-		if (matrix[x][j].isNonZero()) {
+		if (fraction.isNonZero(matrix[x][j])) {
 			hasNonZero = true;
 		}
 	}
 
+	// If it doesn't have a nonzero, move pivot one right
 
 	if (!hasNonZero) {
 		reducedRowEchelon(matrix, i, j+1);
@@ -36,7 +38,9 @@ function reducedRowEchelon(matrix, i, j) {
 		// Finds first nonzero row and permutes with pivot position
 
 		for (let x = i; x < matrix.length; x++) {
-			if (!(matrix[i][j].isNonZero()) && (matrix[x][j].isNonZero())) {
+			console.log(matrix);
+			console.log(i + ' ' + j);
+			if (!(fraction.isNonZero(matrix[i][j])) && (fraction.isNonZero(matrix[x][j]))) {
 				console.log("Permuting rows: " + i + " and " + x);
 				matrix = operations.permuteRowOperation(matrix, i, x);
 				printMatrix(matrix);
@@ -46,20 +50,20 @@ function reducedRowEchelon(matrix, i, j) {
 
 		// Multiplies the row by reciprocal of pivot point
 
-		if (((matrix[i][j].getDecimal()) != 1) && ((matrix[i][j].getDecimal()) != 0)) {
+		if (((fraction.getDecimal(matrix[i][j])) !== 1) && ((fraction.getDecimal(matrix[i][j])) !== 0)) {
 			console.log("Scaling row: " + (i+1));
 			console.log("Before inverse: " + matrix[i][j].num + " " + matrix[i][j].den);
-			matrix = operations.scalarOperation(matrix, i, matrix[i][j].invertFraction());
+			matrix = operations.scalarOperation(matrix, i, fraction.invertFraction(matrix[i][j]));
 			printMatrix(matrix);
 		}
 
 		// Adds multiple of pivot position to other rows
 
 		for (let x = 0; x < matrix.length; x++) {
-			if ((x != i) && (matrix[x][j].isNonZero()) && (matrix[i][j].isNonZero()) && (j < matrix[0].length)) {
+			if ((x !== i) && (fraction.isNonZero(matrix[x][j])) && (fraction.isNonZero(matrix[i][j])) && (j < matrix[0].length)) {
 				console.log("Row Replacement to row: " + (x+1));
-				let product = matrix[i][j].multiplyFraction(matrix[x][j]);
-				matrix = operations.rowReplacementOperation(matrix, i, x, product.negateFraction());
+				let product = fraction.multiplyFraction(matrix[i][j], matrix[x][j]);
+				matrix = operations.rowReplacementOperation(matrix, i, x, fraction.negateFraction(product));
 				printMatrix(matrix);
 			}
 		}
@@ -87,11 +91,10 @@ function reducedRowEchelonAugmented(matrix, i, j) {
 
 	let hasNonZero = false;
 	for (let x = i; x < matrix.length; x++) {
-		if (matrix[x][j].isNonZero()) {
+		if (fraction.isNonZero(matrix[x][j])) {
 			hasNonZero = true;
 		}
 	}
-
 
 	if (!hasNonZero) {
 		reducedRowEchelonAugmented(matrix, i, j+1);
@@ -101,7 +104,7 @@ function reducedRowEchelonAugmented(matrix, i, j) {
 		// Finds first nonzero row and permutes with pivot position
 
 		for (let x = i; x < matrix.length; x++) {
-			if (!(matrix[i][j].isNonZero()) && (matrix[x][j].isNonZero())) {
+			if (!(fraction.isNonZero(matrix[i][j])) && (fraction.isNonZero(matrix[x][j]))) {
 				console.log("Permuting rows: " + i + " and " + x);
 				matrix = operations.permuteRowOperation(matrix, i, x);
 				printMatrix(matrix);
@@ -111,20 +114,18 @@ function reducedRowEchelonAugmented(matrix, i, j) {
 
 		// Multiplies the row by reciprocal of the pivot point
 
-		if (((matrix[i][j].getDecimal()) != 1) && ((matrix[i][j].getDecimal()) != 0)) {
-			console.log("Scaling row: " + (i+1));
-			console.log("Before inverse: " + matrix[i][j].num + " " + matrix[i][j].den);
-			matrix = operations.scalarOperation(matrix, i, matrix[i][j].invertFraction());
+		if (((fraction.getDecimal(matrix[i][j])) != 1) && ((fraction.getDecimal(matrix[i][j])) != 0)) {
+			matrix = operations.scalarOperation(matrix, i, fraction.invertFraction(matrix[i][j]));
 			printMatrix(matrix);
 		}
 
 		// Adds multiple of pivot position to other rows
 
 		for (let x = 0; x < matrix.length; x++) {
-			if ((x != i) && (matrix[x][j].isNonZero()) && (matrix[i][j].isNonZero()) && (j < matrix[0].length)) {
+			if ((x !== i) && (fraction.isNonZero(matrix[x][j])) && (fraction.isNonZero(matrix[i][j])) && (j < matrix[0].length)) {
 				console.log("Row Replacement to row: " + (x+1));
-				let product = matrix[i][j].multiplyFraction(matrix[x][j]);
-				matrix = operations.rowReplacementOperation(matrix, i, x, product.negateFraction());
+				let product = fraction.multiplyFraction(matrix[i][j], matrix[x][j]);
+				matrix = operations.rowReplacementOperation(matrix, i, x, fraction.negateFraction(product));
 				printMatrix(matrix);
 			}
 		}
@@ -157,12 +158,12 @@ function reducedRowEchelonDeterminant(matrix, i, j) {
 	let hasNonZero = false;
 
 	for (let x = 0; x < matrix.length; x++) {
-		if (matrix[x][j].isNonZero()) {
+		if (fraction.isNonZero(matrix[x][j])) {
 			hasNonZero = true;
 		}
 	}
 	if (!hasNonZero) {
-		multiplicity.multiplyFraction(new frac(0,1));
+		fraction.multiplyFraction(multiplicity, new frac(0,1));
 		return;
 	}
 	else {
@@ -170,9 +171,9 @@ function reducedRowEchelonDeterminant(matrix, i, j) {
 		// Finds first nonzero row and permutes with pivot position
 
 		for (let x = i; x < matrix.length; x++) {
-			if (!(matrix[i][j].isNonZero()) && (matrix[x][j].isNonZero())) {
+			if (!(fraction.isNonZero(matrix[i][j])) && (fraction.isNonZero(matrix[x][j]))) {
 				console.log("Permuting rows: " + i + " and " + x);
-				multiplicity = multiplicity.multiplyFraction(new frac(-1, 1));
+				multiplicity = fraction.multiplyFraction(multiplicity, new frac(-1, 1));
 				matrix = operations.permuteRowOperation(matrix, i, x);
 				printMatrix(matrix);
 				break;
@@ -181,26 +182,26 @@ function reducedRowEchelonDeterminant(matrix, i, j) {
 
 		// Multiplies the row by reciprocal of pivot point
 
-		if (((matrix[i][j].getDecimal()) != 1) && ((matrix[i][j].getDecimal()) != 0)) {
+		if (((fraction.getDecimal(matrix[i][j])) !== 1) && ((fraction.getDecimal(matrix[i][j])) !== 0)) {
 			console.log("Scaling row: " + (i+1));
-			multiplicity = multiplicity.multiplyFraction(matrix[i][j]);
+			multiplicity = fraction.multiplyFraction(multiplicity, matrix[i][j]);
 			console.log("\nmultiplicity" + multiplicity);
-			matrix = operations.scalarOperation(matrix, i, matrix[i][j].invertFraction());
+			matrix = operations.scalarOperation(matrix, i, fraction.invertFraction(matrix[i][j]));
 			printMatrix(matrix);
 		}
 
 		// Adds multiple of pivot point to other rows
 
 		for (let x = 0; x < matrix.length; x++) {
-			if ((x != i) && (matrix[x][j].isNonZero()) && (matrix[i][j].isNonZero()) && (j < matrix[0].length)) {
+			if ((x !== i) && (fraction.isNonZero(matrix[x][j])) && (fraction.isNonZero(matrix[i][j])) && (j < matrix[0].length)) {
 				console.log("Row Replacement to row: " + (x+1));
-				let product = matrix[i][j].multiplyFraction(matrix[x][j]);
-				matrix = operations.rowReplacementOperation(matrix, i, x, product.negateFraction());
+				let product = fraction.multiplyFraction(matrix[i][j], matrix[x][j]);
+				matrix = operations.rowReplacementOperation(matrix, i, x, fraction.negateFraction(product));
 				printMatrix(matrix);
 			}
 		}
-		if (matrix[j][j].num == 0) {
-			multiplicity = multiplicity.multiplyFraction(new frac(0,1));
+		if (matrix[j][j].num === 0) {
+			multiplicity = fraction.multiplyFraction(multiplicity, new frac(0,1));
 			return;
 		}
 
@@ -226,7 +227,7 @@ function matrixColumnSpace(matrix) {
 		let rowArr = [];
 		let pivotTally = 0;
 		for (let y = 0; y < matrix[0].length; y++) {
-			if (y == pivots[pivotTally]) {
+			if (y === pivots[pivotTally]) {
 				rowArr.push(matrix[x][y]);
 				pivotTally++;
 			}
@@ -285,7 +286,7 @@ function matrixNullspace(matrix) {
 			console.log("top iteration " + x);
 			for (let y = 0; y < matrixCopy[0].length; y++) {
 				if (!pivots.includes(y)) {
-					rowArr.push(matrixCopy[pivotTally][y].negateFraction());
+					rowArr.push(fraction.negateFraction(matrixCopy[pivotTally][y]));
 				}
 			}
 			pivotTally++;
@@ -293,7 +294,7 @@ function matrixNullspace(matrix) {
 		else if (!pivots.includes(x)) {
 			console.log("bottom iteration " + x);
 			for (let y = 0; y < (matrixCopy[0].length - pivots.length); y++) {
-				if (y == nonPivotTally) {
+				if (y === nonPivotTally) {
 					rowArr.push(new frac(1, 1));
 				}
 				else {
@@ -361,7 +362,7 @@ function convertInput(matrix) {
 function printMatrix(matrix) {
 	for (let x = 0; x < matrix.length; x++) {
 		for (let y = 0; y < matrix[0].length; y++) {
-			if (matrix[x][y].den == 1 || matrix[x][y].den == -1) {
+			if (matrix[x][y].den === 1 || matrix[x][y].den === -1) {
 				process.stdout.write(matrix[x][y].num + "\t\t");
 			}
 			else {
@@ -421,7 +422,7 @@ function getPivots(matrix) {
 	let i = 0; // rows
 	let j = 0; // cols
 	while ((i < matrix.length) && (j < matrix[0].length)) {
-		if ((matrix[i][j].num == 1) && (matrix[i][j].den == 1)) { // move 1 right 1 down
+		if ((matrix[i][j].num === 1) && (matrix[i][j].den === 1)) { // move 1 right 1 down
 			pivots.push(j);
 			i++;
 			j++;

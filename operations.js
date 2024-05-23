@@ -1,19 +1,11 @@
-import {frac, gcd} from './frac.js';
+import {frac} from './frac.js';
+import * as fraction from './frac.js';
 
 /*
  * Permutes two rows of a given matrix. Parameters are 1-indexed.
  */
 
 export function permuteRowOperation(matrix, i, j) {
-	if (i > matrix.length || j > matrix.length) {
-		console.log("Rows cannot be greater than matrix size!");
-		return matrix;
-	}
-	else if (i < 0 || j < 0) {
-		console.log("Rows cannot be less than zero!");
-		return matrix;
-	}
-
 	let tempRow = matrix[i];
 	matrix[i] = matrix[j];
 	matrix[j] = tempRow;
@@ -24,22 +16,14 @@ export function permuteRowOperation(matrix, i, j) {
  * Will add n times the value of each element in row i to row j
  */
 
-export function rowReplacementOperation(matrix, i, j, fraction) {
-	console.log(i);
-	if (i > matrix.length || j > matrix.length) {
-		console.log("Rows cannot be greater than matrix size!");
-		return matrix;
-	}
-	else if (i < 0 || j < 0) {
-		console.log("Rows cannot be less than zero!");
-		return matrix;
-	}
-
+export function rowReplacementOperation(matrix, i, j, scalar) {
 	for (let x = 0; x < matrix[0].length; x++) {
-		if (matrix[i][x].isNonZero()) {
-			let tempMultiplied = matrix[i][x].multiplyFraction(fraction)
+		console.log(matrix);
+		console.log(matrix[i][x]);
+		if (fraction.isNonZero(matrix[i][x])) {
+			let tempMultiplied = fraction.multiplyFraction(matrix[i][x], scalar)
 
-			matrix[j][x] = matrix[j][x].addFraction(tempMultiplied);
+			matrix[j][x] = fraction.addFraction(matrix[j][x], tempMultiplied);
 		}
 	}
 	return matrix;
@@ -50,18 +34,8 @@ export function rowReplacementOperation(matrix, i, j, fraction) {
  */
 
 function scalarOperation(matrix, i, inverse) {
-	console.log("After inverse: " + inverse.num + " " + inverse.den);
-	if (i > matrix.length) {
-		console.log("Rows cannot be greater than matrix size!");
-		return matrix;
-	} 
-	else if (i < 0) {
-		console.log("Row cannot be less than one!")
-		return matrix;
-	}
-	
 	for (let x = 0; x < matrix[0].length; x++) {
-		matrix[i][x] = matrix[i][x].multiplyFraction(inverse);
+		matrix[i][x] = fraction.multiplyFraction(matrix[i][x], inverse);
 	}
 	return matrix;
 }

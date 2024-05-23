@@ -1,15 +1,29 @@
 import matrixOperations from './matrixOperations.js';
 import latexOutput from './latexOutput.js';
-import {gcd, frac} from './frac.js';
+import {frac} from './frac.js';
+import * as fraction from './frac.js';
 import vector from './vector.js';
 import {complex} from './complex.js';
 import * as comp from './complex.js';
 
+let temp = new frac(1, 3);
+let temp2 = new frac(2, 3);
+let test = fraction.invertFraction(temp);
+console.log(test);
+
+let matrix = [[2,-5, 6], [6, 7, 2], [-1, 3, 4]];
+matrixOperations.convertInput(matrix);
+matrix = matrixOperations.gramSchmidtProcess(matrix);
+console.log(matrix);
+
+/*
 let temp = new complex(1, 2);
 comp.negateComplex(temp);
 console.log(temp);
 console.log(comp.addComplex(temp, new complex(4, 5)));
 console.log(comp.subtractComplex(temp, new complex(1, 1)));
+*/
+
 
 /*
 selectOperation = () => {
@@ -98,5 +112,6 @@ getTable = () => {
     }
 
     document.getElementById('Table Space').appendChild(table);
-} 
-*/
+}
+
+ */

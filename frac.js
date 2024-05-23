@@ -1,95 +1,109 @@
 export class frac {
-	constructor(num, den) {
-		this.num = num;
-		this.den = den;
-	}
+    constructor(num, den) {
+        this.num = num;
+        this.den = den;
+    }
+}
 
-	addFraction(num2) {
-		let commonDenominator = this.den * num2.den;
-		let newFrac = new frac((num2.num * this.den) + (this.num * num2.den),
-								commonDenominator);
-		return newFrac.simplifyFraction(newFrac);
-	}
+export function addFraction(fraction1, fraction2) {
+    let newFrac = new frac((fraction2.num * fraction1.den) + (fraction1.num * fraction2.den),
+        fraction1.den * fraction2.den);
+    return simplifyFraction(newFrac);
+}
 
-	subtractFraction(num2) {
-		let newFrac = num2.negateFraction();
-		return this.addFraction(newFrac);
-	}
+export function negateFraction(fraction1) {
+    return new frac((-1) * fraction1.num, fraction1.den);
+}
 
-	multiplyFraction(num2) {
-		let newFrac = new frac((this.num * num2.num), (this.den * num2.den));
-		return newFrac.simplifyFraction(newFrac);
-	}
+// Takes fraction2 away from fraction1
 
-	divideFraction(num2) {
-		let newFrac = new frac((this.num * num2.den), (this.den * num2.num));
-		return newFrac.simplifyFraction(newFrac);
-	}
+export function subtractFraction(fraction1, fraction2) {
+    return addFraction(fraction1, negateFraction(fraction2));
+}
 
-	negateFraction() {
-		return new frac((-1) * this.num, this.den);
-	}
+export function multiplyFraction(fraction1, fraction2) {
+    let newFrac = new frac((fraction1.num * fraction2.num), (fraction1.den * fraction2.den));
+    return simplifyFraction(newFrac);
+}
 
-	getDecimal() {
-		return this.num / this.den;
-	}
+// Divides fraction1 by fraction2
 
-	isEqualTo(num2) {
-		return ((this.num == num2.num) && (this.den == num2.den));
-		return ((this.num == num2.num) && (this.den == num2.den));
-	}
+export function divideFraction(fraction1, fraction2) {
+    return simplifyFraction(new frac((fraction1.num * fraction2.den), (fraction1.den * fraction2.num)));
+}
 
-	isNonZero() {
-		return (this.num != 0);
-	}
+export function getDecimal(fraction1) {
+    return fraction1.num / fraction1.den;
+}
 
-	invertFraction() {
-		return new frac(this.den, this.num);
-	}
+export function isEqualTo(fraction1, fraction2) {
+    return ((fraction1.num === fraction2.num) && (fraction1.den === fraction2.den));
+}
 
-	printFraction() {
-		console.log(this.num + "/" + this.den);
-	}
+export function isNonZero(fraction1) {
+    if (fraction1.num !== 0) {
+        return true;
+    }
 
-	isFraction() {
-		if (this.den == 1) {
-			return false;
-		}
-		return true;
-	}
+    return false;
+}
 
-	simplifyFraction(oldFrac) {
-		if ((oldFrac.num < 0) && (oldFrac.den < 0)) {
-			oldFrac.num *= (-1);
-			oldFrac.den *= (-1);
-		}
-		if ((oldFrac.den < 0) && (oldFrac.num >= 0)) {
-			oldFrac.den *= (-1);
-			oldFrac.num *= (-1);
-		}
+// AKA reciprocal
 
-		let divisor = Math.abs(gcd(oldFrac.num, oldFrac.den));
-		if (divisor == 1) {
-			return oldFrac;
-		} 
-		else {
-			oldFrac.num /= divisor;
-			oldFrac.den /= divisor;
-		}
+export function invertFraction(fraction1) {
+    return new frac(fraction1.den, fraction1.num);
+}
 
-		return oldFrac;
-	}
+export function printFraction(fraction1){
+    console.log(fraction1.num + "/" + fraction1.den);
+}
+
+export function isFraction(fraction1) {
+    return fraction1.den !== 1;
+}
+
+
+export function simplifyFraction(fraction1) {
+    if ((fraction1.num < 0) && (fraction1.den < 0)) {
+        fraction1.num *= (-1);
+        fraction1.den *= (-1);
+    }
+    if ((fraction1.den < 0) && (fraction1.num >= 0)) {
+        fraction1.den *= (-1);
+        fraction1.num *= (-1);
+    }
+
+    let divisor = Math.abs(gcd(fraction1.num, fraction1.den));
+    if (divisor === 1) {
+        return fraction1;
+    } else {
+        fraction1.num /= divisor;
+        fraction1.den /= divisor;
+    }
+    return fraction1;
 }
 
 // Euclidean Algorithm
 
 export function gcd(a, b) {
-  if (!b) return a;
+    if (!b) return a;
 
-  return gcd(b, a % b);
+    return gcd(b, a % b);
 }
 
 export default {
-	frac: frac,
-	gcd: gcd
+    frac: frac,
+    addFraction: addFraction,
+    negateFraction: negateFraction,
+    subtractFraction: subtractFraction,
+    multiplyFraction: multiplyFraction,
+    divideFraction: divideFraction,
+    getDecimal: getDecimal,
+    isEqualTo: isEqualTo,
+    isNonZero: isNonZero,
+    invertFraction: invertFraction,
+    printFraction: printFraction,
+    isFraction: isFraction,
+    simplifyFraction: simplifyFraction,
+    gcd: gcd
 }

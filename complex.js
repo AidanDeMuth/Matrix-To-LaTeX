@@ -36,11 +36,17 @@ export function invertComplex(num) {
 // Divides num1 by num2
 
 export function divideComplex(num1, num2) {
-	return multiplyComplex(num1, invertComplex())
+	return multiplyComplex(num1, invertComplex(num2));
 }
 
 export function isNonZeroComplex(num) {
-	return (fraction.isNonZero(num.re) && fraction.isNonZero(num.im));
+	return (fraction.isNonZero(num.re) || fraction.isNonZero(num.im));
+}
+
+// Just for testing
+
+export function printComplex(number) {
+	console.log(`complex(${number.re.num}/${number.re.den}, ${number.im.num}/${number.im.den})`);
 }
 
 export default {
@@ -50,6 +56,6 @@ export default {
 	negateComplex: negateComplex,
 	multiplyComplex: multiplyComplex,
 	invertComplex: invertComplex,
-	dividecomplex: divideComplex,
+	divideComplex: divideComplex,
 	isNonZeroComplex: isNonZeroComplex
 }

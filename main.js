@@ -3,11 +3,98 @@ import latexOutput from './latexOutput.js';
 import {frac} from './frac.js';
 import * as fraction from './frac.js';
 import vector from './vector.js';
-import {addComplex, complex, invertComplex, multiplyComplex, negateComplex, subtractComplex} from './complex.js';
+import {complex, printComplex} from './complex.js';
 import * as comp from './complex.js';
+import operations from "./operations.js";
 
-let temp = new complex(new frac(1, 2), new frac(0, 1));
-console.log(comp.isNonZeroComplex(temp));
+let matrix = [[new complex(new frac(2, 1), new frac(1, 1)), new complex(new frac(1, 1), new frac(0, 1)), new complex(new frac(  5, 2), new frac(1, 1))],
+                    [new complex(new frac(2, 1), new frac(1, 1)), new complex(new frac(1, 1), new frac(0, 1)), new complex(new frac(  5, 2), new frac(1, 1))],
+                    [new complex(new frac(2, 1), new frac(1, 1)), new complex(new frac(1, 1), new frac(0, 1)), new complex(new frac(  5, 2), new frac(1, 1))]]
+
+reducedRowEchelonComplex(matrix, 0, 0);
+
+function printComp(input) {
+    for (let x = 0; x < input.length; x++) {
+        for (let y = 0; y < input[0].length; y++) {
+            printComplex(input[x][y]);
+        }
+        console.log('\n');
+    }
+}
+
+function reducedRowEchelonComplex(matrix, i, j) {
+
+    // End iterations if at right end of matrix
+
+    if ((j >= matrix[0].length) || (i >= matrix.length)) {
+        console.log("Finished! Returning.")
+        return;
+    }
+
+    // Checks if the pivot position down is all zero
+
+    let hasNonZero = false;
+    for (let x = i; x < matrix.length; x++) {
+        if (comp.isNonZeroComplex(matrix[x][j])) {
+            hasNonZero = true;
+        }
+    }
+
+    // If it doesn't have a nonzero, move pivot one right
+
+    if (!hasNonZero) {
+        reducedRowEchelonComplex(matrix, i, j+1);
+    }
+    else {
+
+        // Finds first nonzero row and permutes with pivot position
+
+        for (let x = i; x < matrix.length; x++) {
+            console.log(i + ' ' + j);
+            if (!(comp.isNonZeroComplex(matrix[i][j])) && (comp.isNonZeroComplex(matrix[x][j]))) {
+                console.log("Permuting rows: " + i + " and " + x);
+                matrix = operations.permuteRowOperationComplex(matrix, i, x);
+                break;
+            }
+        }
+
+        console.log("AFTER PERMUTE");
+        printComp(matrix);
+
+        // Multiplies the row by reciprocal of pivot point
+
+        if (((fraction.getDecimal(matrix[i][j].re) !== 1) || (fraction.getDecimal(matrix[i][j].im)) !== 1) &&
+            ((fraction.getDecimal(matrix[i][j].re) !== 0) || (fraction.getDecimal(matrix[i][j].im)) !== 0)) {
+            console.log("SCALING");
+            console.log("AFTER SCALE\n\n\n");
+            printComp(matrix);
+            matrix = operations.scalarOperationComplex(matrix, i, comp.invertComplex(matrix[i][j]));
+            console.log('final product after row scale');
+            printComp(matrix);
+        }
+
+        // Adds multiple of pivot position to other rows
+
+        for (let x = 0; x < matrix.length; x++) {
+            console.log('loop');
+            console.log(comp.isNonZeroComplex(matrix[x][j]));
+            console.log(comp.isNonZeroComplex(matrix[i][j]));
+            printComplex(matrix[x][j]);
+            printComplex(matrix[i][j]);
+            if ((x !== i) && (comp.isNonZeroComplex(matrix[x][j])) && (comp.isNonZeroComplex(matrix[i][j])) && (j < matrix[0].length)) {
+                console.log("Row Replacement to row: " + (x+1));
+                let product = comp.multiplyComplex(matrix[i][j], matrix[x][j]);
+                console.log("ADDING PIVOT BY");
+                comp.printComplex(product);
+                matrix = operations.rowReplacementOperationComplex(matrix, i, x, comp.negateComplex(product));
+                console.log('printing matrix:');
+                printComp(matrix);
+            }
+        }
+        console.log('made it here');
+        reducedRowEchelonComplex(matrix, i+1, j+1);
+    }
+}
 
 /*
 let matrix = [[2,-5, 6], [6, 7, 2], [-1, 3, 4]];

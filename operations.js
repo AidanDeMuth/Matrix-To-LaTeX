@@ -19,8 +19,6 @@ export function permuteRowOperation(matrix, i, j) {
 
 export function rowReplacementOperation(matrix, i, j, scalar) {
 	for (let x = 0; x < matrix[0].length; x++) {
-		console.log(matrix);
-		console.log(matrix[i][x]);
 		if (fraction.isNonZero(matrix[i][x])) {
 			let tempMultiplied = fraction.multiplyFraction(matrix[i][x], scalar)
 
@@ -51,7 +49,6 @@ export default {
 }
 
 export function permuteRowOperationComplex(matrix, i, j) {
-	console.log('in here somehow');
 	let tempRow = matrix[i];
 	matrix[i] = matrix[j];
 	matrix[j] = tempRow;
@@ -64,8 +61,6 @@ export function permuteRowOperationComplex(matrix, i, j) {
 
 export function rowReplacementOperationComplex(matrix, i, j, scalar) {
 	for (let x = 0; x < matrix[0].length; x++) {
-		console.log(matrix);
-		console.log(matrix[i][x]);
 		if (comp.isNonZeroComplex(matrix[i][x])) {
 			let tempMultiplied = comp.multiplyComplex(matrix[i][x], scalar)
 

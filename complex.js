@@ -29,7 +29,6 @@ export function multiplyComplex(num1, num2) {
 
 export function invertComplex(num) {
 	let magnitude = addFraction(multiplyFraction(num.re, num.re), multiplyFraction(num.im, num.im));
-	console.log(magnitude);
 	return new complex(divideFraction(num.re, magnitude), negateFraction(divideFraction(num.im, magnitude)));
 }
 
@@ -41,6 +40,11 @@ export function divideComplex(num1, num2) {
 
 export function isNonZeroComplex(num) {
 	return (fraction.isNonZero(num.re) || fraction.isNonZero(num.im));
+}
+
+export function simplifyComplex(num1) {
+	fraction.simplifyFraction(num1.re);
+	fraction.simplifyFraction(num1.im);
 }
 
 // Just for testing
@@ -57,5 +61,7 @@ export default {
 	multiplyComplex: multiplyComplex,
 	invertComplex: invertComplex,
 	divideComplex: divideComplex,
-	isNonZeroComplex: isNonZeroComplex
+	isNonZeroComplex: isNonZeroComplex,
+	simplifyComplex: simplifyComplex,
+	printComplex: printComplex
 }

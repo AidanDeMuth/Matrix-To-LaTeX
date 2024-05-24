@@ -39,11 +39,17 @@ export function divideComplex(num1, num2) {
 	return multiplyComplex(num1, invertComplex())
 }
 
+export function isNonZeroComplex(num) {
+	return (fraction.isNonZero(num.re) && fraction.isNonZero(num.im));
+}
+
 export default {
 	complex: complex,
 	addComplex: addComplex,
 	subtractComplex: subtractComplex,
 	negateComplex: negateComplex,
 	multiplyComplex: multiplyComplex,
-	invertComplex: invertComplex
+	invertComplex: invertComplex,
+	dividecomplex: divideComplex,
+	isNonZeroComplex: isNonZeroComplex
 }

@@ -6,9 +6,8 @@ import vector from './vector.js';
 import {addComplex, complex, invertComplex, multiplyComplex, negateComplex, subtractComplex} from './complex.js';
 import * as comp from './complex.js';
 
-let temp = new complex(new frac(1, 2), new frac(2, 4));
-let temp2 = new complex(new frac(1, 2), new frac( 3, 4));
-console.log(invertComplex(temp));
+let temp = new complex(new frac(1, 2), new frac(0, 1));
+console.log(comp.isNonZeroComplex(temp));
 
 /*
 let matrix = [[2,-5, 6], [6, 7, 2], [-1, 3, 4]];

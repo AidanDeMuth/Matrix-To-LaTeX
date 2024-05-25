@@ -7,24 +7,16 @@ import {complex, printComplex} from './complex.js';
 import * as comp from './complex.js';
 import operations from "./operations.js";
 
-let matrix = [[new complex(new frac(1, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(0, 1)), new complex(new frac(  3, 1), new frac(0, 1))],
-                    [new complex(new frac(4, 1), new frac(0, 1)), new complex(new frac(5, 1), new frac(0, 1)), new complex(new frac(  6, 2), new frac(0, 1))],
-                    [new complex(new frac(7, 1), new frac(0, 1)), new complex(new frac(8, 1), new frac(0, 1)), new complex(new frac(  9, 2), new frac(0, 1))]]
+let matrix = [[new complex(new frac(1, 1), new frac(1, 1)), new complex(new frac(2, 1), new frac(4, 1)), new complex(new frac(  3, 1), new frac(1, 1))],
+			  [new complex(new frac(1, 1), new frac(1, 1)), new complex(new frac(2, 1), new frac(4, 2)), new complex(new frac(  4, 1), new frac(1, 1))],
+			  [new complex(new frac(1, 1), new frac(1, 1)), new complex(new frac(2, 1), new frac(4, 1)), new complex(new frac(  3, 1), new frac(1, 1))]];
 
-matrixOperations.reducedRowEchelon(matrix, 0, 0);
-printComp(matrix);
-
-function printComp(input) {
-    for (let x = 0; x < input.length; x++) {
-        for (let y = 0; y < input[0].length; y++) {
-            printComplex(input[x][y]);
-        }
-        console.log('\n\n\nj');
-    }
-}
-
-
-
+let col = matrixOperations.matrixColumnSpace(matrix);
+let row = matrixOperations.matrixRowSpace(matrix);
+let nullspace = matrixOperations.matrixNullspace(matrix);
+matrixOperations.printMatrix(col);
+matrixOperations.printMatrix(row);
+matrixOperations.printMatrix(nullspace);
 
 /*
 

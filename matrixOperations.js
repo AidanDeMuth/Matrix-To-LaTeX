@@ -5,6 +5,8 @@ import vector from './vector.js';
 import {complex} from "./complex.js";
 import * as comp from "./complex.js";
 
+import * as main from "./main.js";
+
 /* ------------ Matrix Solution Operations ------------ */
 
 /*
@@ -12,11 +14,13 @@ import * as comp from "./complex.js";
  * Operates with a matrix array of complex numbers, and two beginning zeroes to start the recursion.
  */
 
-function reducedRowEchelon(matrix, i, j) {
+export function reducedRowEchelon(matrix, i, j) {
 
 	// End iterations if at right end of matrix
 
 	if ((j >= matrix[0].length) || (i >= matrix.length)) {
+		console.log('Matrix is reduced.');
+		printMatrix(matrix);
 		return;
 	}
 
@@ -40,6 +44,8 @@ function reducedRowEchelon(matrix, i, j) {
 
 		for (let x = i; x < matrix.length; x++) {
 			if (!(comp.isNonZeroComplex(matrix[i][j])) && (comp.isNonZeroComplex(matrix[x][j]))) {
+				console.log('Permuting Rows ' + i + ' and ' + x);
+				printMatrix(matrix);
 				matrix = operations.permuteRowOperationComplex(matrix, i, x);
 				break;
 			}
@@ -47,8 +53,10 @@ function reducedRowEchelon(matrix, i, j) {
 
 		// Multiplies the row by reciprocal of pivot point
 
-		if (((fraction.getDecimal(matrix[i][j].re) !== 1) || (fraction.getDecimal(matrix[i][j].im)) !== 1) &&
-			((fraction.getDecimal(matrix[i][j].re) !== 0) || (fraction.getDecimal(matrix[i][j].im)) !== 0)) {
+		if ((!(fraction.getDecimal(matrix[i][j].re) !== 1) != !(fraction.getDecimal(matrix[i][j].im)) !== 1) &&
+			(!(fraction.getDecimal(matrix[i][j].re) !== 0) != !(fraction.getDecimal(matrix[i][j].im)) !== 0)) {
+			console.log('Scaling row ' + i);
+			printMatrix(matrix);
 			matrix = operations.scalarOperationComplex(matrix, i, comp.invertComplex(matrix[i][j]));
 		}
 
@@ -56,6 +64,8 @@ function reducedRowEchelon(matrix, i, j) {
 
 		for (let x = 0; x < matrix.length; x++) {
 			if ((x !== i) && (comp.isNonZeroComplex(matrix[x][j])) && (comp.isNonZeroComplex(matrix[i][j])) && (j < matrix[0].length)) {
+				console.log('Replacing row ' + x + ' by a multiple of ' + i);
+				printMatrix(matrix);
 				let product = comp.multiplyComplex(matrix[i][j], matrix[x][j]);
 				matrix = operations.rowReplacementOperationComplex(matrix, i, x, comp.negateComplex(product));
 			}
@@ -70,7 +80,7 @@ function reducedRowEchelon(matrix, i, j) {
  * Operates with a matrix array of complex numbers, and zeros for i, j.
  */
 
-function reducedRowEchelonAugmented(matrix, i, j) {
+export function reducedRowEchelonAugmented(matrix, i, j) {
 
 	// End iterations if at right end of matrix
 
@@ -207,7 +217,7 @@ function reducedRowEchelonDeterminant(matrix, i, j, multiplicity) {
  * Given a matrix, returns a matrix of the rows that form a basis
  */
 
-function matrixColumnSpace(matrix) {
+export function matrixColumnSpace(matrix) {
 	let matrixCopy = copyMatrix(matrix);
 	let pivots = getPivots(matrixCopy);
 
@@ -234,7 +244,7 @@ function matrixColumnSpace(matrix) {
  * Returns a matrix consisting of only the row basis vectors
  */
 
-function matrixRowSpace(matrix) {
+export function matrixRowSpace(matrix) {
 	let matrixCopy = copyMatrix(matrix);
 	let pivots = getPivots(matrixCopy);
 
@@ -257,7 +267,7 @@ function matrixRowSpace(matrix) {
  */
 
 
-function matrixNullspace(matrix) {
+export function matrixNullspace(matrix) {
 	let matrixCopy = copyMatrix(matrix);
 	reducedRowEchelon(matrixCopy, 0, 0);
 	let pivots = getPivots(matrixCopy);
@@ -304,7 +314,7 @@ function matrixNullspace(matrix) {
  * a set of orthogonal vectors.
  */
 
-function gramSchmidtProcess(matrix) {
+export function gramSchmidtProcess(matrix) {
 
 	// Transpose so we can operate on vectors as rows
 
@@ -327,41 +337,58 @@ function gramSchmidtProcess(matrix) {
 
 /* ------------ Matrix Format Functions ------------ */
 
-/*
- * Converts the input matrix into a matrix of frac objects
- */
 
-/*
-function convertInput(matrix) {
+export function printMatrix(matrix) {
+	let printString = ``;
+
 	for (let x = 0; x < matrix.length; x++) {
 		for (let y = 0; y < matrix[0].length; y++) {
-			matrix[x][y] = new frac(matrix[x][y], 1);
-		}
-	}
-}
+			if (comp.hasReal(matrix[x][y]) && comp.hasComplex(matrix[x][y])) {
+				if (fraction.isFraction(matrix[x][y].re)) {
+					printString += `${matrix[x][y].re.num}/${matrix[x][y].re.den} `;
+				}
+				else {
+					printString += `${matrix[x][y].re.num} `;
+				}
 
-function printMatrix(matrix) {
-	for (let x = 0; x < matrix.length; x++) {
-		for (let y = 0; y < matrix[0].length; y++) {
-			if (matrix[x][y].den === 1 || matrix[x][y].den === -1) {
-				process.stdout.write(matrix[x][y].num + "\t\t");
+				if (fraction.isFraction(matrix[x][y].im)) {
+					printString += `+ ${matrix[x][y].im.num}/${matrix[x][y].im.den}i\t `;
+				}
+				else {
+					printString += `+ ${matrix[x][y].im.num}i\t `;
+				}
+			}
+			else if (comp.hasReal(matrix[x][y])) {
+				if (fraction.isFraction(matrix[x][y].re)) {
+					printString += `${matrix[x][y].re.num}/${matrix[x][y].re.den}\t `;
+				}
+				else {
+					printString += `${matrix[x][y].re.num}\t `;
+				}
+
+			}
+			else if (comp.hasComplex(matrix[x][y])) {
+				if (fraction.isFraction(matrix[x][y].re)) {
+					printString += `+ ${matrix[x][y].re.num}/${matrix[x][y].re.den}i\t `;
+				}
+				else {
+					printString += `+ ${matrix[x][y].re.num}i\t `;
+				}
 			}
 			else {
-				process.stdout.write(matrix[x][y].num + "/" + matrix[x][y].den + "\t");
+				if (!comp.isNonZeroComplex(matrix[x][y])) {
+					printString += ` 0\t `;
+				}
 			}
 		}
-		console.log();
+		printString += `\n`;
 	}
-	console.log();
+
+	console.log(printString);
 }
 
- */
 
-/*
- * Returns a copy of the matrix
- */
-
-function copyMatrix(matrix) {
+export function copyMatrix(matrix) {
 	let matrixCopy = [];
 	for (let x = 0; x < matrix.length; x++) {
 		let newArr = [];
@@ -379,7 +406,7 @@ function copyMatrix(matrix) {
  * Returns a transposed matrix
  */
 
-function getTranspose(matrix) {
+export function getTranspose(matrix) {
 	let matrixCopy = copyMatrix(matrix);
 	let newMatrix = [];
 
@@ -398,7 +425,7 @@ function getTranspose(matrix) {
  * Returns an array of 0-indexed pivot positions.
  */
 
-function getPivots(matrix) {
+export function getPivots(matrix) {
 	let matrixCopy = copyMatrix(matrix);
 	reducedRowEchelon(matrixCopy, 0, 0);
 	let pivots = [];
@@ -427,6 +454,7 @@ export default {
 	matrixRowSpace: matrixRowSpace,
 	matrixNullspace: matrixNullspace,
 	gramSchmidtProcess: gramSchmidtProcess,
+	printMatrix: printMatrix,
 	copyMatrix: copyMatrix,
 	getTranspose: getTranspose,
 	getPivots: getPivots

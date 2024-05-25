@@ -47,6 +47,16 @@ export function simplifyComplex(num1) {
 	fraction.simplifyFraction(num1.im);
 }
 
+// Used for printing
+
+export function hasReal(num1) {
+	return fraction.isNonZero(num1.re);
+}
+
+export function hasComplex(num1) {
+	return fraction.isNonZero(num1.im);
+}
+
 // Just for testing
 
 export function printComplex(number) {
@@ -63,5 +73,7 @@ export default {
 	divideComplex: divideComplex,
 	isNonZeroComplex: isNonZeroComplex,
 	simplifyComplex: simplifyComplex,
+	hasReal: hasReal,
+	hasComplex: hasComplex,
 	printComplex: printComplex
 }

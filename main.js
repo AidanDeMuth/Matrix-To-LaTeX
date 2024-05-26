@@ -11,12 +11,7 @@ let matrix = [[new complex(new frac(1, 1), new frac(1, 1)), new complex(new frac
 			  [new complex(new frac(1, 1), new frac(1, 1)), new complex(new frac(2, 1), new frac(4, 2)), new complex(new frac(  4, 1), new frac(1, 1))],
 			  [new complex(new frac(1, 1), new frac(1, 1)), new complex(new frac(2, 1), new frac(4, 1)), new complex(new frac(  3, 1), new frac(1, 1))]];
 
-let col = matrixOperations.matrixColumnSpace(matrix);
-let row = matrixOperations.matrixRowSpace(matrix);
-let nullspace = matrixOperations.matrixNullspace(matrix);
-matrixOperations.printMatrix(col);
-matrixOperations.printMatrix(row);
-matrixOperations.printMatrix(nullspace);
+latexOutput.columnBasisLatex(matrix);
 
 /*
 

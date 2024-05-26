@@ -368,11 +368,11 @@ export function printMatrix(matrix) {
 
 			}
 			else if (comp.hasComplex(matrix[x][y])) {
-				if (fraction.isFraction(matrix[x][y].re)) {
-					printString += `+ ${matrix[x][y].re.num}/${matrix[x][y].re.den}i\t `;
+				if (fraction.isFraction(matrix[x][y].im)) {
+					printString += `${matrix[x][y].im.num}/${matrix[x][y].im.den}i\t `;
 				}
 				else {
-					printString += `+ ${matrix[x][y].re.num}i\t `;
+					printString += `${matrix[x][y].im.num}i\t `;
 				}
 			}
 			else {

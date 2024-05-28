@@ -54,7 +54,7 @@ function addVector(vector1, vector2) {
  */
 
 function subtractVector(vector1, vector2) {
-	return addVector(vector1, scalarProduct(new complex(new frac(-1, 1), new frac(-1, 1)), vector2));
+	return addVector(vector1, negateVector(vector2));
 }
 
 /*
@@ -62,6 +62,7 @@ function subtractVector(vector1, vector2) {
  */
 
 function projectVector(vector1, vector2) {
+	console.log('vectors 1 and 2');
 	console.log(vector1);
 	console.log(vector2);
 	return scalarProduct(comp.divideComplex(innerProduct(vector1, vector2), innerProduct(vector2, vector2)), vector2);
@@ -75,6 +76,16 @@ function simplifyVector(vector) {
 	for (let x = 0; x < vector.length; x++) {
 		comp.simplifyComplex(vector[x]);
 	}
+}
+
+function negateVector(vector) {
+	let newVector = [];
+
+	for (let x = 0; x < vector.length; x++) {
+		newVector.push(new complex(fraction.negateFraction(vector[x].re), fraction.negateFraction(vector[x].im)));
+	}
+
+	return newVector;
 }
 
 export default {

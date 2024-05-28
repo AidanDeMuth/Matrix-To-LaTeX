@@ -131,7 +131,7 @@ function columnBasisLatex(matrix) {
 				output = output.concat(`\\\\\n`);
 			}
 			else {
-							output = output.concat(`\n`);
+				output = output.concat(`\n`);
 			}
 		}
 

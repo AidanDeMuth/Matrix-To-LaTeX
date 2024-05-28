@@ -290,6 +290,9 @@ export function matrixNullspace(matrix) {
 		}
 		else if (!pivots.includes(x)) {
 			for (let y = 0; y < (matrixCopy[0].length - pivots.length); y++) {
+
+				// Associates the n'th free variable with the n'th basis vector
+
 				if (y === nonPivotTally) {
 					rowArr.push(new complex(new frac(1, 1), new frac(0, 1)));
 				}
@@ -314,18 +317,18 @@ export function matrixNullspace(matrix) {
  * a set of orthogonal vectors.
  */
 
+
 export function gramSchmidtProcess(matrix) {
 
 	// Transpose so we can operate on vectors as rows
 
 	let vectors = getTranspose(matrix);
-	console.log('vectors');
-	console.log(vectors);
-
+	
 	for (let x = 0; x < vectors.length; x++) {
 		for (let y = 0; y < x; y++) {
-			console.log(x);
+			printMatrix(vectors);
 			vectors[x] = vector.subtractVector(vectors[x], vector.projectVector(vectors[x], vectors[y]));
+
 		}
 	}
 
@@ -333,6 +336,7 @@ export function gramSchmidtProcess(matrix) {
 
 	return getTranspose(vectors);
 }
+
 
 
 /* ------------ Matrix Format Functions ------------ */

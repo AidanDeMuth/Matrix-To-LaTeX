@@ -29,9 +29,6 @@ export function multiplyFraction(fraction1, fraction2) {
 // Divides fraction1 by fraction2
 
 export function divideFraction(fraction1, fraction2) {
-    console.log('dividing...');
-    console.log(new frac((fraction1.num * fraction2.den), (fraction1.den * fraction2.num)));
-    console.log(simplifyFraction(new frac((fraction1.num * fraction2.den), (fraction1.den * fraction2.num))));
     return simplifyFraction(new frac((fraction1.num * fraction2.den), (fraction1.den * fraction2.num)));
 }
 

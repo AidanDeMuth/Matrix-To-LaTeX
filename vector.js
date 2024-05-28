@@ -62,9 +62,6 @@ function subtractVector(vector1, vector2) {
  */
 
 function projectVector(vector1, vector2) {
-	console.log('vectors 1 and 2');
-	console.log(vector1);
-	console.log(vector2);
 	return scalarProduct(comp.divideComplex(innerProduct(vector1, vector2), innerProduct(vector2, vector2)), vector2);
 }
 
@@ -88,11 +85,21 @@ function negateVector(vector) {
 	return newVector;
 }
 
+function isNonZeroVector(vector) {
+	for (let x = 0; x < vector.length; x++) {
+		if (comp.isNonZeroComplex(vector[x])) {
+			return true;
+		}
+	}
+	return false;
+}
+
 export default {
 	innerProduct: innerProduct,
 	scalarProduct: scalarProduct,
 	addVector: addVector,
 	subtractVector: subtractVector,
 	projectVector: projectVector,
-	simplifyVector: simplifyVector
+	simplifyVector: simplifyVector,
+	isNonZeroVector: isNonZeroVector
 }

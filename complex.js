@@ -23,29 +23,18 @@ export function negateComplex(num) {
 }
 
 export function multiplyComplex(num1, num2) {
-
 	return new complex(subtractFraction(multiplyFraction(num1.re, num2.re), multiplyFraction(num1.im, num2.im)),
 				       addFraction(multiplyFraction(num1.re, num2.im), multiplyFraction(num1.im, num2.re)));
 }
 
 export function invertComplex(num) {
 	let magnitude = addFraction(multiplyFraction(num.re, num.re), multiplyFraction(num.im, num.im));
-
-	console.log('num im');
-	console.log(num.im);
-	console.log('magnitude:');
-	console.log(magnitude);
-	console.log(new complex(divideFraction(num.re, magnitude), fraction.negateFraction(divideFraction(num.im, magnitude))));
 	return new complex(divideFraction(num.re, magnitude), fraction.negateFraction(divideFraction(num.im, magnitude)));
 }
 
 // Divides num1 by num2
 
 export function divideComplex(num1, num2) {
-	console.log('dividing complex');
-	console.log(num1);
-	console.log('fuck up:');
-	console.log(invertComplex(num2));
 	return multiplyComplex(num1, invertComplex(num2));
 }
 

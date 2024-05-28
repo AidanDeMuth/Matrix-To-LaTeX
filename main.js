@@ -3,16 +3,23 @@ import latexOutput from './latexOutput.js';
 import {frac} from './frac.js';
 import * as fraction from './frac.js';
 import vector from './vector.js';
-import {complex, printComplex} from './complex.js';
+import {complex, divideComplex, printComplex} from './complex.js';
 import * as comp from './complex.js';
 import operations from "./operations.js";
-
+/*
 let matrix = [[new complex(new frac(1, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(0, 1)), new complex(new frac(3, 1), new frac(0, 1))],
-			  [new complex(new frac(1, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(0, 1)), new complex(new frac(3, 1), new frac(0, 1))],
-			  [new complex(new frac(1, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(0, 1)), new complex(new frac(3, 1), new frac(0, 1))]];
+			  [new complex(new frac(1, 1), new frac(1, 1)), new complex(new frac(2, 1), new frac(0, 1)), new complex(new frac(3, 1), new frac(1, 1))],
+			  [new complex(new frac(1, 1), new frac(2, 1)), new complex(new frac(2, 1), new frac(0, 1)), new complex(new frac(3, 1), new frac(0, 1))]];
 
-let gram = matrixOperations.gramSchmidtProcess(matrix);
+ */
+
+let matrix2 = [[new complex(new frac(1, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(0, 1))],
+	[new complex(new frac(1, 1), new frac(1, 1)), new complex(new frac(2, 1), new frac(0, 1))],
+	[new complex(new frac(1, 1), new frac(2, 1)), new complex(new frac(2, 1), new frac(0, 1))]];
+
+let gram = matrixOperations.gramSchmidtProcess(matrix2);
 latexOutput.columnBasisLatex(gram);
+
 
 /*
 checkValue = (element) => {

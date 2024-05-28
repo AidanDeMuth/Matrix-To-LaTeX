@@ -29,6 +29,9 @@ export function multiplyFraction(fraction1, fraction2) {
 // Divides fraction1 by fraction2
 
 export function divideFraction(fraction1, fraction2) {
+    console.log('dividing...');
+    console.log(new frac((fraction1.num * fraction2.den), (fraction1.den * fraction2.num)));
+    console.log(simplifyFraction(new frac((fraction1.num * fraction2.den), (fraction1.den * fraction2.num))));
     return simplifyFraction(new frac((fraction1.num * fraction2.den), (fraction1.den * fraction2.num)));
 }
 
@@ -58,7 +61,7 @@ export function isFraction(fraction1) {
     return fraction1.den !== 1;
 }
 
-
+// divide by zero error
 export function simplifyFraction(fraction1) {
     if ((fraction1.num < 0) && (fraction1.den < 0)) {
         fraction1.num *= (-1);

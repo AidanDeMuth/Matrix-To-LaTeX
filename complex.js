@@ -30,7 +30,13 @@ export function multiplyComplex(num1, num2) {
 
 export function invertComplex(num) {
 	let magnitude = addFraction(multiplyFraction(num.re, num.re), multiplyFraction(num.im, num.im));
-	return new complex(divideFraction(num.re, magnitude), negateFraction(divideFraction(num.im, magnitude)));
+
+	console.log('num im');
+	console.log(num.im);
+	console.log('magnitude:');
+	console.log(magnitude);
+	console.log(new complex(divideFraction(num.re, magnitude), fraction.negateFraction(divideFraction(num.im, magnitude))));
+	return new complex(divideFraction(num.re, magnitude), fraction.negateFraction(divideFraction(num.im, magnitude)));
 }
 
 // Divides num1 by num2

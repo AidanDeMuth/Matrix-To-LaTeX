@@ -317,6 +317,7 @@ export function matrixNullspace(matrix) {
  * a set of orthogonal vectors.
  */
 
+// update zero vectors to get removed
 
 export function gramSchmidtProcess(matrix) {
 

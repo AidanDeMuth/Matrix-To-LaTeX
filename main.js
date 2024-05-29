@@ -6,23 +6,20 @@ import vector from './vector.js';
 import {complex, divideComplex, printComplex} from './complex.js';
 import * as comp from './complex.js';
 import operations from "./operations.js";
-/*
-let matrix = [[new complex(new frac(1, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(0, 1)), new complex(new frac(3, 1), new frac(0, 1))],
-			  [new complex(new frac(1, 1), new frac(1, 1)), new complex(new frac(2, 1), new frac(0, 1)), new complex(new frac(3, 1), new frac(1, 1))],
-			  [new complex(new frac(1, 1), new frac(2, 1)), new complex(new frac(2, 1), new frac(0, 1)), new complex(new frac(3, 1), new frac(0, 1))]];
 
- */
+let matrix = [[new complex(new frac(1, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(1, 1)), new complex(new frac(-3, 1), new frac(-2, 1))],
+			  [new complex(new frac(1, 1), new frac(1, 1)), new complex(new frac(3, 1), new frac(0, 1)), new complex(new frac(4, 1), new frac(1, 1))],
+			  [new complex(new frac(1, 1), new frac(3, 1)), new complex(new frac(4, 1), new frac(-2, 1)), new complex(new frac(-4, 1), new frac(0, 1))]];
 
-let matrix2 = [[new complex(new frac(1, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(0, 1))],
-	[new complex(new frac(1, 1), new frac(1, 1)), new complex(new frac(2, 1), new frac(0, 1))],
-	[new complex(new frac(1, 1), new frac(2, 1)), new complex(new frac(2, 1), new frac(0, 1))]];
-
-let gram = matrixOperations.gramSchmidtProcess(matrix2);
-latexOutput.columnBasisLatex(gram);
+let matrix2 = [[new complex(new frac(1, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(1, 1)), new complex(new frac(-3, 1), new frac(-2, 1)), new complex(new frac(1, 1), new frac(1, 1))],
+    [new complex(new frac(1, 1), new frac(1, 1)), new complex(new frac(3, 1), new frac(0, 1)), new complex(new frac(4, 1), new frac(1, 1)), new complex(new frac(0, 1), new frac(2, 1))],
+    [new complex(new frac(1, 1), new frac(3, 1)), new complex(new frac(4, 1), new frac(-2, 1)), new complex(new frac(-4, 1), new frac(0, 1)), new complex(new frac(1, 1), new frac(1, 1))]];
 
 
-/*
-checkValue = (element) => {
+matrixOperations.reducedRowEchelonAugmented(matrix2, 0, 0);
+matrixOperations.printMatrix(matrix2);
+
+const checkValue = (element) => {
         let min = element.min;
         let max = element.max;
     
@@ -35,7 +32,7 @@ checkValue = (element) => {
         }
       }
 
-getTable = () => {
+const makeTable = () => {
     document.getElementById('Table Space').innerHTML = '';
     let num_rows = document.getElementById('Rows').value;
     let num_cols = document.getElementById('Columns').value;
@@ -59,4 +56,6 @@ getTable = () => {
     document.getElementById('Table Space').appendChild(table);
 }
 
- */
+const operationHandler = () => {
+
+}

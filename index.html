@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang='en'>
   <head>
+
     <title>Matrix to LaTeX</title>
-    <meta charset="UTF-8"></meta>
-    <link href="style.css" rel=stylesheet></link>
-    <script src="main.js"></script>
+    <meta charset="UTF-8">
+    <link href="./style.css" rel=stylesheet></link>
+    <script src="./main.js"></script>
   </head>
   <body>
     <div class='header'>
@@ -18,6 +19,7 @@
     </div>
 
     <div class='center'>
+      <label for="operation">Operation: </label>
       <select id='operation'>
         <option value="0">Custom</option>
         <option value="1">Reduced Row Echelon Form</option>
@@ -33,10 +35,10 @@
 
     <div class='center'>
       <label for="Rows">Rows </label>
-      <input type="number" id="Rows" min="1" max="15" oninput="checkValue(this);getTable();operationHandler()" onChange="getTable();operationHandler();"></input>
+      <input type="number" id="Rows" min="1" max="15" oninput="checkValue(this);makeTable();" onChange="makeTable();"></input>
 
       <label for="Columns">Columns </label>
-      <input type="number" id="Columns" min="1" max="15" oninput="checkValue(this);getTable();operationHandler()" onChange="getTable();operationHandler()"></input>
+      <input type="number" id="Columns" min="1" max="15" oninput="checkValue(this);makeTable();" onChange="makeTable();"></input>
 
       <label for="Bracket Type">Bracket Type: </label>
       <select id="Bracket Type">
@@ -52,14 +54,5 @@
     <div class='center'>
       <div id='Table Space' class='center'></div>
     </div>
-
-    <script type="module">
-      import main from "./main.js"
-
-      function operationHandler() {
-        console.log("RUNNING");
-        main.selectOperation();
-      }
-    </script>
   </body>
 </html>

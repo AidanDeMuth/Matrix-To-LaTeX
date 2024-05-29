@@ -327,12 +327,11 @@ export function gramSchmidtProcess(matrix) {
 	
 	for (let x = 0; x < vectors.length; x++) {
 		for (let y = 0; y < x; y++) {
-			console.log(x + '' + y);
-			console.log('before scalar product:');
+			console.log('projecting vector ' + x + ' onto vector ' +  y);
+			console.log('BEFORE PROJECTION: ');
 			printMatrix(vectors);
 			vectors[x] = vector.subtractVector(vectors[x], vector.projectVector(vectors[x], vectors[y]));
-			console.log('\n\nAfter:');
-			printMatrix(vectors);
+			console.log('AFTER PROJECTION: ');
 		}
 
 		// Will remove linearly dependent vectors from the list and account for loop condition

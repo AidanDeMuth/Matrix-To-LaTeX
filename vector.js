@@ -27,10 +27,16 @@ function innerProduct(vector1, vector2) {
 
 function scalarProduct(scalar, vector) {
 	let productArr = [];
+	console.log('\n\nTaking the scalar product: ');
+	console.log(scalar);
+	console.log(vector);
 
 	for (let x = 0; x < vector.length; x++) {
 		productArr.push(comp.multiplyComplex(vector[x], scalar));
 	}
+
+	console.log('After Scalar: ');
+	console.log(productArr);
 
 	return productArr;
 }
@@ -42,9 +48,16 @@ function scalarProduct(scalar, vector) {
 function addVector(vector1, vector2) {
 	let newVector = [];
 
+	console.log('\n\nAdding two vectors: ');
+	console.log(vector1);
+	console.log(vector2);
+
 	for (let x = 0; x < vector1.length; x++) {
 		newVector.push(comp.addComplex(vector1[x], vector2[x]));
 	}
+
+	console.log('After adding vectors:');
+	console.log(newVector);
 
 	return newVector;
 }
@@ -54,6 +67,9 @@ function addVector(vector1, vector2) {
  */
 
 function subtractVector(vector1, vector2) {
+	console.log('\n\nsubtracting vector 1 and 2: ');
+	console.log(vector1);
+	console.log(vector2);
 	return addVector(vector1, negateVector(vector2));
 }
 
@@ -62,6 +78,9 @@ function subtractVector(vector1, vector2) {
  */
 
 function projectVector(vector1, vector2) {
+	console.log('\n\nProjecting Vector 1 onto two');
+	console.log(vector1);
+	console.log(vector2);
 	return scalarProduct(comp.divideComplex(innerProduct(vector1, vector2), innerProduct(vector2, vector2)), vector2);
 }
 
@@ -77,11 +96,13 @@ function simplifyVector(vector) {
 
 function negateVector(vector) {
 	let newVector = [];
-
+	console.log('\n\nNegating vector before: ');
+	console.log(vector);
 	for (let x = 0; x < vector.length; x++) {
 		newVector.push(new complex(fraction.negateFraction(vector[x].re), fraction.negateFraction(vector[x].im)));
 	}
-
+	console.log('After negating vector: ');
+	console.log(newVector);
 	return newVector;
 }
 

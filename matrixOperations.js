@@ -351,7 +351,6 @@ export function gramSchmidtProcess(matrix) {
 
 /* ------------ Matrix Format Functions ------------ */
 
-
 export function printMatrix(matrix) {
 	let printString = ``;
 
@@ -365,11 +364,21 @@ export function printMatrix(matrix) {
 					printString += `${matrix[x][y].re.num} `;
 				}
 
-				if (fraction.isFraction(matrix[x][y].im)) {
-					printString += `+ ${matrix[x][y].im.num}/${matrix[x][y].im.den}i\t `;
+				if (fraction.getDecimal(matrix[x][y].im) < 0) {
+					if (fraction.isFraction(matrix[x][y].im)) {
+						printString += `- ${fraction.negateFraction(matrix[x][y].im).num}/${matrix[x][y].im.den}i\t `;
+					}
+					else {
+						printString += `- ${fraction.negateFraction(matrix[x][y].im).num}i\t `;
+					}
 				}
 				else {
-					printString += `+ ${matrix[x][y].im.num}i\t `;
+					if (fraction.isFraction(matrix[x][y].im)) {
+						printString += `+ ${matrix[x][y].im.num}/${matrix[x][y].im.den}i\t `;
+					}
+					else {
+						printString += `+ ${matrix[x][y].im.num}i\t `;
+					}
 				}
 			}
 			else if (comp.hasReal(matrix[x][y])) {

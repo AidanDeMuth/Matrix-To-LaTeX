@@ -26,11 +26,21 @@ function rowBasisLatex(matrix) {
 					output += `${matrix[x][y].re.num} `;
 				}
 
-				if (fraction.isFraction(matrix[x][y].im)) {
-					output += `+ \\frac{${matrix[x][y].im.num}}{${matrix[x][y].im.den}}i `;
+				if (fraction.getDecimal(matrix[x][y].im) < 0) {
+					if (fraction.isFraction(matrix[x][y].im)) {
+						output += `- i\\frac{${fraction.negateFraction(matrix[x][y].im).num}}{${matrix[x][y].im.den}} `;
+					}
+					else {
+						output += `- i${fraction.negateFraction(matrix[x][y].im).num} `;
+					}
 				}
 				else {
-					output += `+ ${matrix[x][y].im.num}i `;
+					if (fraction.isFraction(matrix[x][y].im)) {
+						output += `+ i\\frac{${matrix[x][y].im.num}}{${matrix[x][y].im.den}} `;
+					}
+					else {
+						output += `+ i${matrix[x][y].im.num} `;
+					}
 				}
 			}
 			else if (comp.hasReal(matrix[x][y])) {
@@ -44,10 +54,10 @@ function rowBasisLatex(matrix) {
 			}
 			else if (comp.hasComplex(matrix[x][y])) {
 				if (fraction.isFraction(matrix[x][y].im)) {
-					output += `\\frac{${matrix[x][y].im.num}}{${matrix[x][y].im.den}}i `;
+					output += `i\\frac{${matrix[x][y].im.num}}{${matrix[x][y].im.den}} `;
 				}
 				else {
-					output += `${matrix[x][y].im.num}i `;
+					output += `i${matrix[x][y].im.num} `;
 				}
 			}
 			else {
@@ -97,11 +107,21 @@ function columnBasisLatex(matrix) {
 					output += `${matrix[y][x].re.num} `;
 				}
 
-				if (fraction.isFraction(matrix[y][x].im)) {
-					output += `+ \\frac{${matrix[y][x].im.num}}{${matrix[y][x].im.den}}i `;
+				if (fraction.getDecimal(matrix[y][x].im) < 0) {
+					if (fraction.isFraction(matrix[y][x].im)) {
+						output += `- i\\frac{${fraction.negateFraction(matrix[y][x].im).num}}{${matrix[y][x].im.den}} `;
+					}
+					else {
+						output += `- i${fraction.negateFraction(matrix[y][x].im).num} `;
+					}
 				}
 				else {
-					output += `+ ${matrix[y][x].im.num}i `;
+					if (fraction.isFraction(matrix[y][x].im)) {
+						output += `+ i\\frac{${matrix[y][x].im.num}}{${matrix[y][x].im.den}} `;
+					}
+					else {
+						output += `+ i${matrix[y][x].im.num} `;
+					}
 				}
 			}
 			else if (comp.hasReal(matrix[y][x])) {
@@ -115,10 +135,10 @@ function columnBasisLatex(matrix) {
 			}
 			else if (comp.hasComplex(matrix[y][x])) {
 				if (fraction.isFraction(matrix[y][x].im)) {
-					output += `\\frac{${matrix[y][x].im.num}}{${matrix[y][x].im.den}}i `;
+					output += `i\\frac{${matrix[y][x].im.num}}{${matrix[y][x].im.den}} `;
 				}
 				else {
-					output += `${matrix[y][x].im.num}i `;
+					output += `i${matrix[y][x].im.num} `;
 				}
 			}
 			else {

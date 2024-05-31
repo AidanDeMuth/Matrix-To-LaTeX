@@ -47,6 +47,10 @@ export function simplifyComplex(num1) {
 	fraction.simplifyFraction(num1.im);
 }
 
+export function getConjugate(num1) {
+	return new complex(new frac(num1.re.num, num1.re.den), negateFraction(num1.im));
+}
+
 // Used for printing
 
 export function hasReal(num1) {
@@ -73,6 +77,7 @@ export default {
 	divideComplex: divideComplex,
 	isNonZeroComplex: isNonZeroComplex,
 	simplifyComplex: simplifyComplex,
+	getConjugate: getConjugate,
 	hasReal: hasReal,
 	hasComplex: hasComplex,
 	printComplex: printComplex

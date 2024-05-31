@@ -4,7 +4,108 @@ import matrixOperations from './matrixOperations.js';
 import {complex} from './complex.js';
 import * as comp from './complex.js';
 
-function rowBasisLatex(matrix) {
+/*
+ * Takes a complex number object as a parameter and gets the latex formatting for that additional number.
+ * Moves negative signs outside of fractions, checks if numbers are fractions, and writes the imaginary number
+ * i if necessary.
+ * Adds a space at end of output.
+ */
+
+function getNumberFormat(number) {
+	let format = ``;
+	if (comp.hasReal(number) && comp.hasComplex(number)) {
+		if (fraction.getDecimal(number.re) < 0) {
+			if (fraction.isFraction(number.re)) {
+				format += `-\\frac{${fraction.negateFraction(number.re).num}}{${number.re.den}} `;
+			}
+			else {
+				format += `-${number.re.num} `;
+			}
+		}
+		else {
+			if (fraction.isFraction(number.re)) {
+				format += `\\frac{${number.re.num}}{${number.re.den}} `;
+			}
+			else {
+				format += `${number.re.num} `;
+			}
+		}
+
+		if (fraction.getDecimal(number.im) < 0) {
+			if (fraction.isFraction(number.im)) {
+				format += `- \\frac{${fraction.negateFraction(number.im).num}}{${number.im.den}}i `;
+			}
+			else {
+				format += `- ${fraction.negateFraction(number.im).num}i `;
+			}
+		}
+		else {
+			if (fraction.isFraction(number.im)) {
+				format += `+ \\frac{${number.im.num}}{${number.im.den}}i `;
+			}
+			else {
+				format += `+ ${number.im.num}i `;
+			}
+		}
+	}
+	else if (comp.hasReal(number)) {
+		if (fraction.getDecimal(number.re) < 0) {
+			if (fraction.isFraction(number.re)) {
+				format += `-\\frac{${fraction.negateFraction(number.re).num}}{${number.re.den}} `;
+			}
+			else {
+				format += `-${number.re.num} `;
+			}
+		}
+		else {
+			if (fraction.isFraction(number.re)) {
+				format += `\\frac{${number.re.num}}{${number.re.den}} `;
+			}
+			else {
+				format += `${number.re.num} `;
+			}
+		}
+	}
+	else if (comp.hasComplex(number)) {
+		if (fraction.getDecimal(number.im) < 0) {
+			if (fraction.isFraction(number.im)) {
+				format += `-\\frac{${fraction.negateFraction(number.im).num}}{${number.im.den}} `;
+			}
+			else {
+				format += `-${number.im.num} `;
+			}
+		}
+		else {
+			if (fraction.isFraction(number.im)) {
+				format += `\\frac{${number.im.num}}{${number.im.den}} `;
+			}
+			else {
+				format += `${number.im.num} `;
+			}
+		}
+	}
+	else {
+		if (!comp.isNonZeroComplex(number)) {
+			format += `0 `;
+		}
+	}
+
+	return format;
+}
+
+/*
+ * Prints a generic formatted matrix.
+ */
+
+export function matrixLatex(matrix) {
+
+}
+
+/*
+ * Prints a Latex formatted matrix where the basis vectors are 1xn matrices.
+ */
+
+export function rowBasisLatex(matrix) {
 	let output = `$\\left\\{\n`;
 
 	// Traverse by row then column
@@ -15,56 +116,7 @@ function rowBasisLatex(matrix) {
 		output = output.concat(`    `);
 
 		for (let y = 0; y < matrix[0].length; y++) {
-			
-			// Include space after entries
-
-			if (comp.hasReal(matrix[x][y]) && comp.hasComplex(matrix[x][y])) {
-				if (fraction.isFraction(matrix[x][y].re)) {
-					output += `\\frac{${matrix[x][y].re.num}}{${matrix[x][y].re.den}} `;
-				}
-				else {
-					output += `${matrix[x][y].re.num} `;
-				}
-
-				if (fraction.getDecimal(matrix[x][y].im) < 0) {
-					if (fraction.isFraction(matrix[x][y].im)) {
-						output += `- i\\frac{${fraction.negateFraction(matrix[x][y].im).num}}{${matrix[x][y].im.den}} `;
-					}
-					else {
-						output += `- i${fraction.negateFraction(matrix[x][y].im).num} `;
-					}
-				}
-				else {
-					if (fraction.isFraction(matrix[x][y].im)) {
-						output += `+ i\\frac{${matrix[x][y].im.num}}{${matrix[x][y].im.den}} `;
-					}
-					else {
-						output += `+ i${matrix[x][y].im.num} `;
-					}
-				}
-			}
-			else if (comp.hasReal(matrix[x][y])) {
-				if (fraction.isFraction(matrix[x][y].re)) {
-					output += `\\frac{${matrix[x][y].re.num}}{${matrix[x][y].re.den}} `;
-				}
-				else {
-					output += `${matrix[x][y].re.num} `;
-				}
-
-			}
-			else if (comp.hasComplex(matrix[x][y])) {
-				if (fraction.isFraction(matrix[x][y].im)) {
-					output += `i\\frac{${matrix[x][y].im.num}}{${matrix[x][y].im.den}} `;
-				}
-				else {
-					output += `i${matrix[x][y].im.num} `;
-				}
-			}
-			else {
-				if (!comp.isNonZeroComplex(matrix[x][y])) {
-					output += `0 `;
-				}
-			}
+			output = output.concat(getNumberFormat(matrix[x][y]));
 
 			if (y + 1 < matrix[0].length) {
 				output = output.concat(`& `);
@@ -85,7 +137,11 @@ function rowBasisLatex(matrix) {
 	console.log(output);
 }
 
-function columnBasisLatex(matrix) {
+/*
+ * Prints a Latex formatted matrix where the basis vectors are nx1 matrices.
+ */
+
+export function columnBasisLatex(matrix) {
 	let output = `$\\left\\{\n`;
 
 	// Traverse by column then row
@@ -99,53 +155,7 @@ function columnBasisLatex(matrix) {
 			// Include space before entries
 			output = output.concat(`    `);
 
-			if (comp.hasReal(matrix[y][x]) && comp.hasComplex(matrix[y][x])) {
-				if (fraction.isFraction(matrix[y][x].re)) {
-					output += `\\frac{${matrix[y][x].re.num}}{${matrix[y][x].re.den}} `;
-				}
-				else {
-					output += `${matrix[y][x].re.num} `;
-				}
-
-				if (fraction.getDecimal(matrix[y][x].im) < 0) {
-					if (fraction.isFraction(matrix[y][x].im)) {
-						output += `- i\\frac{${fraction.negateFraction(matrix[y][x].im).num}}{${matrix[y][x].im.den}} `;
-					}
-					else {
-						output += `- i${fraction.negateFraction(matrix[y][x].im).num} `;
-					}
-				}
-				else {
-					if (fraction.isFraction(matrix[y][x].im)) {
-						output += `+ i\\frac{${matrix[y][x].im.num}}{${matrix[y][x].im.den}} `;
-					}
-					else {
-						output += `+ i${matrix[y][x].im.num} `;
-					}
-				}
-			}
-			else if (comp.hasReal(matrix[y][x])) {
-				if (fraction.isFraction(matrix[y][x].re)) {
-					output += `\\frac{${matrix[y][x].re.num}}{${matrix[y][x].re.den}} `;
-				}
-				else {
-					output += `${matrix[y][x].re.num} `;
-				}
-
-			}
-			else if (comp.hasComplex(matrix[y][x])) {
-				if (fraction.isFraction(matrix[y][x].im)) {
-					output += `i\\frac{${matrix[y][x].im.num}}{${matrix[y][x].im.den}} `;
-				}
-				else {
-					output += `i${matrix[y][x].im.num} `;
-				}
-			}
-			else {
-				if (!comp.isNonZeroComplex(matrix[y][x])) {
-					output += `0 `;
-				}
-			}
+			output = output.concat(getNumberFormat(matrix[y][x]));
 
 			if (y + 1 < matrix.length) {
 				output = output.concat(`\\\\\n`);
@@ -168,6 +178,7 @@ function columnBasisLatex(matrix) {
 }
 
 export default {
+	matrixLatex: matrixLatex,
 	rowBasisLatex: rowBasisLatex,
 	columnBasisLatex: columnBasisLatex
 }

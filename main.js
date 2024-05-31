@@ -11,14 +11,14 @@ let matrix = [[new complex(new frac(1, 1), new frac(0, 1)), new complex(new frac
 			  [new complex(new frac(1, 1), new frac(1, 1)), new complex(new frac(3, 1), new frac(0, 1)), new complex(new frac(4, 1), new frac(1, 1))],
 			  [new complex(new frac(1, 1), new frac(3, 1)), new complex(new frac(4, 1), new frac(-2, 1)), new complex(new frac(-4, 1), new frac(0, 1))]];
 
-let matrix2 = [[new complex(new frac(1, 1), new frac(0, 1)), new complex(new frac(-2, 1), new frac(1, 1)), new complex(new frac(-3, 1), new frac(-2, 1)), new complex(new frac(1, 1), new frac(1, 1))],
-    [new complex(new frac(1, 1), new frac(-1, 1)), new complex(new frac(3, 1), new frac(0, 1)), new complex(new frac(4, 1), new frac(1, 1)), new complex(new frac(0, 1), new frac(-2, 1))],
-    [new complex(new frac(1, 1), new frac(-3, 1)), new complex(new frac(4, 1), new frac(-2, 1)), new complex(new frac(-4, 1), new frac(0, 1)), new complex(new frac(1, 1), new frac(1, 1))]];
+let matrix2 = [[new complex(new frac(1, 1), new frac(0, 1)), new complex(new frac(1, 1), new frac(1, 1)), new complex(new frac(-2, 1), new frac(4, 1))],
+    [new complex(new frac(1, 1), new frac(2, 1)), new complex(new frac(2, 1), new frac(0, 1)), new complex(new frac(1, 1), new frac(3, 1))],
+    [new complex(new frac(1, 1), new frac(0, 1)), new complex(new frac(3, 1), new frac(0, 1)), new complex(new frac(5, 1), new frac(1, 1))]];
 
-
-matrixOperations.reducedRowEchelonAugmented(matrix2, 0, 0);
-matrixOperations.printMatrix(matrix2);
-latexOutput.columnBasisLatex(matrix2);
+let gram = matrixOperations.gramSchmidtProcess(matrix2);
+matrixOperations.printMatrix(gram);
+latexOutput.rowBasisLatex(gram);
+latexOutput.columnBasisLatex(gram);
 
 const checkValue = (element) => {
         let min = element.min;
@@ -31,7 +31,7 @@ const checkValue = (element) => {
         else if (value < min) {
           element.value = min;
         }
-      }
+}
 
 const makeTable = () => {
     document.getElementById('Table Space').innerHTML = '';

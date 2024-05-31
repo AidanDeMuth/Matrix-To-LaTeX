@@ -13,7 +13,12 @@ function innerProduct(vector1, vector2) {
 	let sum = new complex(new frac(0, 1), new frac(0, 1));
 
 	for (let x = 0; x < vector1.length; x++) {
-		sum = comp.addComplex(sum, comp.multiplyComplex(vector1[x], vector2[x]));
+		if (comp.hasComplex(vector2[x])) {
+			sum = comp.addComplex(sum, comp.multiplyComplex(vector1[x], comp.getConjugate(vector2[x])));
+		}
+		else {
+			sum = comp.addComplex(sum, comp.multiplyComplex(vector1[x], vector2[x]));
+		}
 	}
 
 	return sum;

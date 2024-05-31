@@ -357,12 +357,23 @@ export function printMatrix(matrix) {
 	for (let x = 0; x < matrix.length; x++) {
 		for (let y = 0; y < matrix[0].length; y++) {
 			if (comp.hasReal(matrix[x][y]) && comp.hasComplex(matrix[x][y])) {
-				if (fraction.isFraction(matrix[x][y].re)) {
-					printString += `${matrix[x][y].re.num}/${matrix[x][y].re.den} `;
+				if (fraction.getDecimal(matrix[x][y].re) < 0) {
+					if (fraction.isFraction(matrix[x][y].re)) {
+						printString += `-${fraction.negateFraction(matrix[x][y].re).num}/${matrix[x][y].re.den} `;
+					}
+					else {
+						printString += `${matrix[x][y].re.num} `;
+					}
 				}
 				else {
-					printString += `${matrix[x][y].re.num} `;
+					if (fraction.isFraction(matrix[x][y].re)) {
+						printString += `${matrix[x][y].re.num}/${matrix[x][y].re.den} `;
+					}
+					else {
+						printString += `${matrix[x][y].re.num} `;
+					}
 				}
+
 
 				if (fraction.getDecimal(matrix[x][y].im) < 0) {
 					if (fraction.isFraction(matrix[x][y].im)) {
@@ -382,20 +393,40 @@ export function printMatrix(matrix) {
 				}
 			}
 			else if (comp.hasReal(matrix[x][y])) {
-				if (fraction.isFraction(matrix[x][y].re)) {
-					printString += `${matrix[x][y].re.num}/${matrix[x][y].re.den}\t `;
+				if (fraction.getDecimal(matrix[x][y].re) < 0) {
+					if (fraction.isFraction(matrix[x][y].re)) {
+						printString += `-${fraction.negateFraction(matrix[x][y].re).num}/${matrix[x][y].re.den}\t `;
+					}
+					else {
+						printString += `${matrix[x][y].re.num}\t `;
+					}
 				}
 				else {
-					printString += `${matrix[x][y].re.num}\t `;
+					if (fraction.isFraction(matrix[x][y].re)) {
+						printString += `${matrix[x][y].re.num}/${matrix[x][y].re.den}\t `;
+					}
+					else {
+						printString += `${matrix[x][y].re.num}\t `;
+					}
 				}
 
 			}
 			else if (comp.hasComplex(matrix[x][y])) {
-				if (fraction.isFraction(matrix[x][y].im)) {
-					printString += `${matrix[x][y].im.num}/${matrix[x][y].im.den}i\t `;
+				if (fraction.getDecimal(matrix[x][y].im) < 0) {
+					if (fraction.isFraction(matrix[x][y].im)) {
+						printString += `-${fraction.negateFraction(matrix[x][y].im).num}/${matrix[x][y].im.den}\t `;
+					}
+					else {
+						printString += `${matrix[x][y].im.num}\t `;
+					}
 				}
 				else {
-					printString += `${matrix[x][y].im.num}i\t `;
+					if (fraction.isFraction(matrix[x][y].im)) {
+						printString += `${matrix[x][y].im.num}/${matrix[x][y].im.den}\t `;
+					}
+					else {
+						printString += `${matrix[x][y].im.num}\t `;
+					}
 				}
 			}
 			else {

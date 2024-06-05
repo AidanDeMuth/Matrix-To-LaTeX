@@ -451,7 +451,7 @@ export function copyMatrix(matrix) {
 				new frac(matrix[x][y].im.num, matrix[x][y].im.den));
 			newArr.push(tempFrac);
 		}
-		matrixCopy.push(newArr);
+		matrixCopy.push(newArr); // testing
 	}
 	return matrixCopy;
 }

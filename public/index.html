@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+
+    <title>Matrix to LaTeX</title>
+    <meta charset="UTF-8">
+    <link href="./style.css" rel=stylesheet></link>
+  </head>
+  <body>
+    <div class='header'>
+      Matrix Solver and LaTeX Converter
+    </div>
+
+    <div>
+      <p>
+        Solve matrices and generate customizable LaTeX code. Choose an operation from the dropdown menu or convert custom matrix.
+      <p>
+    </div>
+
+    <div class='center'>
+      <label for="operation">Operation: </label>
+      <select id='operation'>
+        <option value="0">Custom</option>
+        <option value="1">Reduced Row Echelon Form</option>
+        <option value="2">Reduce Augmented Matrix</option>
+        <option value="3">Determinant</option>
+        <option value="4">Column Space</option>
+        <option value="5">Row Space</option>
+        <option value="6">Null Space</option>
+        <option value="7">Transpose</option>
+        <option value="8">Gram-Schmidt Process</option>
+      </select>
+    </div>
+
+    <div class='center'>
+      <label for="Rows">Rows </label>
+      <input type="number" id="Rows" min="1" max="15" oninput="checkValue(this);makeTable();" onChange="makeTable();"></input>
+
+      <label for="Columns">Columns </label>
+      <input type="number" id="Columns" min="1" max="15" oninput="checkValue(this);makeTable();" onChange="makeTable();"></input>
+
+      <label for="Bracket Type">Bracket Type: </label>
+      <select id="Bracket Type">
+        <option value="matrix">  </option>
+        <option value="pmatrix">( )</option>
+        <option value="bmatrix">[ ]</option>
+        <option value="Bmatrix">{ }</option>
+        <option value="vmatrix">| |</option>
+        <option value="Vmatrix">|| ||</option>
+      </select>
+    </div>
+
+    <div class='center'>
+      <div id='Table Space' class='center'></div>
+    </div>
+
+    <script type='module' src='app.js"></script>
+  </body>
+</html>

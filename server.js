@@ -8,11 +8,16 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'));
 
 // Serves HTML file
 app.get('/', (req, res) => {
-	res.sendFile(path.join(__dirname, './public/index.html'));
+	try {
+		res.sendFile(path.join(__dirname, 'public', './public/index.html'));
+	}
+	catch (err) {
+		res.send(err);
+	}
 });
 
 // Start server

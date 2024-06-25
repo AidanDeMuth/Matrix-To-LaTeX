@@ -14,20 +14,20 @@ let matrix = [[new complex(new frac(1, 1), new frac(0, 1)), new complex(new frac
 let gram = matrixOperations.gramSchmidtProcess(matrix);
 latexOutput.columnBasisLatex(gram);
 
-const checkValue = (element) => {
-        let min = element.min;
-        let max = element.max;
-    
-        let value = parseInt(element.value);
-        if (value > max) {
-          element.value = max;
-        } 
-        else if (value < min) {
-          element.value = min;
-        }
-      }
+export const checkValue = (element) => {
+    let min = element.min;
+    let max = element.max;
 
-const getTable = () => {
+    let value = parseInt(element.value);
+    if (value > max) {
+      element.value = max;
+    } 
+    else if (value < min) {
+      element.value = min;
+    }
+}
+
+export const getTable = () => {
     document.getElementById('Table Space').innerHTML = '';
     let num_rows = document.getElementById('Rows').value;
     let num_cols = document.getElementById('Columns').value;

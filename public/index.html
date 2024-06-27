@@ -5,9 +5,8 @@
     <title>Matrix to LaTeX</title>
     <meta charset="UTF-8">
     <link href="./style.css" rel=stylesheet></link>
-    <script type='module' src='app.js'></script>
   </head>
-  <body>
+  <body onload="app.createEventListeners();">
     <div class='header'>
       Matrix Solver and LaTeX Converter
     </div>
@@ -35,10 +34,10 @@
 
     <div class='center'>
       <label for="Rows">Rows </label>
-      <input type="number" id="Rows" min="1" max="15" oninput="checkValue(this);getTable();" onChange="getTable();"></input>
+      <input type="number" id="Rows" min="1" max="15" value='1' oninput="app.checkValue(this);app.getTable();" onChange="app.getTable();"></input>
 
       <label for="Columns">Columns </label>
-      <input type="number" id="Columns" min="1" max="15" oninput="checkValue(this);getTable();" onChange="getTable();"></input>
+      <input type="number" id="Columns" min="1" max="15" value='1' oninput="app.checkValue(this);app.getTable();" onChange="app.getTable();"></input>
 
       <label for="Bracket Type">Bracket Type: </label>
       <select id="Bracket Type">
@@ -52,7 +51,20 @@
     </div>
 
     <div class='center'>
+      <div id='submit'>
+        <button type='button' id='submitButton' onclick='app.parseInputs()'>Submit</button>
+      </div>
+    </div>
+
+    <div class='center'>
       <div id='Table Space' class='center'></div>
     </div>
+
+    <!-- Import app -->
+    <script type='module'>
+      import app from './app.js';
+      window.app = app;
+      app.createEventListeners();
+    </script>
   </body>
 </html>

@@ -82,7 +82,7 @@ export function simplifyFraction(fraction1) {
 // Euclidean Algorithm
 
 export function gcd(a, b) {
-    if (!b) return a;
+    if (b < 0.0000001) return a;
 
     return gcd(b, a % b);
 }

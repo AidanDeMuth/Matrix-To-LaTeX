@@ -7,12 +7,25 @@ import {complex, printComplex} from './complex.js';
 import * as comp from './complex.js';
 import operations from "./operations.js";
 
-let matrix = [[new complex(new frac(1, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(0, 1)), new complex(new frac(3, 1), new frac(0, 1))],
-			  [new complex(new frac(1, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(0, 1)), new complex(new frac(3, 1), new frac(0, 1))],
-			  [new complex(new frac(1, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(0, 1)), new complex(new frac(3, 1), new frac(0, 1))]];
+/* -------- Event Listeners -------- */
 
-let gram = matrixOperations.gramSchmidtProcess(matrix);
-latexOutput.columnBasisLatex(gram);
+export const createEventListeners = () => {
+    document.addEventListener('DOMContentLoaded', function() {
+        getTable();
+
+        const submitButton = document.getElementById('submitButton');
+
+        submitButton.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                submitButton.click();
+                console.log('Enter key pressed on submitButton');
+            }
+        });
+    });
+}
+
+// Ensures selection is within bounds
 
 export const checkValue = (element) => {
     let min = element.min;
@@ -27,11 +40,16 @@ export const checkValue = (element) => {
     }
 }
 
+// Creates table
+
 export const getTable = () => {
     document.getElementById('Table Space').innerHTML = '';
     let num_rows = document.getElementById('Rows').value;
+    console.log(num_rows);
     let num_cols = document.getElementById('Columns').value;
+    console.log(num_cols);
     let table = document.createElement('Table')
+    table.setAttribute('id', 'table');
     table.style.margin = 'auto';
 
     for (let x = 0; x < num_rows; x++) {
@@ -49,4 +67,19 @@ export const getTable = () => {
     }
 
     document.getElementById('Table Space').appendChild(table);
+}
+
+// Converts table inputs to array
+
+export const parseInputs = () => {
+    let table = document.getElementById('table');
+
+    console.log(table);
+}
+
+export default {
+    createEventListeners: createEventListeners,
+    checkValue: checkValue,
+    getTable: getTable,
+    parseInputs: parseInputs
 }

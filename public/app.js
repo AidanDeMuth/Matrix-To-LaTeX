@@ -69,12 +69,44 @@ export const getTable = () => {
     document.getElementById('Table Space').appendChild(table);
 }
 
-// Converts table inputs to array
+// Parses strings and converts to matrix
 
 export const parseInputs = () => {
     let table = document.getElementById('table');
+    let tableData = [];
 
-    console.log(table);
+    // Keeping this separate for now
+
+    for (let i = 0; i < table.rows.length; i++) {
+        let tableRow = table.rows.item(i).cells;
+        let rowData = [];
+        for (let j = 0; j < tableRow.length; j++) {
+            rowData.push(tableRow.item(j).children[0].value);
+        }
+        tableData.push(rowData);
+    }
+
+    // Parse string here
+    console.log(tableData);
+
+    for (let i = 0; i < tableData.length; i++) {
+        for (let j = 0; j < tableData[i].length; j++) {
+            let oldString = tableData[i][j];
+            oldString = oldString.replaceAll(' ', '');
+
+            let currentString = '';
+            let isPositive = true;
+
+            let real = '';
+            let complex = '';
+
+            for (let index = 0; index < oldString.length; index++) {
+                let char = oldString.charAt(index);
+            }
+        }
+    }
+
+
 }
 
 export default {

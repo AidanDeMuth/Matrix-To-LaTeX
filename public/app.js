@@ -7,6 +7,8 @@ import {complex, printComplex} from './complex.js';
 import * as comp from './complex.js';
 import operations from "./operations.js";
 
+const inputRegex = /^[0-9i.\/\-+ ]+$/;
+
 /* -------- Event Listeners -------- */
 
 export const createEventListeners = () => {
@@ -42,7 +44,7 @@ export const checkValue = (element) => {
 
 // Creates table
 
-export const getTable = () => {
+export const makeTable = () => {
     document.getElementById('Table Space').innerHTML = '';
     let num_rows = document.getElementById('Rows').value;
     console.log(num_rows);
@@ -56,10 +58,11 @@ export const getTable = () => {
         let row = table.insertRow();
         for (let y = 0; y < num_cols; y++) {
         	let cell = row.insertCell();
-        	let input_box = document.createElement('input');
-        	input_box.style.width = '50px'
+        	let inputBox = document.createElement('input');
+        	inputBox.style.width = '50px';
+            inputBox.id = `cell-${x}-${y}` // id is cell-`ROW`-`COLUMN`
 
-        	cell.appendChild(input_box);
+        	cell.appendChild(inputBox);
         	cell.style.border = '1px solid black';
 
         	console.log('test');
@@ -69,49 +72,121 @@ export const getTable = () => {
     document.getElementById('Table Space').appendChild(table);
 }
 
-// Parses strings and converts to matrix
+// Fetches data from table cells and passes each one to the 
 
-export const parseInputs = () => {
+export const fetchTable = () => {
     let table = document.getElementById('table');
     let tableData = [];
 
-    // Keeping this separate for now
+    let errorCells = [];
 
     for (let i = 0; i < table.rows.length; i++) {
         let tableRow = table.rows.item(i).cells;
         let rowData = [];
         for (let j = 0; j < tableRow.length; j++) {
-            rowData.push(tableRow.item(j).children[0].value);
+            try {
+                rowData.push(parseInput(tableRow.item(j).children[0].value));
+            }
+            catch (error) {
+                rowData.push('NULL'); // Not necessary
+                errorCells.push(`${i}-${j}`) // ROW-COLUMN of value box to update
+            }
         }
         tableData.push(rowData);
     }
+}
 
-    // Parse string here
-    console.log(tableData);
+// Parses strings and converts to matrix, does NOT create divs
 
-    for (let i = 0; i < tableData.length; i++) {
-        for (let j = 0; j < tableData[i].length; j++) {
-            let oldString = tableData[i][j];
-            oldString = oldString.replaceAll(' ', '');
+export const parseInput = (element) => {
+    let oldString = element;
 
-            let currentString = '';
-            let isPositive = true;
+    // Test if regex matches
 
-            let real = '';
-            let complex = '';
+    if (!inputRegex.test(oldString)) {
+        throw new Error('Invalid Character');
+    }
 
-            for (let index = 0; index < oldString.length; index++) {
-                let char = oldString.charAt(index);
+    console.log(oldString);
+    oldString = oldString.replaceAll(' ', '');
+
+    let currentString = '';
+    let currentSign = true;
+
+    let real = '';
+    let realSign = true;
+    let complex = '';
+    let complexSign = true;
+
+    for (let index = 0; index < oldString.length; index++) {
+        console.log('GOT HERE')
+        let char = oldString.charAt(index);
+
+        if (char === '+') {
+            // End of part
+            if (currentString.length > 0) {
+                if (currentString.includes('i') || currentString.includes('I')) {
+                    complex = currentString; // If this happens twice, the user messed up and I don't care
+                    complexSign = currentSign;
+                    currentString = '';
+                }
+                else {
+                    real = currentString;
+                    realSign = currentSign;
+                    currentString = '';
+                }
+                currentSign = true;
+            }
+            // No else because it doesn't change sign
+        }
+        else if (char === '-') {
+            // End of part
+            if (currentString.length > 0) {
+                if (currentString.includes('i') || currentString.includes('I')) {
+                    complex = currentString; 
+                    complexSign = currentSign;
+                    currentString = '';
+                }
+                else {
+                    real = currentString;
+                    realSign = currentSign;
+                    currentString = '';
+                }
+                currentSign = false;
+            }
+            else {
+                currentSign = !currentSign;
+            }
+        }
+        else {
+            currentString += char;
+        }
+
+        // Check end and just add whatever
+        if ((index + 1) >= oldString.length) {
+            if (currentString.length > 0) {
+                if (currentString.includes('i') || currentString.includes('I')) {
+                    complex = currentString;
+                    complexSign = currentSign;
+                }
+                else {
+                    real = currentString;
+                    realSign = currentSign;
+                }
             }
         }
     }
 
+    console.log('printing real ' + real + ' ' + realSign)
+    console.log('printing complex ' + complex + ' ' + complexSign)
+    console.log('\n')
+
+    // Returns frac object from String representation
 
 }
 
 export default {
     createEventListeners: createEventListeners,
     checkValue: checkValue,
-    getTable: getTable,
-    parseInputs: parseInputs
+    makeTable: makeTable,
 }

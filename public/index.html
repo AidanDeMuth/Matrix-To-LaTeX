@@ -34,10 +34,10 @@
 
     <div class='center'>
       <label for="Rows">Rows </label>
-      <input type="number" id="Rows" min="1" max="15" value='1' oninput="app.checkValue(this);app.getTable();" onChange="app.getTable();"></input>
+      <input type="number" id="Rows" min="1" max="15" value='1' oninput="app.checkValue(this);app.makeTable();" onChange="app.makeTable();"></input>
 
       <label for="Columns">Columns </label>
-      <input type="number" id="Columns" min="1" max="15" value='1' oninput="app.checkValue(this);app.getTable();" onChange="app.getTable();"></input>
+      <input type="number" id="Columns" min="1" max="15" value='1' oninput="app.checkValue(this);app.makeTable();" onChange="app.makeTable();"></input>
 
       <label for="Bracket Type">Bracket Type: </label>
       <select id="Bracket Type">
@@ -52,7 +52,7 @@
 
     <div class='center'>
       <div id='submit'>
-        <button type='button' id='submitButton' onclick='app.parseInputs()'>Submit</button>
+        <button type='button' id='submitButton' onclick=''>Submit</button>
       </div>
     </div>
 

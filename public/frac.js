@@ -58,7 +58,10 @@ export function isFraction(fraction1) {
     return fraction1.den !== 1;
 }
 
-// divide by zero error
+/*
+ * Simplifies double negatives and GCD's
+ */
+
 export function simplifyFraction(fraction1) {
     if ((fraction1.num < 0) && (fraction1.den < 0)) {
         fraction1.num *= (-1);
@@ -69,7 +72,7 @@ export function simplifyFraction(fraction1) {
         fraction1.num *= (-1);
     }
 
-    let divisor = Math.abs(gcd(fraction1.num, fraction1.den));
+    let divisor = Math.abs(gcd(fraction1.num, fraction1.den)); // divide by zero error maybe?
     if (divisor === 1) {
         return fraction1;
     } else {
@@ -87,6 +90,33 @@ export function gcd(a, b) {
     return gcd(b, a % b);
 }
 
+/*
+ * Expects a string (or number?) in the form '%.%'
+ */
+
+export function decimalToFraction(decimal) {
+    // Takes the right side of the decimal, or an empty array if needed
+    console.log('ínside fractin');
+
+    var digits = (String(num).split('.')[1] || []).length;
+
+    console.log('ínside fractin');
+    // Scale both numbers above zero
+    var num = Number(decimal) * (10 ** digits);
+    var den = 10 ** digits;
+
+    return simplifyFraction(new frac(num, den));
+}
+
+/*
+ * Expects a string in the form of '%/%'
+ */
+
+export function stringToFraction(string) {
+    let components = string.split('/');
+    return simplifyFraction(new frac(components[0], components[1]));
+}
+
 export default {
     frac: frac,
     addFraction: addFraction,
@@ -101,5 +131,7 @@ export default {
     printFraction: printFraction,
     isFraction: isFraction,
     simplifyFraction: simplifyFraction,
-    gcd: gcd
+    gcd: gcd,
+    decimalToFraction: decimalToFraction,
+    stringToFraction: stringToFraction
 }

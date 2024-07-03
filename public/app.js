@@ -7,7 +7,7 @@ import {complex} from './complex.js';
 import * as comp from './complex.js';
 import operations from "./operations.js";
 
-const complexRegex = /^[0-9iI.\/\-+ ]+$/;
+const complexRegex = /^[0-9iI\(\).\/\-+ ]+$/;
 const fracRegex = /^(?:(?:0|[1-9]\d*)(?:[.,]\d+)?|[1-9]\d*\/[1-9]\d*)$/;
 
 /* -------- Event Listeners -------- */
@@ -47,40 +47,41 @@ export const checkValue = (element) => {
 
 export const makeTable = () => { 
     document.getElementById('Table Space').innerHTML = '';
+
     let num_rows = document.getElementById('Rows').value;
-    console.log(num_rows);
     let num_cols = document.getElementById('Columns').value;
-    console.log(num_cols);
     let table = document.createElement('Table')
+
     table.setAttribute('id', 'table');
     table.style.margin = 'auto';
-
     
     for (let x = 0; x < num_rows; x++) {
         let row = table.insertRow();
         for (let y = 0; y < num_cols; y++) {
-            
         	let cell = row.insertCell();
         	let inputBox = document.createElement('input');
+
+            inputBox.type = 'text';
         	inputBox.style.width = '50px';
             inputBox.id = `cell-${x}-${y}` // id is cell-`ROW`-`COLUMN`
 
         	cell.appendChild(inputBox);
         	cell.style.border = '1px solid black';
-
-        	console.log('test');
-            
         }
     }
     
-
     document.getElementById('Table Space').appendChild(table);
-    
 }
 
-// Fetches data from table cells and passes each one to the 
+export const outputHandler = () => {
+    let tableData = processTable();
+}
 
-export const fetchTable = () => {
+/*
+ * Fetches data from table cells and passes each to the parser.
+ */ 
+
+export const processTable = () => {
     let table = document.getElementById('table');
     let tableData = [];
 
@@ -102,6 +103,8 @@ export const fetchTable = () => {
         }
         tableData.push(rowData);
     }
+
+    return [tableData, errorCells];
 }
 
 // Parses strings and converts to matrix, does NOT create divs

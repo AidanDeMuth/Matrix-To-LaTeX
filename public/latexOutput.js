@@ -105,14 +105,14 @@ export function matrixLatex(matrix) {
  * Prints a Latex formatted matrix where the basis vectors are 1xn matrices.
  */
 
-export function rowBasisLatex(matrix) {
+export function rowBasisLatex(matrix, bracket) {
 	let output = `$\\left\\{\n`;
 
 	// Traverse by row then column
 
 	for (let x = 0; x < matrix.length; x++) {
 
-		output = output.concat(`  \\begin{bmatrix}\n`);
+		output = output.concat(`  \\begin{${bracket}}\n`);
 		output = output.concat(`    `);
 
 		for (let y = 0; y < matrix[0].length; y++) {
@@ -125,11 +125,11 @@ export function rowBasisLatex(matrix) {
 
 		if (x + 1 < matrix.length) {
 			output = output.concat(`\\\\\n`);
-			output = output.concat(`  \\end{bmatrix}_{\\textstyle,}\n`);
+			output = output.concat(`  \\end{${bracket}}_{\\textstyle,}\n`);
 		}
 		else {
 			output = output.concat(`\n`);
-			output = output.concat(`  \\end{bmatrix}\n`);
+			output = output.concat(`  \\end{${bracket}}\n`);
 		}
 	}
 
@@ -141,14 +141,14 @@ export function rowBasisLatex(matrix) {
  * Prints a Latex formatted matrix where the basis vectors are nx1 matrices.
  */
 
-export function columnBasisLatex(matrix) {
+export function columnBasisLatex(matrix, bracket) {
 	let output = `$\\left\\{\n`;
 
 	// Traverse by column then row
 
 	for (let x = 0; x < matrix[0].length; x++) {
 
-		output = output.concat(`  \\begin{bmatrix}\n`);
+		output = output.concat(`  \\begin{${bracket}}\n`);
 
 		for (let y = 0; y < matrix.length; y++) {
 			
@@ -166,10 +166,10 @@ export function columnBasisLatex(matrix) {
 		}
 
 		if (x + 1 < matrix[0].length) {
-			output = output.concat(`  \\end{bmatrix}_{\\textstyle,}\n`);
+			output = output.concat(`  \\end{${bracket}}_{\\textstyle,}\n`);
 		}
 		else {
-			output = output.concat(`  \\end{bmatrix}\n`);
+			output = output.concat(`  \\end{${bracket}}\n`);
 		}
 	}
 

@@ -39,8 +39,8 @@
       <label for="Columns">Columns </label>
       <input type="number" id="Columns" min="1" max="15" value='1' oninput="app.checkValue(this);app.makeTable();" onChange="app.makeTable();"></input>
 
-      <label for="Bracket Type">Bracket Type: </label>
-      <select id="Bracket Type">
+      <label for="bracketType">Bracket Type: </label>
+      <select id="bracketType">
         <option value="matrix">  </option>
         <option value="pmatrix">( )</option>
         <option value="bmatrix">[ ]</option>
@@ -52,7 +52,7 @@
 
     <div class='center'>
       <div id='submit'>
-        <button type='button' id='submitButton' onclick='app.processTable();'>Submit</button>
+        <button type='button' id='submitButton' onclick='app.outputHandler();'>Submit</button>
       </div>
     </div>
 
@@ -65,6 +65,12 @@
       import app from './app.js';
       window.app = app;
       app.createEventListeners();
+    </script>
+
+    <!-- External Libraries -->
+    <script type="module" src="./loadMathJax.js" defer></script>
+    <script type="text/javascript" id="MathJax-script" defer
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
     </script>
   </body>
 </html>

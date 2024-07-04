@@ -64,6 +64,7 @@ export const makeTable = () => {
             inputBox.type = 'text';
         	inputBox.style.width = '50px';
             inputBox.id = `cell-${x}-${y}` // id is cell-`ROW`-`COLUMN`
+            inputBox.onclick = function () {this.style.backgroundColor = 'white'};
 
         	cell.appendChild(inputBox);
         	cell.style.border = '1px solid black';
@@ -74,7 +75,32 @@ export const makeTable = () => {
 }
 
 export const outputHandler = () => {
+    // All Data / Error Cells
     let tableData = processTable();
+
+    if (tableData[1].length > 0) {
+        console.log('got in here');
+        let errorCells = tableData[1];
+        for (let i = 0; i < errorCells.length; i++) {
+            console.log(errorCells[i] + ' error');
+            let element = document.getElementById(`cell-${errorCells[i]}`);
+            element.style.backgroundColor = 'red';
+        }
+
+        return;
+    }
+
+    let bracketType = document.getElementById('bracketType').value;
+    let operation =  Number(document.getElementById('operation').value);
+
+    switch(operation) {
+        case 0: // Custom
+            break;
+        case 1: // RREF
+
+
+
+    }
 }
 
 /*
@@ -96,8 +122,7 @@ export const processTable = () => {
                 rowData.push(parseInput(tableRow.item(j).children[0].value));
             }
             catch (error) {
-                console.log(error.message);
-                rowData.push('NULL'); // Not necessary really
+                rowData.push(error.message);
                 errorCells.push(`${i}-${j}`) // ROW-COLUMN of value box to update
             }
         }
@@ -131,7 +156,6 @@ export const parseInput = (element) => {
     let imaginarySign = true;
 
     for (let index = 0; index < oldString.length; index++) {
-        console.log('GOT HERE')
         let char = oldString.charAt(index);
 
         if (char === '+') {
@@ -195,31 +219,21 @@ export const parseInput = (element) => {
         imaginary = '1';
     }
     else {
-        console.log('imaginary before: ' + imaginary);
         imaginary = imaginary.replaceAll('i', '');
-        console.log('imaginary after: ' + imaginary);
     }
 
     if ((real) && !fracRegex.test(real)) {
-        console.log('throwing fraction error real' + real);
         throw new Error('Invalid Fraction');
     }
     if ((imaginary) && !fracRegex.test(imaginary)) {
-        console.log('throwing fraction error imaginary' + imaginary);
         throw new Error('Invalid Fraction');
     }
-
-    console.log('test');
-
-    // Breaking somewhere in here
 
     let realFrac = null;
     let imaginaryFrac = null;
 
     if (real) {
-        console.log('before function')
         realFrac = real.includes('/') ? fraction.stringToFraction(real) : fraction.decimalToFraction(real);
-        console.log('passed');
     }
     else {
         realFrac = new frac(0, 1);
@@ -242,9 +256,16 @@ export const parseInput = (element) => {
     return new complex(realFrac, imaginaryFrac);
 }
 
+/* ------------- Styling Functions ------------- */
+
+export const changeColor = (element, color) => {
+    element.backgroundColor = `${color}`;
+}
+
 export default {
     createEventListeners: createEventListeners,
     checkValue: checkValue,
-    fetchTable: fetchTable,
     makeTable: makeTable,
+    outputHandler: outputHandler,
+    changeColor: changeColor
 }

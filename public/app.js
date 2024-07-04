@@ -16,14 +16,18 @@ export const createEventListeners = () => {
     document.addEventListener('DOMContentLoaded', function() {
         makeTable();
 
-        const submitButton = document.getElementById('submitButton');
+        function renderLatex() {
+            outputHandler();
 
-        submitButton.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                submitButton.click();
-                console.log('Enter key pressed on submitButton');
+            if (window.MathJax) {
+                console.log('inside typset Function');
+                MathJax.typeset();
             }
+        }
+
+        document.getElementById('submitButton').addEventListener('click', function () {
+            console.log('got here');
+            renderLatex();
         });
     });
 }
@@ -93,13 +97,24 @@ export const outputHandler = () => {
     let bracketType = document.getElementById('bracketType').value;
     let operation =  Number(document.getElementById('operation').value);
 
+    let matrix = tableData[0];
+    console.log('printing matrix');
+    matrixOperations.printMatrix(matrix);
+
+    console.log('in switch');
     switch(operation) {
         case 0: // Custom
             break;
         case 1: // RREF
-
-
-
+            let matrixCopy = matrixOperations.copyMatrix(matrix);
+            matrixOperations.reducedRowEchelon(matrixCopy, 0, 0);
+            let latexString = latexOutput.columnBasisLatex(matrixCopy, bracketType);
+            console.log(latexString);
+            document.getElementById('test').innerHTML += latexString;
+            break;
+        case 2: // Reduce augmented matrix
+            break
+        case 3: // Determinant
     }
 }
 

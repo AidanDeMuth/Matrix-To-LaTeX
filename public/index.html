@@ -3,7 +3,7 @@
   <head>
 
     <title>Matrix to LaTeX</title>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" content='width=device-width, intial-scale=1'>
     <link href="./style.css" rel=stylesheet></link>
   </head>
   <body onload="app.createEventListeners();">
@@ -50,15 +50,27 @@
       </select>
     </div>
 
+    
     <div class='center'>
       <div id='submit'>
-        <button type='button' id='submitButton' onclick='app.outputHandler();'>Submit</button>
+        <button type='button' id='submitButton'>Submit</button>
       </div>
     </div>
 
     <div class='center'>
       <div id='Table Space' class='center'></div>
     </div>
+
+
+    <div class='container'>
+      <div class='column' style='background-color: #DDD' id='test'>
+      </div>
+      <div class='column' style='background-color: #DDD'>
+      </div>
+    </div>
+
+
+
 
     <!-- Import app -->
     <script type='module'>
@@ -68,7 +80,7 @@
     </script>
 
     <!-- External Libraries -->
-    <script type="module" src="./loadMathJax.js" defer></script>
+    <script type="module" async src="./loadMathJax.js" defer></script>
     <script type="text/javascript" id="MathJax-script" defer
             src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
     </script>

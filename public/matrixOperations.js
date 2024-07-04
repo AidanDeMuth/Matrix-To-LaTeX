@@ -62,7 +62,7 @@ export function reducedRowEchelon(matrix, i, j) {
 
 		for (let x = 0; x < matrix.length; x++) {
 			if ((x !== i) && (comp.isNonZeroComplex(matrix[x][j])) && (comp.isNonZeroComplex(matrix[i][j])) && (j < matrix[0].length)) {
-				console.log('Replacing row ' + x + ' by a multiple of ' + i);
+				console.log('Replacing row ' + x + ' by a multiple sg of ' + i);
 				printMatrix(matrix);
 				let product = comp.multiplyComplex(matrix[i][j], matrix[x][j]);
 				matrix = operations.rowReplacementOperationComplex(matrix, i, x, comp.negateComplex(product));
@@ -261,7 +261,7 @@ export function matrixRowSpace(matrix) {
 }
 
 /*
- * Returns a new matrix that represents the basis vectors of the nullspace.
+ * Returns a new matrix that represents the basis vectors of the nullspace
  */
 
 
@@ -412,18 +412,18 @@ export function printMatrix(matrix) {
 			else if (comp.hasComplex(matrix[x][y])) {
 				if (fraction.getDecimal(matrix[x][y].im) < 0) {
 					if (fraction.isFraction(matrix[x][y].im)) {
-						printString += `-${fraction.negateFraction(matrix[x][y].im).num}/${matrix[x][y].im.den}\t `;
+						printString += `-${fraction.negateFraction(matrix[x][y].im).num}/${matrix[x][y].im.den}i\t `;
 					}
 					else {
-						printString += `${matrix[x][y].im.num}\t `;
+						printString += `${matrix[x][y].im.num}i\t `;
 					}
 				}
 				else {
 					if (fraction.isFraction(matrix[x][y].im)) {
-						printString += `${matrix[x][y].im.num}/${matrix[x][y].im.den}\t `;
+						printString += `${matrix[x][y].im.num}/${matrix[x][y].im.den}i\t `;
 					}
 					else {
-						printString += `${matrix[x][y].im.num}\t `;
+						printString += `${matrix[x][y].im.num}i\t `;
 					}
 				}
 			}

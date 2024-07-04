@@ -69,18 +69,18 @@ function getNumberFormat(number) {
 	else if (comp.hasComplex(number)) {
 		if (fraction.getDecimal(number.im) < 0) {
 			if (fraction.isFraction(number.im)) {
-				format += `-\\frac{${fraction.negateFraction(number.im).num}}{${number.im.den}} `;
+				format += `-\\frac{${fraction.negateFraction(number.im).num}}{${number.im.den}}i `;
 			}
 			else {
-				format += `-${number.im.num} `;
+				format += `-${number.im.num}i `;
 			}
 		}
 		else {
 			if (fraction.isFraction(number.im)) {
-				format += `\\frac{${number.im.num}}{${number.im.den}} `;
+				format += `\\frac{${number.im.num}}{${number.im.den}}i `;
 			}
 			else {
-				format += `${number.im.num} `;
+				format += `${number.im.num}i `;
 			}
 		}
 	}
@@ -134,7 +134,7 @@ export function rowBasisLatex(matrix, bracket) {
 	}
 
 	output = output.concat(`\\right\\}$\n`);
-	console.log(output);
+	return output;
 }
 
 /*
@@ -174,7 +174,7 @@ export function columnBasisLatex(matrix, bracket) {
 	}
 
 	output = output.concat(`\\right\\}$\n`);
-	console.log(output);
+	return output;
 }
 
 export default {

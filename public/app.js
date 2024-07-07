@@ -16,12 +16,23 @@ export const createEventListeners = () => {
     document.addEventListener('DOMContentLoaded', function() {
         makeTable();
 
-        function renderLatex() {
+        async function renderLatex() {
             outputHandler();
+
+            let elements = ['test']
+
+            // make array of objects to typeset
 
             if (window.MathJax) {
                 console.log('inside typset Function');
-                MathJax.typeset();
+                try {
+                    await MathJax.typesetPromise(elements);
+                    console.log(document.getElementById('test').innerHTML);
+                    console.log("MathJax typesetting complete");
+                } catch (err) {
+                    console.error("MathJax typesetting failed:", err);
+                }
+
             }
         }
 

@@ -47,8 +47,9 @@ td, tr {
 .column {
 	flex: 50%;
 	padding: 10px;
+	background-color: #444444;
 	text-align: center;
-	color: #000;
+	color: #FFF;
 	white-space: pre-wrap;
 }
 

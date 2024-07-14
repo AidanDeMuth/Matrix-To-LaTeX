@@ -58,20 +58,13 @@
     </div>
 
     <div class='center'>
-      <div id='Table Space' class='center'></div>
+      <div id='tableSpace' class='center'></div>
     </div>
 
-
-    <div class='container'>
-      <div class='column' style='background-color: #DDD' id='test'>
-      </div>
-      <div class='column' style='background-color: #DDD'>
-      </div>
+    <!-- This is where the output is added -->
+    <div class='center' id='outputSpace'>
     </div>
-
-
-
-
+    
     <!-- Import app -->
     <script type='module'>
       import app from './app.js';
@@ -81,8 +74,6 @@
 
     <!-- External Libraries -->
     <script type="module" async src="./loadMathJax.js" defer></script>
-    <script type="text/javascript" id="MathJax-script" defer
-            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
-    </script>
+    <script type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" defer></script>
   </body>
 </html>

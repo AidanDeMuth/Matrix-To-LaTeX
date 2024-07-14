@@ -62,24 +62,27 @@ export function isFraction(fraction1) {
  * Simplifies double negatives and GCD's
  */
 
-export function simplifyFraction(fraction1) {
-    if ((fraction1.num < 0) && (fraction1.den < 0)) {
-        fraction1.num *= (-1);
-        fraction1.den *= (-1);
+export function simplifyFraction(inputFrac) {
+    inputFrac.num = parseFloat(inputFrac.num).toPrecision(10)
+    inputFrac.den = parseFloat(inputFrac.den).toPrecision(10)
+
+    if ((inputFrac.num < 0) && (inputFrac.den < 0)) {
+        inputFrac.num *= (-1);
+        inputFrac.den *= (-1);
     }
-    if ((fraction1.den < 0) && (fraction1.num >= 0)) {
-        fraction1.den *= (-1);
-        fraction1.num *= (-1);
+    if ((inputFrac.den < 0) && (inputFrac.num >= 0)) {
+        inputFrac.den *= (-1);
+        inputFrac.num *= (-1);
     }
 
-    let divisor = Math.abs(gcd(fraction1.num, fraction1.den)); // divide by zero error maybe?
+    let divisor = Math.abs(gcd(inputFrac.num, inputFrac.den)); // divide by zero error maybe?
     if (divisor === 1) {
-        return fraction1;
+        return inputFrac;
     } else {
-        fraction1.num /= divisor;
-        fraction1.den /= divisor;
+        inputFrac.num /= divisor;
+        inputFrac.den /= divisor;
     }
-    return fraction1;
+    return inputFrac;
 }
 
 // Euclidean Algorithm

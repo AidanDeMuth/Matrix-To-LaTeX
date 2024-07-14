@@ -19,15 +19,13 @@ export const createEventListeners = () => {
         async function renderLatex() {
             outputHandler();
 
-            let elements = ['test']
-
             // make array of objects to typeset
 
             if (window.MathJax) {
                 console.log('inside typset Function');
                 try {
-                    await MathJax.typesetPromise(elements);
-                    console.log(document.getElementById('test').innerHTML);
+                    MathJax.typesetClear();
+                    await MathJax.typesetPromise([document.querySelector('[typeset="true"]')]);
                     console.log("MathJax typesetting complete");
                 } catch (err) {
                     console.error("MathJax typesetting failed:", err);
@@ -61,7 +59,7 @@ export const checkValue = (element) => {
 // Creates table
 
 export const makeTable = () => { 
-    document.getElementById('Table Space').innerHTML = '';
+    document.getElementById('tableSpace').innerHTML = '';
 
     let num_rows = document.getElementById('Rows').value;
     let num_cols = document.getElementById('Columns').value;
@@ -86,11 +84,12 @@ export const makeTable = () => {
         }
     }
     
-    document.getElementById('Table Space').appendChild(table);
+    document.getElementById('tableSpace').appendChild(table);
 }
 
 export const outputHandler = () => {
     // All Data / Error Cells
+
     let tableData = processTable();
 
     if (tableData[1].length > 0) {
@@ -105,6 +104,8 @@ export const outputHandler = () => {
         return;
     }
 
+    // Fetch operation and bracket type
+
     let bracketType = document.getElementById('bracketType').value;
     let operation =  Number(document.getElementById('operation').value);
 
@@ -112,21 +113,36 @@ export const outputHandler = () => {
     console.log('printing matrix');
     matrixOperations.printMatrix(matrix);
 
+    // Choose the operation and append LaTeX to var
+
+    let latexString = '';
+    let matrixCopy = matrixOperations.copyMatrix(matrix);
+
     console.log('in switch');
     switch(operation) {
         case 0: // Custom
             break;
+
         case 1: // RREF
-            let matrixCopy = matrixOperations.copyMatrix(matrix);
             matrixOperations.reducedRowEchelon(matrixCopy, 0, 0);
-            let latexString = latexOutput.columnBasisLatex(matrixCopy, bracketType);
-            console.log(latexString);
-            document.getElementById('test').innerHTML += latexString;
+            latexString = latexOutput.columnBasisLatex(matrixCopy, bracketType);
             break;
+
         case 2: // Reduce augmented matrix
-            break
+            break;
+
         case 3: // Determinant
     }
+
+    let newDiv = `<div class='container'>
+                    <div class='column' typeset='true'>
+                        ${latexString}
+                    </div>
+                    <div class='column'>
+                        <p class='output-text'>${latexString}</p>
+                    </div>
+                  </div>`;
+    document.getElementById('outputSpace').innerHTML = newDiv;
 }
 
 /*
@@ -282,16 +298,9 @@ export const parseInput = (element) => {
     return new complex(realFrac, imaginaryFrac);
 }
 
-/* ------------- Styling Functions ------------- */
-
-export const changeColor = (element, color) => {
-    element.backgroundColor = `${color}`;
-}
-
 export default {
     createEventListeners: createEventListeners,
     checkValue: checkValue,
     makeTable: makeTable,
-    outputHandler: outputHandler,
-    changeColor: changeColor
+    outputHandler: outputHandler
 }

@@ -63,9 +63,6 @@ export function isFraction(fraction1) {
  */
 
 export function simplifyFraction(inputFrac) {
-    inputFrac.num = parseFloat(inputFrac.num).toPrecision(10)
-    inputFrac.den = parseFloat(inputFrac.den).toPrecision(10)
-
     if ((inputFrac.num < 0) && (inputFrac.den < 0)) {
         inputFrac.num *= (-1);
         inputFrac.den *= (-1);
@@ -88,7 +85,7 @@ export function simplifyFraction(inputFrac) {
 // Euclidean Algorithm
 
 export function gcd(a, b) {
-    if (b < 0.0000001) return a;
+    if (!b) return a; // Should have an epsilon, but for some reason it breaks
 
     return gcd(b, a % b);
 }

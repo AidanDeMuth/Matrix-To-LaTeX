@@ -17,6 +17,8 @@
       <p>
     </div>
 
+    <!-- ROW ONE -->
+
     <div class='center'>
       <label for="operation">Operation: </label>
       <select id='operation'>
@@ -32,6 +34,8 @@
       </select>
     </div>
 
+    <!-- ROW TWO -->
+
     <div class='center'>
       <label for="Rows">Rows </label>
       <input type="number" id="Rows" min="1" max="15" value='1' oninput="app.checkValue(this);app.makeTable();" onChange="app.makeTable();"></input>
@@ -41,6 +45,27 @@
 
       <label for="bracketType">Bracket Type: </label>
       <select id="bracketType">
+        <option value="matrix">  </option>
+        <option value="pmatrix">( )</option>
+        <option value="bmatrix">[ ]</option>
+        <option value="Bmatrix">{ }</option>
+        <option value="vmatrix">| |</option>
+        <option value="Vmatrix">|| ||</option>
+      </select>
+    </div>
+
+    <!-- ROW THREE -->
+
+    <div class='center'>
+      <label for="basisType">Basis Type: </label>
+      <select id="bracketType">
+        <option value="None">None</option>
+        <option value="Row Basis">Row Basis</option>
+        <option value="Column Basis">Column Basis</option>
+      </select>
+
+      <label for="basisBracketType">Basis Bracket Type: </label>
+      <select id="basisBracketType">
         <option value="matrix">  </option>
         <option value="pmatrix">( )</option>
         <option value="bmatrix">[ ]</option>

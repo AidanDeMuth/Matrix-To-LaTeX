@@ -14,6 +14,16 @@ const fracRegex = /^(?:(?:0|[1-9]\d*)(?:[.,]\d+)?|[1-9]\d*\/[1-9]\d*)$/;
 
 export const createEventListeners = () => {
     document.addEventListener('DOMContentLoaded', function() {
+
+        let testMatrix = [[new complex(new frac(2, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(-3, 1)), new complex(new frac(2, 1), new frac(-3, 1))],
+                          [new complex(new frac(3, 1), new frac(1, 1)), new complex(new frac(3, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(-3, 1))],
+                          [new complex(new frac(3, 1), new frac(1, 1)), new complex(new frac(3, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(-3, 1))],
+                          [new complex(new frac(3, 1), new frac(1, 1)), new complex(new frac(3, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(-3, 1))],
+                          [new complex(new frac(3, 1), new frac(1, 1)), new complex(new frac(3, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(-3, 1))]];
+        matrixOperations.reducedRowEchelon(testMatrix, 0, 0);
+        let latexString = latexOutput.columnBasisLatex(testMatrix, 'bmatrix', 'bmatrix');
+        console.log(latexString)
+
         makeTable();
 
         async function renderLatex() {
@@ -107,6 +117,7 @@ export const outputHandler = () => {
     // Fetch operation and bracket type
 
     let bracketType = document.getElementById('bracketType').value;
+    let basisBracketType = document.getElementById('basisBracketType').value;
     let operation =  Number(document.getElementById('operation').value);
 
     let matrix = tableData[0];
@@ -117,6 +128,7 @@ export const outputHandler = () => {
 
     let latexString = '';
     let matrixCopy = matrixOperations.copyMatrix(matrix);
+    let outputMatrix = null;
 
     console.log('in switch');
     switch(operation) {
@@ -125,13 +137,32 @@ export const outputHandler = () => {
 
         case 1: // RREF
             matrixOperations.reducedRowEchelon(matrixCopy, 0, 0);
-            latexString = latexOutput.columnBasisLatex(matrixCopy, bracketType);
+            outputMatrix = matrixCopy;
             break;
 
         case 2: // Reduce augmented matrix
+            matrixOperations.reducedRowEchelonAugmented(matrixCopy, 0, 0);
+            outputMatrix = matrixCopy
             break;
 
-        case 3: // Determinant
+        case 3: // Determinant WIP
+            break;
+
+        case 4: // Column Space Vectors
+            matrixOperations.reducedRowEchelon(matrixCopy, 0, 0);
+            break;
+
+        case 5: // Row Space Vectors
+            break;
+
+        case 6: // Nullspace
+            break;
+
+        case 7: // Transpose Matrix
+            break;
+
+        case 8: // Gram-Schmidt Process
+
     }
 
     let newDiv = `<div class='container'>

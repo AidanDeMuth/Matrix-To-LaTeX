@@ -4,7 +4,7 @@
 
     <title>Matrix to LaTeX</title>
     <meta charset="UTF-8" content='width=device-width, intial-scale=1'>
-    <link href="./style.css" rel=stylesheet></link>
+    <link href="./public/style.css" rel=stylesheet></link>
   </head>
   <body onload="app.createEventListeners();">
     <div class='header'>
@@ -92,13 +92,13 @@
     
     <!-- Import app -->
     <script type='module'>
-      import app from './app.js';
+      import app from './public/app.js';
       window.app = app;
       app.createEventListeners();
     </script>
 
     <!-- External Libraries -->
-    <script type="module" async src="./loadMathJax.js" defer></script>
+    <script type="module" async src="./public/loadMathJax.js" defer></script>
     <script type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" defer></script>
   </body>
 </html>

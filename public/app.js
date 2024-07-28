@@ -20,9 +20,9 @@ export const createEventListeners = () => {
                           [new complex(new frac(3, 1), new frac(1, 1)), new complex(new frac(3, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(-3, 1))],
                           [new complex(new frac(3, 1), new frac(1, 1)), new complex(new frac(3, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(-3, 1))],
                           [new complex(new frac(3, 1), new frac(1, 1)), new complex(new frac(3, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(-3, 1))]];
-        matrixOperations.reducedRowEchelon(testMatrix, 0, 0);
-        let latexString = latexOutput.columnBasisLatex(testMatrix, 'bmatrix', 'bmatrix');
-        console.log(latexString)
+        testMatrix = matrixOperations.matrixNullspace(testMatrix);
+        console.log('printing test')
+        matrixOperations.printMatrix(testMatrix);
 
         makeTable();
 
@@ -114,20 +114,22 @@ export const outputHandler = () => {
         return;
     }
 
-    // Fetch operation and bracket type
+    // Operation | Bracket Type || Group by | Group by Bracket
 
-    let bracketType = document.getElementById('bracketType').value;
-    let basisBracketType = document.getElementById('basisBracketType').value;
     let operation =  Number(document.getElementById('operation').value);
+    let bracketType = document.getElementById('bracketType').value;
 
-    let matrix = tableData[0];
-    console.log('printing matrix');
-    matrixOperations.printMatrix(matrix);
+    let groupBy = document.getElementById('groupBy').value;
+    let groupByType = document.getElementById('groupByType').value;
 
     // Choose the operation and append LaTeX to var
 
-    let latexString = '';
+    let matrix = tableData[0];
     let matrixCopy = matrixOperations.copyMatrix(matrix);
+    console.log('printing matrix');
+    matrixOperations.printMatrix(matrix);
+
+    let latexString = '';
     let outputMatrix = null;
 
     console.log('in switch');
@@ -149,21 +151,44 @@ export const outputHandler = () => {
             break;
 
         case 4: // Column Space Vectors
-            matrixOperations.reducedRowEchelon(matrixCopy, 0, 0);
+            outputMatrix = matrixOperations.matrixColumnSpace(matrixCopy);
             break;
 
         case 5: // Row Space Vectors
+            outputMatrix = matrixOperations.matrixRowSpace(matrixCopy);
             break;
 
         case 6: // Nullspace
+            outputMatrix = matrixOperations.matrixNullspace(matrixCopy);
             break;
 
         case 7: // Transpose Matrix
+            outputMatrix = matrixOperations.getTranspose(matrixCopy);
             break;
 
         case 8: // Gram-Schmidt Process
-
+            outputMatrix = matrixOperations.gramSchmidtProcess(matrixCopy);
+            break;
     }
+
+    matrixOperations.printMatrix(outputMatrix);
+
+    switch (groupBy) {
+        case "None":
+            console.log('in none')
+            latexString = latexOutput.matrixLatex(outputMatrix, bracketType);
+            break;
+        case "Rows":
+            console.log('in rows')
+            latexString = latexOutput.rowBasisLatex(outputMatrix, groupByType, bracketType)
+            break;
+        case "Columns":
+            console.log('in cols')
+            latexString = latexOutput.columnBasisLatex(outputMatrix, groupByType, bracketType)
+            break;
+    }
+
+    console.log(latexString)
 
     let newDiv = `<div class='container'>
                     <div class='column' typeset='true'>

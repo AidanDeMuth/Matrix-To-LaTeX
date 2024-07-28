@@ -13,7 +13,7 @@
 
     <div>
       <p>
-        Solve matrices and generate customizable LaTeX code. Choose an operation from the dropdown menu or convert custom matrix.
+        Solves matrices and generates LaTeX output. Please enter complex numbers in a form like 'a + bi'.
       <p>
     </div>
 
@@ -25,7 +25,7 @@
         <option value="0">Custom</option>
         <option value="1">Reduced Row Echelon Form</option>
         <option value="2">Reduce Augmented Matrix</option>
-        <option value="3">Determinant</option>
+        <option value="3">Determinant (WIP)</option>
         <option value="4">Column Space</option>
         <option value="5">Row Space</option>
         <option value="6">Null Space</option>
@@ -57,15 +57,15 @@
     <!-- ROW THREE -->
 
     <div class='center'>
-      <label for="basisType">Basis Type: </label>
-      <select id="bracketType">
+      <label for="groupBy">Basis Type: </label>
+      <select id="groupBy">
         <option value="None">None</option>
-        <option value="Row Basis">Row Basis</option>
-        <option value="Column Basis">Column Basis</option>
+        <option value="Rows">Rows</option>
+        <option value="Columns">Columns</option>
       </select>
 
-      <label for="basisBracketType">Basis Bracket Type: </label>
-      <select id="basisBracketType">
+      <label for="groupByType"> Group Bracket Type: </label>
+      <select id="groupByType">
         <option value="matrix">  </option>
         <option value="pmatrix">( )</option>
         <option value="bmatrix">[ ]</option>

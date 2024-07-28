@@ -51,10 +51,10 @@ function getNumberFormat(number) {
 	else if (comp.hasReal(number)) {
 		if (fraction.getDecimal(number.re) < 0) {
 			if (fraction.isFraction(number.re)) {
-				format += `-\\frac{${fraction.negateFraction(number.re).num}}{${number.re.den}} `;
+				format += `\\frac{${fraction.negateFraction(number.re).num}}{${number.re.den}} `;
 			}
 			else {
-				format += `-${number.re.num} `;
+				format += `${number.re.num} `;
 			}
 		}
 		else {
@@ -72,7 +72,7 @@ function getNumberFormat(number) {
 				format += `-\\frac{${fraction.negateFraction(number.im).num}}{${number.im.den}}i `;
 			}
 			else {
-				format += `-${number.im.num}i `;
+				format += `${number.im.num}i `;
 			}
 		}
 		else {

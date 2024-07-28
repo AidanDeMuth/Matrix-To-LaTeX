@@ -16,3 +16,4 @@ Run an http server in the root directory of the repository. I chose to use pytho
 | Center the text div |
 | Display text for consistent/inconsistent matrices |
 | Don't print a matrix when matrix is empty (nullspace) |
+| Fix floating point errors for complex numbers |

@@ -11,9 +11,11 @@ Run an http server in the root directory of the repository. I chose to use pytho
 |------|------|
 | Complete README ||
 | Enlarge site components ||
-| Custom (direct) matrix conversion ||
-| Fix Determinant option ||
+| Custom (direct) matrix conversion | cancelled|
+| Fix Determinant option | done |
 | Center the text div ||
 | Display text for consistent/inconsistent matrices ||
 | Don't print a matrix when matrix is empty (nullspace) ||
 | Fix floating point errors for complex numbers ||
+| Convert rref to return value | done |
+| add text for all output | done |

@@ -1,104 +1,114 @@
 <!DOCTYPE html>
 <html lang='en'>
-  <head>
+  	<head>
+    	<title>Matrix to LaTeX</title>
+    	<meta charset="UTF-8" content='width=device-width, intial-scale=1'>
+    	<link href="./public/style.css" rel=stylesheet></link>
+  	</head>
+  	<body onload="app.createEventListeners();">
+    	<div class='header'>
+      		Matrix Solver and LaTeX Converter
+    	</div>
 
-    <title>Matrix to LaTeX</title>
-    <meta charset="UTF-8" content='width=device-width, intial-scale=1'>
-    <link href="./public/style.css" rel=stylesheet></link>
-  </head>
-  <body onload="app.createEventListeners();">
-    <div class='header'>
-      Matrix Solver and LaTeX Converter
-    </div>
+	    <div>
+		    <p>
+		        Solves matrices and generates LaTeX output. Anything like the following are accepted:<br>
+		        Fractions: p/q <br>
+		        Decimals: p.xxx <br>
+		        Complex Numbers: a + bi <br>
+		    <p>
+	    </div>
 
-    <div>
-      <p>
-        Solves matrices and generates LaTeX output. Please enter complex numbers in a form like 'a + bi'.
-      <p>
-    </div>
+	    <!-- ROW ONE -->
 
-    <!-- ROW ONE -->
+	    <div class='center'>
+	      	<label for="operation">Operation: </label>
+	      	<select id='operation'>
+	        	<option value="0">Reduced Row Echelon Form</option>
+	        	<option value="1">Reduce Augmented Matrix</option>
+	        	<option value="2">Determinant (WIP)</option>
+	        	<option value="3">Column Space</option>
+	        	<option value="4">Row Space</option>
+	        	<option value="5">Null Space</option>
+	        	<option value="6">Transpose</option>
+	        	<option value="7">Gram-Schmidt Process</option>
+	      	</select>
+	    </div>
 
-    <div class='center'>
-      <label for="operation">Operation: </label>
-      <select id='operation'>
-        <option value="0">Custom</option>
-        <option value="1">Reduced Row Echelon Form</option>
-        <option value="2">Reduce Augmented Matrix</option>
-        <option value="3">Determinant (WIP)</option>
-        <option value="4">Column Space</option>
-        <option value="5">Row Space</option>
-        <option value="6">Null Space</option>
-        <option value="7">Transpose</option>
-        <option value="8">Gram-Schmidt Process</option>
-      </select>
-    </div>
+	    <!-- ROW TWO -->
 
-    <!-- ROW TWO -->
+	    <div class='center'>
+	      	<label for="Rows">Rows </label>
+	      	<input type="number" id="Rows" min="1" max="15" value='1' oninput="app.checkValue(this);app.makeTable();" onChange="app.makeTable();"></input>
 
-    <div class='center'>
-      <label for="Rows">Rows </label>
-      <input type="number" id="Rows" min="1" max="15" value='1' oninput="app.checkValue(this);app.makeTable();" onChange="app.makeTable();"></input>
+	      	<label for="Columns">Columns </label>
+	      	<input type="number" id="Columns" min="1" max="15" value='1' oninput="app.checkValue(this);app.makeTable();" onChange="app.makeTable();"></input>
 
-      <label for="Columns">Columns </label>
-      <input type="number" id="Columns" min="1" max="15" value='1' oninput="app.checkValue(this);app.makeTable();" onChange="app.makeTable();"></input>
+	      	<label for="bracketType">Bracket Type: </label>
+	      	<select id="bracketType">
+	        	<option value="matrix">  </option>
+	        	<option value="pmatrix">( )</option>
+	        	<option value="bmatrix">[ ]</option>
+	        	<option value="Bmatrix">{ }</option>
+	        	<option value="vmatrix">| |</option>
+	        	<option value="Vmatrix">|| ||</option>
+	      	</select>
+	    </div>
 
-      <label for="bracketType">Bracket Type: </label>
-      <select id="bracketType">
-        <option value="matrix">  </option>
-        <option value="pmatrix">( )</option>
-        <option value="bmatrix">[ ]</option>
-        <option value="Bmatrix">{ }</option>
-        <option value="vmatrix">| |</option>
-        <option value="Vmatrix">|| ||</option>
-      </select>
-    </div>
+	    <!-- ROW THREE -->
 
-    <!-- ROW THREE -->
+	    <div class='center'>
+	      	<label for="groupBy">Basis Type: </label>
+	      	<select id="groupBy">
+	        	<option value="None">None</option>
+	        	<option value="Rows">Rows</option>
+	        	<option value="Columns">Columns</option>
+	      	</select>
 
-    <div class='center'>
-      <label for="groupBy">Basis Type: </label>
-      <select id="groupBy">
-        <option value="None">None</option>
-        <option value="Rows">Rows</option>
-        <option value="Columns">Columns</option>
-      </select>
+	      	<label for="groupByType"> Group Bracket Type: </label>
+	      	<select id="groupByType">
+	        	<option value="matrix">  </option>
+	        	<option value="pmatrix">( )</option>
+	        	<option value="bmatrix">[ ]</option>
+	        	<option value="Bmatrix">{ }</option>
+	        	<option value="vmatrix">| |</option>
+	        	<option value="Vmatrix">|| ||</option>
+	      	</select>
+	    </div>
+	    
+	    <div class='center'>
+	      	<div id='submit'>
+	        	<button type='button' id='submitButton'>Submit</button>
+	      	</div>
+	    </div>
 
-      <label for="groupByType"> Group Bracket Type: </label>
-      <select id="groupByType">
-        <option value="matrix">  </option>
-        <option value="pmatrix">( )</option>
-        <option value="bmatrix">[ ]</option>
-        <option value="Bmatrix">{ }</option>
-        <option value="vmatrix">| |</option>
-        <option value="Vmatrix">|| ||</option>
-      </select>
-    </div>
+	    <!-- ERROR LABEL -->
 
-    
-    <div class='center'>
-      <div id='submit'>
-        <button type='button' id='submitButton'>Submit</button>
-      </div>
-    </div>
+	    <div class='center' id='errorSpace'> 
+	    </div>
 
-    <div class='center'>
-      <div id='tableSpace' class='center'></div>
-    </div>
+	    <!-- Table -->
 
-    <!-- This is where the output is added -->
-    <div class='center' id='outputSpace'>
-    </div>
-    
-    <!-- Import app -->
-    <script type='module'>
-      import app from './public/app.js';
-      window.app = app;
-      app.createEventListeners();
-    </script>
+	    <div class='center' id='tableSpace'>
+	    </div>
 
-    <!-- External Libraries -->
-    <script type="module" async src="./public/loadMathJax.js" defer></script>
-    <script type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" defer></script>
-  </body>
+	    <!-- Output -->
+
+	    <div class='center' id='descriptionSpace'>
+	    </div>
+
+	    <div class='center' id='outputSpace'>
+	    </div>
+	    
+	    <!-- Import app -->
+	    <script type='module'>
+	      	import app from './public/app.js';
+	      	window.app = app;
+	      	app.createEventListeners();
+	    </script>
+
+	    <!-- External Libraries -->
+	    <script type="module" async src="./public/loadMathJax.js" defer></script>
+	    <script type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" defer></script>
+  	</body>
 </html>

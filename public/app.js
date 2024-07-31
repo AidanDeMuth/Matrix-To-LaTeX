@@ -15,21 +15,24 @@ const fracRegex = /^(?:(?:0|[1-9]\d*)(?:[.,]\d+)?|[1-9]\d*\/[1-9]\d*)$/;
 export const createEventListeners = () => {
     document.addEventListener('DOMContentLoaded', function() {
 
-        let testMatrix = [[new complex(new frac(2, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(-3, 1)), new complex(new frac(2, 1), new frac(-3, 1))],
-                          [new complex(new frac(3, 1), new frac(1, 1)), new complex(new frac(3, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(-3, 1))],
-                          [new complex(new frac(3, 1), new frac(1, 1)), new complex(new frac(3, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(-3, 1))],
-                          [new complex(new frac(3, 1), new frac(1, 1)), new complex(new frac(3, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(-3, 1))],
-                          [new complex(new frac(3, 1), new frac(1, 1)), new complex(new frac(3, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(-3, 1))]];
-        testMatrix = matrixOperations.matrixNullspace(testMatrix);
-        console.log('printing test')
-        matrixOperations.printMatrix(testMatrix);
+        /*
+        let testMatrix = [[new complex(new frac(3, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(-3, 1)), new complex(new frac(2, 1), new frac(-3, 1))],
+                          [new complex(new frac(2, 1), new frac(1, 1)), new complex(new frac(3, 1), new frac(0, 1)), new complex(new frac(2, 1), new frac(-3, 1))],
+                          [new complex(new frac(3, 1), new frac(1, 1)), new complex(new frac(-2, 1), new frac(0, 1)), new complex(new frac(1, 1), new frac(-3, 1))]];
+        testMatrix = matrixOperations.reducedRowEchelon(testMatrix);
+        */
 
         makeTable();
 
         async function renderLatex() {
-            outputHandler();
 
-            // make array of objects to typeset
+            // Clear error box and any existing output
+
+            document.getElementById('errorSpace').innerHTML = '';
+            document.getElementById('descriptionSpace').innerHTML = '';
+            document.getElementById('outputSpace').innerHTML = '';
+
+            outputHandler();
 
             if (window.MathJax) {
                 console.log('inside typset Function');
@@ -45,7 +48,6 @@ export const createEventListeners = () => {
         }
 
         document.getElementById('submitButton').addEventListener('click', function () {
-            console.log('got here');
             renderLatex();
         });
     });
@@ -98,99 +100,107 @@ export const makeTable = () => {
 }
 
 export const outputHandler = () => {
-    // All Data / Error Cells
+    let operation = Number(document.getElementById('operation').value);
+    let tableData = processTable(); // [0] - Full table / [1] - Error Cells
 
-    let tableData = processTable();
+    let matrix = tableData[0];
+    let errorCells = tableData[1];
 
-    if (tableData[1].length > 0) {
-        console.log('got in here');
-        let errorCells = tableData[1];
+    // ERROR HANDLING SWITCH
+
+    switch (operation) {
+        case 2: // Determinant - should be square
+            if (matrix.length != matrix[0].length) {
+                document.getElementById('errorSpace').innerHTML += 'Error - Matrix must be square (n x n)'
+                setTimeout(function () { document.getElementById('errorSpace').innerHTML = ''; }, 5000);
+                return;
+            }
+            break;
+    }
+
+    if (errorCells.length) {
         for (let i = 0; i < errorCells.length; i++) {
             console.log(errorCells[i] + ' error');
             let element = document.getElementById(`cell-${errorCells[i]}`);
             element.style.backgroundColor = 'red';
         }
-
         return;
     }
 
-    // Operation | Bracket Type || Group by | Group by Bracket
-
-    let operation =  Number(document.getElementById('operation').value);
     let bracketType = document.getElementById('bracketType').value;
-
     let groupBy = document.getElementById('groupBy').value;
     let groupByType = document.getElementById('groupByType').value;
 
-    // Choose the operation and append LaTeX to var
-
-    let matrix = tableData[0];
     let matrixCopy = matrixOperations.copyMatrix(matrix);
-    console.log('printing matrix');
-    matrixOperations.printMatrix(matrix);
 
     let latexString = '';
+    let description = '';
     let outputMatrix = null;
 
-    console.log('in switch');
-    switch(operation) {
-        case 0: // Custom
+    // MATRIX OPERATION AND TEXT OUTPUT
+
+    switch (operation) {
+        case 0: // RREF
+            outputMatrix = matrixOperations.reducedRowEchelon(matrixCopy);
             break;
 
-        case 1: // RREF
-            matrixOperations.reducedRowEchelon(matrixCopy, 0, 0);
-            outputMatrix = matrixCopy;
+        case 1: // Reduce augmented matrix
+            outputMatrix = matrixOperations.reducedRowEchelonAugmented(matrixCopy);
             break;
 
-        case 2: // Reduce augmented matrix
-            matrixOperations.reducedRowEchelonAugmented(matrixCopy, 0, 0);
-            outputMatrix = matrixCopy
+        case 2: // Determinant WIP
+            description += '\u0394 = ' + matrixOperations.printNumber(matrixOperations.calculateDeterminant(matrixCopy));
+            
+            outputMatrix = matrix;
             break;
 
-        case 3: // Determinant WIP
-            break;
-
-        case 4: // Column Space Vectors
+        case 3: // Column Space Vectors
             outputMatrix = matrixOperations.matrixColumnSpace(matrixCopy);
             break;
 
-        case 5: // Row Space Vectors
+        case 4: // Row Space Vectors
             outputMatrix = matrixOperations.matrixRowSpace(matrixCopy);
             break;
 
-        case 6: // Nullspace
+        case 5: // Nullspace
             outputMatrix = matrixOperations.matrixNullspace(matrixCopy);
             break;
 
-        case 7: // Transpose Matrix
+        case 6: // Transpose Matrix
             outputMatrix = matrixOperations.getTranspose(matrixCopy);
             break;
 
-        case 8: // Gram-Schmidt Process
+        case 7: // Gram-Schmidt Process
             outputMatrix = matrixOperations.gramSchmidtProcess(matrixCopy);
             break;
     }
 
     matrixOperations.printMatrix(outputMatrix);
 
-    switch (groupBy) {
-        case "None":
-            console.log('in none')
-            latexString = latexOutput.matrixLatex(outputMatrix, bracketType);
-            break;
-        case "Rows":
-            console.log('in rows')
-            latexString = latexOutput.rowBasisLatex(outputMatrix, groupByType, bracketType)
-            break;
-        case "Columns":
-            console.log('in cols')
-            latexString = latexOutput.columnBasisLatex(outputMatrix, groupByType, bracketType)
-            break;
+    // LATEX OUTPUT
+
+    if (operation == 2) {
+        latexString = latexOutput.matrixLatex(outputMatrix, "vmatrix");
+    }
+    else {
+        switch (groupBy) {
+            case "None":
+                latexString = latexOutput.matrixLatex(outputMatrix, bracketType);
+                break;
+
+            case "Rows":
+                latexString = latexOutput.rowBasisLatex(outputMatrix, groupByType, bracketType);
+                break;
+
+            case "Columns":
+                latexString = latexOutput.columnBasisLatex(outputMatrix, groupByType, bracketType);
+                break;
+        }
     }
 
-    console.log(latexString)
+    let outputDiv = `<span>${description}</span>`;
 
-    let newDiv = `<div class='container'>
+    let latexDiv = `<div class='container'>
                     <div class='column' typeset='true'>
                         ${latexString}
                     </div>
@@ -198,7 +208,9 @@ export const outputHandler = () => {
                         <p class='output-text'>${latexString}</p>
                     </div>
                   </div>`;
-    document.getElementById('outputSpace').innerHTML = newDiv;
+
+    document.getElementById('descriptionSpace').innerHTML = outputDiv;
+    document.getElementById('outputSpace').innerHTML = latexDiv;
 }
 
 /*
@@ -337,8 +349,6 @@ export const parseInput = (element) => {
         realFrac = new frac(0, 1);
     }
 
-    console.log('test');
-
     if (imaginary) {
         imaginaryFrac = imaginary.includes('/') ? fraction.stringToFraction(imaginary) : fraction.decimalToFraction(imaginary);
     }
@@ -348,8 +358,6 @@ export const parseInput = (element) => {
 
     realFrac = realSign ? realFrac : fraction.negateFraction(realFrac);
     imaginaryFrac = imaginarySign ? imaginaryFrac : fraction.negateFraction(imaginaryFrac);
-
-    comp.printComplex(new complex(realFrac, imaginaryFrac));
 
     return new complex(realFrac, imaginaryFrac);
 }

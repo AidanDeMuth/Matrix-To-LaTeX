@@ -8,18 +8,16 @@ import * as comp from "./complex.js";
 /* ------------ Matrix Solution Operations ------------ */
 
 /*
- * Reduces matrix to RREF, implemented recursively. Thus, no return value.
- * Operates with a matrix array of complex numbers, and two beginning zeroes to start the recursion.
+ * Reduces Matrix to RREF
  */
 
-export function reducedRowEchelon(matrix, i, j) {
+export function reducedRowEchelon(matrix, i=0, j=0) {
+	printMatrix(matrix);
 
 	// End iterations if at right end of matrix
 
 	if ((j >= matrix[0].length) || (i >= matrix.length)) {
-		console.log('Matrix is reduced.');
-		printMatrix(matrix);
-		return;
+		return matrix;
 	}
 
 	// Checks if the pivot position down is all zero
@@ -34,7 +32,7 @@ export function reducedRowEchelon(matrix, i, j) {
 	// If it doesn't have a nonzero, move pivot one right
 
 	if (!hasNonZero) {
-		reducedRowEchelon(matrix, i, j+1);
+		return reducedRowEchelon(matrix, i, j + 1);
 	}
 	else {
 
@@ -42,8 +40,6 @@ export function reducedRowEchelon(matrix, i, j) {
 
 		for (let x = i; x < matrix.length; x++) {
 			if (!(comp.isNonZeroComplex(matrix[i][j])) && (comp.isNonZeroComplex(matrix[x][j]))) {
-				console.log('Permuting Rows ' + i + ' and ' + x);
-				printMatrix(matrix);
 				matrix = operations.permuteRowOperationComplex(matrix, i, x);
 				break;
 			}
@@ -53,8 +49,6 @@ export function reducedRowEchelon(matrix, i, j) {
 
 		if ((!(fraction.getDecimal(matrix[i][j].re) !== 1) != !(fraction.getDecimal(matrix[i][j].im)) !== 1) &&
 			(!(fraction.getDecimal(matrix[i][j].re) !== 0) != !(fraction.getDecimal(matrix[i][j].im)) !== 0)) {
-			console.log('Scaling row ' + i);
-			printMatrix(matrix);
 			matrix = operations.scalarOperationComplex(matrix, i, comp.invertComplex(matrix[i][j]));
 		}
 
@@ -62,28 +56,26 @@ export function reducedRowEchelon(matrix, i, j) {
 
 		for (let x = 0; x < matrix.length; x++) {
 			if ((x !== i) && (comp.isNonZeroComplex(matrix[x][j])) && (comp.isNonZeroComplex(matrix[i][j])) && (j < matrix[0].length)) {
-				console.log('Replacing row ' + x + ' by a multiple sg of ' + i);
-				printMatrix(matrix);
 				let product = comp.multiplyComplex(matrix[i][j], matrix[x][j]);
 				matrix = operations.rowReplacementOperationComplex(matrix, i, x, comp.negateComplex(product));
 			}
 		}
 
-		reducedRowEchelon(matrix, i+1, j+1);
+		return reducedRowEchelon(matrix, i + 1, j + 1);
 	}
 }
 
 /*
- * Reduces Matrix to RREF in the form of Ax=b. Recursively implemented, thus no return value.
+ * Reduces Matrix to RREF in the form of Ax=b.
  * Operates with a matrix array of complex numbers, and zeros for i, j.
  */
 
-export function reducedRowEchelonAugmented(matrix, i, j) {
+export function reducedRowEchelonAugmented(matrix, i=0, j=0) {
 
 	// End iterations if at right end of matrix
 
 	if ((j >= matrix[0].length - 1) || (i >= matrix.length)) {
-		return;
+		return matrix;
 	}
 
 	// Checks if the pivot position down is all zero
@@ -98,7 +90,7 @@ export function reducedRowEchelonAugmented(matrix, i, j) {
 	// If it doesn't have a nonzero, move pivot one right
 
 	if (!hasNonZero) {
-		reducedRowEchelonAugmented(matrix, i, j+1);
+		return reducedRowEchelonAugmented(matrix, i, j + 1);
 	}
 	else {
 
@@ -128,34 +120,18 @@ export function reducedRowEchelonAugmented(matrix, i, j) {
 			}
 		}
 
-		reducedRowEchelonAugmented(matrix, i+1, j+1);
+		return reducedRowEchelonAugmented(matrix, i + 1, j + 1);
 	}
 }
 
 /* ------------ Determinant Operations ------------ */
 
-
-/*
-function calculateDeterminant(matrix) {
-	multiplicity = new frac(1, 1);
-	reducedRowEchelonDeterminant(matrix, 0, 0, multiplicity);
-	return multiplicity;
-}
-
-function calculateDeterminant(matrix) {
-	var multiplicity = new complex(new frac(1, 1), new frac(1, 1));
-	multiplicity = reducedRowEchelonDeterminant(matrix, 0, 0, multiplicity);
-	console.log(multiplicity);
-	return multiplicity;
-}
-
-function reducedRowEchelonDeterminant(matrix, i, j, multiplicity) {
-	console.log('here it is');
-	console.log(multiplicity);
+export function calculateDeterminant(matrix, i=0, j=0, multiplicity=new complex(new frac(1, 1), new frac(0, 1))) {
 	if ((i >= matrix.length) || (j >= matrix[0].length)) {
+		console.log(multiplicity);
 		return multiplicity;
 	}
-
+	
 	// Checks if the pivot and down is all zero
 
 	let hasNonZero = false;
@@ -166,8 +142,9 @@ function reducedRowEchelonDeterminant(matrix, i, j, multiplicity) {
 		}
 	}
 	if (!hasNonZero) {
-		comp.multiplyComplex(multiplicity, new complex(new frac(0, 1), new frac(0, 1)));
-		return reducedRowEchelonDeterminant(matrix, i+1, j+1, multiplicity);
+		multiplicity = comp.multiplyComplex(multiplicity, new complex(new frac(0, 1), new frac(0, 1)));
+		console.log(multiplicity);
+		return calculateDeterminant(matrix, i+1, j+1, multiplicity);
 	}
 	else {
 
@@ -176,7 +153,7 @@ function reducedRowEchelonDeterminant(matrix, i, j, multiplicity) {
 		for (let x = i; x < matrix.length; x++) {
 			if (!(comp.isNonZeroComplex(matrix[i][j])) && (comp.isNonZeroComplex(matrix[x][j]))) {
 				matrix = operations.permuteRowOperationComplex(matrix, i, x);
-				comp.multiplyComplex(multiplicity, new complex(new frac(-1, 1), new frac(-1, 1)));
+				multiplicity = comp.multiplyComplex(multiplicity, new complex(new frac(-1, 1), new frac(0, 1)));
 				break;
 			}
 		}
@@ -185,8 +162,8 @@ function reducedRowEchelonDeterminant(matrix, i, j, multiplicity) {
 
 		if (((fraction.getDecimal(matrix[i][j].re) !== 1) || (fraction.getDecimal(matrix[i][j].im)) !== 1) &&
 			((fraction.getDecimal(matrix[i][j].re) !== 0) || (fraction.getDecimal(matrix[i][j].im)) !== 0)) {
+			multiplicity = comp.multiplyComplex(multiplicity, matrix[i][j]);
 			matrix = operations.scalarOperationComplex(matrix, i, comp.invertComplex(matrix[i][j]));
-			comp.multiplyComplex(multiplicity, matrix[i][j]);
 		}
 
 		// Adds multiple of pivot position to every other nonzero row
@@ -199,14 +176,15 @@ function reducedRowEchelonDeterminant(matrix, i, j, multiplicity) {
 			}
 		}
 		if (!(comp.isNonZeroComplex(matrix[i][j]))) {
-			comp.multiplyComplex(multiplicity, new complex(new frac(0, 1), new frac(0, 1)));
-			return;
+			multiplicity = comp.multiplyComplex(multiplicity, new complex(new frac(0, 1), new frac(0, 1)));
+			return multiplicity;
 		}
 
-		return reducedRowEchelonDeterminant(matrix, i+1, j+1, multiplicity);
+		console.log(multiplicity);
+		return calculateDeterminant(matrix, i+1, j+1, multiplicity);
 	}
 }
- */
+ 
 
 
 /* ------------ Matrix Rank / Span Functions ------------ */
@@ -251,7 +229,6 @@ export function matrixRowSpace(matrix) {
 	for (let x = 0; x < pivots.length; x++) {
 		let rowArr = [];
 		for (let y = 0; y < matrixCopy[0].length; y++) {
-			console.log("length" + matrixCopy[0].length);
 			rowArr.push(matrixCopy[x][y]);
 		}
 		newMatrix.push(rowArr);
@@ -267,7 +244,7 @@ export function matrixRowSpace(matrix) {
 
 export function matrixNullspace(matrix) {
 	let matrixCopy = copyMatrix(matrix);
-	reducedRowEchelon(matrixCopy, 0, 0);
+	matrixCopy = reducedRowEchelon(matrixCopy);
 	let pivots = getPivots(matrixCopy);
 
 	let newMatrix = [];
@@ -437,6 +414,94 @@ export function printMatrix(matrix) {
 	}
 
 	console.log(printString);
+	return printString;
+}
+
+// Prints a single number from complex object
+
+export function printNumber(num1) {
+	let printString = '';
+
+	if (comp.hasReal(num1) && comp.hasComplex(num1)) {
+		if (fraction.getDecimal(num1.re) < 0) {
+			if (fraction.isFraction(num1.re)) {
+				printString += `-${fraction.negateFraction(num1.re).num}/${num1.re.den}`;
+			}
+			else {
+				printString += `${num1.re.num}`;
+			}
+		}
+		else {
+			if (fraction.isFraction(num1.re)) {
+				printString += `${num1.re.num}/${num1.re.den}`;
+			}
+			else {
+				printString += `${num1.re.num}`;
+			}
+		}
+
+
+		if (fraction.getDecimal(num1.im) < 0) {
+			if (fraction.isFraction(num1.im)) {
+				printString += ` - ${fraction.negateFraction(num1.im).num}/${num1.im.den}i`;
+			}
+			else {
+				printString += ` - ${fraction.negateFraction(num1.im).num}i`;
+			}
+		}
+		else {
+			if (fraction.isFraction(num1.im)) {
+				printString += ` + ${num1.im.num}/${num1.im.den}i`;
+			}
+			else {
+				printString += ` + ${num1.im.num}i`;
+			}
+		}
+	}
+	else if (comp.hasReal(num1)) {
+		if (fraction.getDecimal(num1.re) < 0) {
+			if (fraction.isFraction(num1.re)) {
+				printString += `-${fraction.negateFraction(num1.re).num}/${num1.re.den}`;
+			}
+			else {
+				printString += `${num1.re.num}`;
+			}
+		}
+		else {
+			if (fraction.isFraction(num1.re)) {
+				printString += `${num1.re.num}/${num1.re.den}`;
+			}
+			else {
+				printString += `${num1.re.num}`;
+			}
+		}
+
+	}
+	else if (comp.hasComplex(num1)) {
+		if (fraction.getDecimal(num1.im) < 0) {
+			if (fraction.isFraction(num1.im)) {
+				printString += `-${fraction.negateFraction(num1.im).num}/${num1.im.den}i`;
+			}
+			else {
+				printString += `${num1.im.num}i`;
+			}
+		}
+		else {
+			if (fraction.isFraction(num1.im)) {
+				printString += `${num1.im.num}/${num1.im.den}i`;
+			}
+			else {
+				printString += `${num1.im.num}i`;
+			}
+		}
+	}
+	else {
+		if (!comp.isNonZeroComplex(num1)) {
+			printString += ` 0`;
+		}
+	}
+
+	return printString;
 }
 
 
@@ -479,7 +544,7 @@ export function getTranspose(matrix) {
 
 export function getPivots(matrix) {
 	let matrixCopy = copyMatrix(matrix);
-	reducedRowEchelon(matrixCopy, 0, 0);
+	matrixCopy = reducedRowEchelon(matrixCopy);
 	let pivots = [];
 
 	let i = 0; // rows
@@ -502,11 +567,13 @@ export function getPivots(matrix) {
 export default {
 	reducedRowEchelon: reducedRowEchelon,
 	reducedRowEchelonAugmented: reducedRowEchelonAugmented,
+	calculateDeterminant: calculateDeterminant,
 	matrixColumnSpace: matrixColumnSpace,
 	matrixRowSpace: matrixRowSpace,
 	matrixNullspace: matrixNullspace,
 	gramSchmidtProcess: gramSchmidtProcess,
 	printMatrix: printMatrix,
+	printNumber: printNumber,
 	copyMatrix: copyMatrix,
 	getTranspose: getTranspose,
 	getPivots: getPivots

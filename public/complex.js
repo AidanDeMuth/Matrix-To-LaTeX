@@ -61,12 +61,6 @@ export function hasComplex(num1) {
 	return fraction.isNonZero(num1.im);
 }
 
-// Just for testing
-
-export function printComplex(number) {
-	console.log(`complex(${number.re.num}/${number.re.den}, ${number.im.num}/${number.im.den})`);
-}
-
 export default {
 	complex: complex,
 	addComplex: addComplex,
@@ -79,6 +73,5 @@ export default {
 	simplifyComplex: simplifyComplex,
 	getConjugate: getConjugate,
 	hasReal: hasReal,
-	hasComplex: hasComplex,
-	printComplex: printComplex
+	hasComplex: hasComplex
 }

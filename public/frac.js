@@ -50,10 +50,6 @@ export function invertFraction(fraction1) {
     return new frac(fraction1.den, fraction1.num);
 }
 
-export function printFraction(fraction1){
-    console.log(fraction1.num + "/" + fraction1.den);
-}
-
 export function isFraction(fraction1) {
     return fraction1.den !== 1;
 }
@@ -96,11 +92,9 @@ export function gcd(a, b) {
 
 export function decimalToFraction(decimal) {
     // Takes the right side of the decimal, or an empty array if needed
-    console.log('ínside fractin');
 
     var digits = (String(num).split('.')[1] || []).length;
-
-    console.log('ínside fractin');
+;
     // Scale both numbers above zero
     var num = Number(decimal) * (10 ** digits);
     var den = 10 ** digits;
@@ -128,7 +122,6 @@ export default {
     isEqualTo: isEqualTo,
     isNonZero: isNonZero,
     invertFraction: invertFraction,
-    printFraction: printFraction,
     isFraction: isFraction,
     simplifyFraction: simplifyFraction,
     gcd: gcd,

@@ -1,6 +1,6 @@
 html {
 	font-family: 'Helvecta', serif;
-	background-color: #444444;
+	background-color: #333333;
 	font-size: 18px;
 	color: #FFFFFF;
 }
@@ -19,6 +19,15 @@ input [type=text] {
 td, tr {
 	width: 50px;
 	height: 20px;
+}
+
+span {
+	display: flex;
+	text-align: center;
+	justify-content: center;
+
+	background-color: #222222;
+	padding: 10px;
 }
 
 .header {
@@ -42,7 +51,7 @@ td, tr {
 /* Using for output space */
 
 .container {
-	background-color: #444444;
+	background-color: #333333;
 	display: flex;
 }
 
@@ -50,7 +59,7 @@ td, tr {
 	flex: 50%;
 	padding: 10px;
 
-	background-color: #333333;
+	background-color: #222222;
 	color: #FFFFFF;
 	white-space: pre-wrap;
 

@@ -19,7 +19,7 @@ function getNumberFormat(number) {
 				format += `-\\frac{${fraction.negateFraction(number.re).num}}{${number.re.den}} `;
 			}
 			else {
-				format += `-${number.re.num} `;
+				format += `${number.re.num} `;
 			}
 		}
 		else {

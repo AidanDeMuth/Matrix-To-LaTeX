@@ -47,8 +47,8 @@ export function reducedRowEchelon(matrix, i=0, j=0) {
 
 		// Multiplies the row by reciprocal of pivot point
 
-		if ((!(fraction.getDecimal(matrix[i][j].re) !== 1) != !(fraction.getDecimal(matrix[i][j].im)) !== 1) &&
-			(!(fraction.getDecimal(matrix[i][j].re) !== 0) != !(fraction.getDecimal(matrix[i][j].im)) !== 0)) {
+		if (((fraction.getDecimal(matrix[i][j].re) !== 1) || (fraction.getDecimal(matrix[i][j].im)) !== 1) &&
+			((fraction.getDecimal(matrix[i][j].re) !== 0) || (fraction.getDecimal(matrix[i][j].im)) !== 0)) {
 			matrix = operations.scalarOperationComplex(matrix, i, comp.invertComplex(matrix[i][j]));
 		}
 

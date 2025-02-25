@@ -4,7 +4,7 @@ This project was created using pure javascript, html, and css without frameworks
 [Project Link](https://aidandemuth.github.io/Matrix-To-LaTeX/)
 
 # How to run locally
-Run an http server in the root directory of the repository. I chose to use python's http.server module \
+In the project directory, run `./run_server`
 
 # TODO
 | Task | Status |

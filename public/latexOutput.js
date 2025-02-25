@@ -98,7 +98,11 @@ function getNumberFormat(number) {
  */
 
 export function matrixLatex(matrix, bracket) {
-	let output = `$\\begin{${bracket}}\n`;
+  if (matrix.length == 0 || matrix[0].length == 0) {
+    return "$\\emptyset$"
+  }
+
+  let output = `$\\begin{${bracket}}\n`;
 
 	// Traverse by row then column
 
@@ -131,7 +135,11 @@ export function matrixLatex(matrix, bracket) {
  */
 
 export function rowBasisLatex(matrix, innerBracket, outerBracket) {
-	let output = `$\\begin{${outerBracket}}\n`;
+  if (matrix.length == 0 || matrix[0].length == 0) {
+    return "$\\emptyset$"
+  }
+	
+  let output = `$\\begin{${outerBracket}}\n`;
 
 	// Traverse by row then column
 
@@ -167,7 +175,11 @@ export function rowBasisLatex(matrix, innerBracket, outerBracket) {
  */
 
 export function columnBasisLatex(matrix, innerBracket, outerBracket) {
-	let output = `$\\begin{${outerBracket}}\n`;
+  if (matrix.length == 0 || matrix[0].length == 0) {
+    return "$\\emptyset$"
+  }
+	
+  let output = `$\\begin{${outerBracket}}\n`;
 
 	// Traverse by column then row
 

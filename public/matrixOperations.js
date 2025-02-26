@@ -504,6 +504,9 @@ export function printNumber(num1) {
 	return printString;
 }
 
+/*
+ * Returns a deep copy of a matrix
+ */
 
 export function copyMatrix(matrix) {
 	let matrixCopy = [];
@@ -520,7 +523,7 @@ export function copyMatrix(matrix) {
 }
 
 /*
- * Returns a transposed matrix
+ * Returns a deep copy of a transposed matrix
  */
 
 export function getTranspose(matrix) {

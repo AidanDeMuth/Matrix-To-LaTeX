@@ -51,7 +51,7 @@ function getNumberFormat(number) {
 	else if (comp.hasReal(number)) {
 		if (fraction.getDecimal(number.re) < 0) {
 			if (fraction.isFraction(number.re)) {
-				format += `\\frac{${fraction.negateFraction(number.re).num}}{${number.re.den}} `;
+				format += `-\\frac{${fraction.negateFraction(number.re).num}}{${number.re.den}} `;
 			}
 			else {
 				format += `${number.re.num} `;
